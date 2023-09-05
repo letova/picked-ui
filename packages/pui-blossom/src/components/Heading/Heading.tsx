@@ -1,7 +1,7 @@
 import { cx } from '@emotion/css';
 import { ForwardedRef, forwardRef } from 'react';
 
-import { Heading as BaseHeading } from '../../../pui-base/components/Heading';
+import { Heading as BaseHeading } from '../../../../pui-base/src/components/Heading';
 
 import { HeadingProps } from './Heading.types';
 import { getClassName } from './Heading.styles';

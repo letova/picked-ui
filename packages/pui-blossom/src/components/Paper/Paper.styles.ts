@@ -1,6 +1,6 @@
 import { css } from '@emotion/css';
 
-import { getSize } from '../../../utils';
+import { getSize } from '../../utils';
 
 import { PaperProps } from './Paper.types';
 

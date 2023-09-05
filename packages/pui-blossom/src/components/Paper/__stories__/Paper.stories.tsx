@@ -35,7 +35,7 @@ export const Base: Story = {
     );
   },
   args: {
-    customStyles: {
+    cs: {
       container: {
         padding: '10px',
         background: 'antiquewhite',

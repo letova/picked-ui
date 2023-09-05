@@ -39,6 +39,6 @@
     // Completeness
     "skipLibCheck": true
   },
-  "include": ["src", "tests"],
+  "include": ["packages", "tests"],
   "exclude": ["node_modules"]
 }
