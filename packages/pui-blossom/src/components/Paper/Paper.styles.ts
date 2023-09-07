@@ -1,6 +1,6 @@
 import { css } from '@emotion/css';
 
-import { getSize } from '../../utils';
+import { getPxSize, getRemSize } from '../../utils';
 
 import { PaperProps } from './Paper.types';
 
@@ -19,75 +19,75 @@ const getBoxShadowValue = (elevation: number, s: number) => {
       return 'none';
     }
     case 1: {
-      return `0 0 ${getSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getSize(1, s)} ${getSize(2, s)} ${
+      return `0 0 ${getPxSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getPxSize(1, s)} ${getPxSize(2, s)} ${
         Colors.SemitransparentBlack20
       }`;
     }
     case 2: {
-      return `0 0 ${getSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getSize(2, s)} ${getSize(3, s)} ${
+      return `0 0 ${getPxSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getPxSize(2, s)} ${getPxSize(3, s)} ${
         Colors.SemitransparentBlack20
       }`;
     }
     case 3: {
-      return `0 0 ${getSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getSize(3, s)} ${getSize(5, s)} ${
+      return `0 0 ${getPxSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getPxSize(3, s)} ${getPxSize(5, s)} ${
         Colors.SemitransparentBlack20
       }`;
     }
     case 4: {
-      return `0 0 ${getSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getSize(4, s)} ${getSize(6, s)} ${
+      return `0 0 ${getPxSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getPxSize(4, s)} ${getPxSize(6, s)} ${
         Colors.SemitransparentBlack20
       }`;
     }
     case 5: {
-      return `0 0 ${getSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getSize(5, s)} ${getSize(8, s)} ${
+      return `0 0 ${getPxSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getPxSize(5, s)} ${getPxSize(8, s)} ${
         Colors.SemitransparentBlack15
       }`;
     }
     case 6: {
-      return `0 0 ${getSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getSize(6, s)} ${getSize(9, s)} ${
+      return `0 0 ${getPxSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getPxSize(6, s)} ${getPxSize(9, s)} ${
         Colors.SemitransparentBlack15
       }`;
     }
     case 7: {
-      return `0 0 ${getSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getSize(7, s)} ${getSize(11, s)} ${
+      return `0 0 ${getPxSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getPxSize(7, s)} ${getPxSize(11, s)} ${
         Colors.SemitransparentBlack15
       }`;
     }
     case 8: {
-      return `0 0 ${getSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getSize(8, s)} ${getSize(12, s)} ${
+      return `0 0 ${getPxSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getPxSize(8, s)} ${getPxSize(12, s)} ${
         Colors.SemitransparentBlack15
       }`;
     }
     case 9: {
-      return `0 0 ${getSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getSize(9, s)} ${getSize(14, s)} ${
+      return `0 0 ${getPxSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getPxSize(9, s)} ${getPxSize(14, s)} ${
         Colors.SemitransparentBlack15
       }`;
     }
     case 10: {
-      return `0 0 ${getSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getSize(10, s)} ${getSize(15, s)} ${
+      return `0 0 ${getPxSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getPxSize(10, s)} ${getPxSize(15, s)} ${
         Colors.SemitransparentBlack15
       }`;
     }
     case 11: {
-      return `0 0 ${getSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getSize(11, s)} ${getSize(17, s)} ${
+      return `0 0 ${getPxSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getPxSize(11, s)} ${getPxSize(17, s)} ${
         Colors.SemitransparentBlack15
       }`;
     }
     case 12: {
-      return `0 0 ${getSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getSize(12, s)} ${getSize(18, s)} ${
+      return `0 0 ${getPxSize(1, s)} ${Colors.SemitransparentBlack30}, 0 ${getPxSize(12, s)} ${getPxSize(18, s)} ${
         Colors.SemitransparentBlack15
       }`;
     }
   }
 };
 
-export const getClassName = ({ elevation = 0, square = false, outline = false }: PaperProps) => {
+export const getClassName = ({ elevation = 0, scale: s = 1, square = false, outline = false }: PaperProps) => {
   return css`
-    border: ${outline ? `1px solid gray` : 'none'};
-    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    border: ${outline ? `${getPxSize(1, s)} solid gray` : 'none'};
+    font-family: 'Arial', sans-serif;
     font-weight: 400;
-    font-size: 0.875rem;
-    box-shadow: ${getBoxShadowValue(elevation, 1)};
-    border-radius: ${square ? 0 : 3}px;
+    font-size: ${getRemSize(0.875, s)};
+    box-shadow: ${getBoxShadowValue(elevation, s)};
+    border-radius: ${square ? 0 : getPxSize(3, s)};
   `;
 };
