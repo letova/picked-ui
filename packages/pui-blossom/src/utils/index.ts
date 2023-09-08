@@ -1,1 +1,1 @@
-export { getSize } from './scale';
+export { getPxSize } from './scale';

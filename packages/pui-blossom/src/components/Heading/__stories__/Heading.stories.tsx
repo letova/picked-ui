@@ -45,6 +45,7 @@ export const Base: Story = {
     );
   },
   args: {
+    size: 'm',
     cs: { container: { color: 'red' } },
   },
 };

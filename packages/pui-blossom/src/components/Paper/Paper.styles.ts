@@ -1,6 +1,6 @@
 import { css } from '@emotion/css';
 
-import { getPxSize, getRemSize } from '../../utils';
+import { getPxSize } from '../../utils';
 
 import { PaperProps } from './Paper.types';
 
@@ -42,7 +42,7 @@ export const getClassName = ({ elevation = 0, scale: s = 1, square = false, outl
     border: ${outline ? `${getPxSize(1, s)} solid gray` : 'none'};
     font-family: 'Arial', sans-serif;
     font-weight: 400;
-    font-size: ${getRemSize(0.875, s)};
+    font-size: ${getPxSize(14, s)};
     box-shadow: ${getBoxShadowValue(elevation, s)};
     border-radius: ${square ? 0 : getPxSize(3, s)};
   `;

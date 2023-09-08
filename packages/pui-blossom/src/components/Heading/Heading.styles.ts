@@ -1,6 +1,6 @@
 import { css } from '@emotion/css';
 
-import { getPxSize, getRemSize } from '../../utils';
+import { getPxSize } from '../../utils';
 
 import { HeadingProps } from './Heading.types';
 
@@ -8,45 +8,45 @@ const getDynamicStyle = (level: number) => {
   switch (level) {
     case 1: {
       return {
-        xs: { fontSize: 1.55, padding: 32 }, // 200 +
-        s: { fontSize: 2.3, padding: 32 }, // 400
-        m: { fontSize: 2.8, padding: 32 }, // 450
+        xs: { fontSize: 30, padding: 32 },
+        s: { fontSize: 38, padding: 32 },
+        m: { fontSize: 46, padding: 32 },
       };
     }
     default:
     case 2: {
       return {
-        xs: { fontSize: 1.35, padding: 28 }, // 150
-        s: { fontSize: 1.9, padding: 28 }, // 300
-        m: { fontSize: 2.35, padding: 28 }, // 350
+        xs: { fontSize: 26, padding: 28 },
+        s: { fontSize: 32, padding: 28 },
+        m: { fontSize: 38, padding: 28 },
       };
     }
     case 3: {
       return {
-        xs: { fontSize: 1.2, padding: 24 }, // 125
-        s: { fontSize: 1.6, padding: 24 }, // 250
-        m: { fontSize: 2, padding: 24 }, // 300
+        xs: { fontSize: 23, padding: 24 },
+        s: { fontSize: 28, padding: 24 },
+        m: { fontSize: 33, padding: 24 },
       };
     }
     case 4: {
       return {
-        xs: { fontSize: 1.075, padding: 20 }, // 100
-        s: { fontSize: 1.35, padding: 20 }, // 200
-        m: { fontSize: 1.7, padding: 20 }, // 250
+        xs: { fontSize: 20, padding: 20 },
+        s: { fontSize: 24, padding: 20 },
+        m: { fontSize: 28, padding: 20 },
       };
     }
     case 5: {
       return {
-        xs: { fontSize: 0.975, padding: 16 }, // 75
-        s: { fontSize: 1.15, padding: 16 }, // 150
-        m: { fontSize: 1.45, padding: 16 }, // 200
+        xs: { fontSize: 17, padding: 16 },
+        s: { fontSize: 20, padding: 16 },
+        m: { fontSize: 23, padding: 16 },
       };
     }
     case 6: {
       return {
-        xs: { fontSize: 0.9, padding: 12 },
-        s: { fontSize: 1, padding: 12 },
-        m: { fontSize: 1.25, padding: 12 },
+        xs: { fontSize: 14, padding: 12 },
+        s: { fontSize: 16, padding: 12 },
+        m: { fontSize: 18, padding: 12 },
       };
     }
   }
@@ -60,6 +60,6 @@ export const getClassName = ({ level = 2, size = 's', scale: s = 1 }: HeadingPro
     margin-bottom: ${getPxSize(dynamicStyle.padding, s)};
     font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
     font-weight: 700;
-    font-size: ${getRemSize(dynamicStyle.fontSize, s)};
+    font-size: ${getPxSize(dynamicStyle.fontSize, s)};
   `;
 };

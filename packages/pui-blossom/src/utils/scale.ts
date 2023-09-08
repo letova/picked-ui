@@ -1,1 +1,1 @@
-export const getSize = (size: number, scale: number) => `${size * scale}px`;
+export const getPxSize = (size: number, scale: number) => `${size * scale}px`;
