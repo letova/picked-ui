@@ -1,7 +1,7 @@
 import { css, cx } from '@emotion/css';
 import { ForwardedRef, forwardRef } from 'react';
 
-import { getElementFromSlot } from '../../utils';
+import { convertCSToClassName, getElementFromSlot } from '../../utils';
 
 import { ChipProps } from './Chip.types';
 
@@ -28,7 +28,12 @@ const Chip = forwardRef(
     return (
       <div ref={ref} className={cx('Chip', className, { [css(cs?.container)]: Boolean(cs?.container) })}>
         {clickable && (
-          <button className="Chip-actionElement" aria-labelledby={id} disabled={disabled} onClick={onClick} />
+          <button
+            className={cx('Chip-action', convertCSToClassName(cs?.action, { disabled }))}
+            aria-labelledby={id}
+            disabled={disabled}
+            onClick={onClick}
+          />
         )}
         <span id={id} className="Chip-label">
           {children}

@@ -2,6 +2,7 @@ import { CSSObject } from '@emotion/css';
 
 export interface CustomStyles {
   container: CSSObject;
+  action: CSSObject;
 }
 
 export interface ChipProps {
