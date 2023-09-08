@@ -2,4 +2,5 @@ import { HeadingProps as BaseHeadingProps } from '../../../../pui-base/src/compo
 
 export interface HeadingProps extends BaseHeadingProps {
   size?: 'xs' | 's' | 'm';
+  scale?: number;
 }
