@@ -1,25 +1,40 @@
 import { css, cx } from '@emotion/css';
 import { ForwardedRef, forwardRef } from 'react';
 
+import { getElementFromSlot } from '../../utils';
+
 import { ChipProps } from './Chip.types';
 
 const Chip = forwardRef(
-  ({ className, children, elements = {}, cs, disabled, onClick }: ChipProps, ref: ForwardedRef<HTMLDivElement>) => {
+  (
+    { className, children, slots = {}, cs, disabled = false, onClick }: ChipProps,
+    ref: ForwardedRef<HTMLDivElement>,
+  ) => {
     const clickable = !!onClick;
     const id = String(new Date().getMilliseconds());
 
-    const { startDecoratorContent, endDecoratorContent } = elements;
+    const { startDecorator, endDecorator } = slots;
+
+    const startDecoratorElement = getElementFromSlot(`${id}startDecorator`, startDecorator, {
+      className: 'Chip-startDecorator',
+      disabled,
+    });
+
+    const endDecoratorElement = getElementFromSlot(`${id}endDecorator`, endDecorator, {
+      className: 'Chip-endDecorator',
+      disabled,
+    });
 
     return (
-      <div ref={ref} className={cx('Chip', className, css(cs?.container))}>
+      <div ref={ref} className={cx('Chip', className, { [css(cs?.container)]: Boolean(cs?.container) })}>
         {clickable && (
           <button className="Chip-actionElement" aria-labelledby={id} disabled={disabled} onClick={onClick} />
         )}
         <span id={id} className="Chip-label">
           {children}
         </span>
-        {startDecoratorContent ? <div className="Chip-startDecorator">{startDecoratorContent}</div> : null}
-        {endDecoratorContent ? <div className="Chip-endDecorator">{endDecoratorContent}</div> : null}
+        {startDecoratorElement}
+        {endDecoratorElement}
       </div>
     );
   },
