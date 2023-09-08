@@ -2,13 +2,18 @@ import { useState } from 'react';
 
 import { isNil } from '../../utils';
 
-export interface UserValue {
+export interface CompositeValue {
   value?: number;
   fractionDigits?: number;
   separator?: '.' | ',';
 }
 
 export type OnChange = (value?: number, fractionDigits?: number) => void;
+
+export interface InputProps {
+  value: string | undefined;
+  onChange: (nextValue: string) => void;
+}
 
 const isNumeric = (value: any, options?: { allowComma: boolean }) => {
   if (typeof value === 'number') {
@@ -32,7 +37,7 @@ const countFractionDigits = (value: string) => {
   return value.length - dotIndex - 1;
 };
 
-export const useNumberInput = (compositeValue: UserValue, onChange: OnChange) => {
+export const useNumberInput = (compositeValue: CompositeValue, onChange: OnChange) => {
   const [temporaryValue, setTemporaryValue] = useState<string>();
 
   const { value: userValue, fractionDigits, separator = '.' } = compositeValue;
@@ -76,6 +81,10 @@ export const useNumberInput = (compositeValue: UserValue, onChange: OnChange) =>
 
   if (value && separator === ',') {
     value = value.replace('.', ',');
+  }
+
+  if (isNil(value)) {
+    value = '';
   }
 
   return { value, onChange: handleOnChange };
