@@ -26,7 +26,18 @@ const Chip = forwardRef(
     });
 
     return (
-      <div ref={ref} className={cx('Chip', className, { [css(cs?.container)]: Boolean(cs?.container) })}>
+      <div
+        ref={ref}
+        className={cx(
+          'Chip',
+          {
+            'Chip--disabled': disabled,
+            [css(cs?.container)]: Boolean(cs?.container),
+          },
+          className,
+        )}
+        data-testid="chip"
+      >
         {clickable && (
           <button
             className={cx('Chip-action', convertCSToClassName(cs?.action, { disabled }))}

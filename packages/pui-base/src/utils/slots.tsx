@@ -7,7 +7,6 @@ interface SlotProps {
 
 export const getElementFromSlot = (id: string, slotProps?: SlotProps, ownerProps?: Record<string, unknown>) => {
   // TODO sep23: create cache???
-  console.log(id);
   if (!slotProps) {
     return null;
   }
