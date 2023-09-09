@@ -18,6 +18,6 @@ type Story = StoryObj<typeof meta>;
 export const Base: Story = {
   args: {
     children: 'Chip',
-    slots: { endDecorator: { as: 'button', props: { children: 'x' } } },
+    slots: { endDecorator: { component: 'button', props: { children: 'x' } } },
   },
 };

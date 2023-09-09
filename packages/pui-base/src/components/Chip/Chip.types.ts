@@ -10,9 +10,9 @@ export interface ChipProps {
   children?: React.ReactNode;
   slots?: {
     // TODO sep23: add slot - example: { as: 'a'; props: { href: '#as-link' } };
-    // action?: { component: React.FC<any>; as: string; props: Record<string, any> };
-    startDecorator?: { component: React.FC<any>; props: Record<string, any> };
-    endDecorator?: { component: React.FC<any>; props: Record<string, any> };
+    // action?: { ... };
+    startDecorator?: { component: React.ElementType<any>; props: Record<string, unknown> };
+    endDecorator?: { component: React.ElementType<any>; props: Record<string, unknown> };
   };
   cs?: CustomStyles;
   disabled?: boolean;
