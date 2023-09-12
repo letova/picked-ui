@@ -17,13 +17,10 @@
     "baseUrl": ".",
     "module": "esnext",
     "moduleResolution": "node",
-    "paths": {
-      "~/*": ["src/*"]
-    },
     "resolveJsonModule": true,
 
     // Emit
-    "removeComments": true,
+    "noEmit": true,
 
     // Interop Constraints
     "allowSyntheticDefaultImports": true,
@@ -39,6 +36,6 @@
     // Completeness
     "skipLibCheck": true
   },
-  "include": ["packages", "tests"],
-  "exclude": ["node_modules"]
+  "include": ["tests", "packages", ".eslintrc.js", "jest.config.js"],
+  "exclude": ["**/node_modules"]
 }
