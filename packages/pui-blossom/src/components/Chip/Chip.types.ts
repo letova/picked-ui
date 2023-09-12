@@ -4,7 +4,7 @@ import { ChipProps as BaseChipProps } from '../../../../pui-base/src/components/
 
 export interface ChipProps extends BaseChipProps {
   scale?: number;
-  variant?: 'plain' | 'outlined' | 'dashed';
+  variant?: 'plain' | 'outlined';
   size?: 'xs' | 's' | 'm';
   maxWidth?: number;
   // TODO sep23: add HexColor
