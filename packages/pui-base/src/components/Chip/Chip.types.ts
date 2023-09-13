@@ -1,8 +1,9 @@
 import { CSSObject } from '@emotion/css';
 
 export interface CustomStyles {
-  container: CSSObject;
-  action: CSSObject;
+  container?: CSSObject;
+  action?: CSSObject;
+  label?: CSSObject;
 }
 
 export interface ChipProps {

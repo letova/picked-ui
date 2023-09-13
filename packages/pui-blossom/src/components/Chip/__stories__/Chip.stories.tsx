@@ -45,6 +45,13 @@ export const Outlined: Story = {
   },
 };
 
+export const MaxWidth: Story = {
+  args: {
+    children: 'How to build a component library with React and TypeScript',
+    maxWidth: 150,
+  },
+};
+
 export const EndDecorator: Story = {
   args: {
     children: 'Chip',

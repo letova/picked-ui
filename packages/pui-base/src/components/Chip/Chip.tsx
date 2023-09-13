@@ -46,7 +46,7 @@ const Chip = forwardRef(
             onClick={onClick}
           />
         )}
-        <span id={id} className="Chip-label">
+        <span id={id} className={cx('Chip-label', convertCSToClassName(cs?.label, { disabled }))}>
           {children}
         </span>
         {startDecoratorElement}

@@ -26,8 +26,9 @@ const SIZES_MAP = {
 export const getClassName = ({
   variant = 'plain',
   size = 's',
-  color = 'primary',
   scale: s = 1,
+  maxWidth,
+  color = 'primary',
   onClick,
 }: ChipProps) => {
   const paletteSource = variant === 'plain' ? PALETTE_MAP_PLAIN : PALETTE_MAP_OUTLINE;
@@ -57,6 +58,7 @@ export const getClassName = ({
     display: flex;
     align-items: center;
     gap: ${getPxSize(4, s)};
+    width: ${maxWidth ? getPxSize(maxWidth, s) : 'auto'};
     padding: ${getPxSize(sizes.paddingY, s)} ${getPxSize(sizes.paddingX, s)};
     border: ${borderStyle};
     border-radius: ${getPxSize(2, s)};
@@ -79,11 +81,18 @@ const BUTTON_CS = {
   background: 'transparent',
 };
 
-export const getCS = ({ cs }: ChipProps): ChipProps['cs'] => {
+const LABEL_TEX_OVERFLOW_CS = {
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+};
+
+export const getCS = ({ maxWidth, cs }: ChipProps): ChipProps['cs'] => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return deepMergeCS(
     {
       action: BUTTON_CS,
+      label: maxWidth ? LABEL_TEX_OVERFLOW_CS : undefined,
     },
     cs,
   );
