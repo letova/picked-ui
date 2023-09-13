@@ -3,7 +3,12 @@ import { css } from '@emotion/css';
 import { deepMergeCS, getPxSize } from '../../utils';
 
 import { ChipProps } from './Chip.types';
-import { PALETTE_MAP_OUTLINE, PALETTE_MAP_PLAIN } from './Chip.palettes';
+import {
+  OUTLINED_HIGHLIGHTED_PALETTE_MAP,
+  OUTLINED_PALETTE_MAP,
+  PLAIN_HIGHLIGHTED_PALETTE_MAP,
+  PLAIN_PALETTE_MAP,
+} from './Chip.palettes';
 
 const SIZES_MAP = {
   xs: {
@@ -29,9 +34,13 @@ export const getClassName = ({
   scale: s = 1,
   maxWidth,
   color = 'primary',
+  highlighted = false,
   onClick,
 }: ChipProps) => {
-  const paletteSource = variant === 'plain' ? PALETTE_MAP_PLAIN : PALETTE_MAP_OUTLINE;
+  const plainPalette = highlighted ? PLAIN_HIGHLIGHTED_PALETTE_MAP : PLAIN_PALETTE_MAP;
+  const outlinedPalette = highlighted ? OUTLINED_HIGHLIGHTED_PALETTE_MAP : OUTLINED_PALETTE_MAP;
+
+  const paletteSource = variant === 'plain' ? plainPalette : outlinedPalette;
   const palette = paletteSource[color];
 
   const sizes = SIZES_MAP[size];
