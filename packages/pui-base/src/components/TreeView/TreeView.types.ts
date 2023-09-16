@@ -5,4 +5,7 @@ export interface NodeType {
   expanded?: boolean;
   checked?: boolean;
   disabled?: boolean;
+  metadata?: {
+    disabledByParent: boolean;
+  };
 }
