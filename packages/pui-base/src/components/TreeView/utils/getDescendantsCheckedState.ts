@@ -1,20 +1,20 @@
 import { NodeType } from '../TreeView.types';
 
 export interface DescendantsCheckedState {
-  hasEnabledCheckedEndNodes: boolean;
-  hasEnabledUncheckedEndNodes: boolean;
-  hasDisabledCheckedEndNodes: boolean;
-  hasDisabledUncheckedEndNodes: boolean;
+  hasEnabledCheckedLeafNodes: boolean;
+  hasEnabledUncheckedLeafNodes: boolean;
+  hasDisabledCheckedLeafNodes: boolean;
+  hasDisabledUncheckedLeafNodes: boolean;
 }
 
 export const getDescendantsCheckedState = (
   tree: NodeType[] | undefined,
   contex: { disabledByParent: boolean } = { disabledByParent: false },
   state: DescendantsCheckedState = {
-    hasEnabledCheckedEndNodes: false,
-    hasEnabledUncheckedEndNodes: false,
-    hasDisabledCheckedEndNodes: false,
-    hasDisabledUncheckedEndNodes: false,
+    hasEnabledCheckedLeafNodes: false,
+    hasEnabledUncheckedLeafNodes: false,
+    hasDisabledCheckedLeafNodes: false,
+    hasDisabledUncheckedLeafNodes: false,
   },
 ): DescendantsCheckedState => {
   if (!tree) {
@@ -27,22 +27,22 @@ export const getDescendantsCheckedState = (
 
     if (!hasChildren) {
       if (!isDisabled) {
-        if (node.checked && !result.hasEnabledCheckedEndNodes) {
-          result.hasEnabledCheckedEndNodes = true;
+        if (node.checked && !result.hasEnabledCheckedLeafNodes) {
+          result.hasEnabledCheckedLeafNodes = true;
         }
 
-        if (!node.checked && !result.hasEnabledUncheckedEndNodes) {
-          result.hasEnabledUncheckedEndNodes = true;
+        if (!node.checked && !result.hasEnabledUncheckedLeafNodes) {
+          result.hasEnabledUncheckedLeafNodes = true;
         }
       }
 
       if (isDisabled) {
-        if (node.checked && !result.hasDisabledCheckedEndNodes) {
-          result.hasDisabledCheckedEndNodes = true;
+        if (node.checked && !result.hasDisabledCheckedLeafNodes) {
+          result.hasDisabledCheckedLeafNodes = true;
         }
 
-        if (!node.checked && !result.hasDisabledUncheckedEndNodes) {
-          result.hasDisabledUncheckedEndNodes = true;
+        if (!node.checked && !result.hasDisabledUncheckedLeafNodes) {
+          result.hasDisabledUncheckedLeafNodes = true;
         }
       }
     }
