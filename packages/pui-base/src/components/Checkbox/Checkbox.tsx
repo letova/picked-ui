@@ -16,11 +16,15 @@ const Checkbox = forwardRef(
       defaultChecked = false,
       disabled = false,
       onChange,
+      onFocus,
+      onBlur,
     }: CheckboxProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
     const id = useId();
+
     const [ownerChecked, setOwnerChecked] = useState(defaultChecked);
+    const [hasFocus, setHasFocus] = useState<boolean>(false);
 
     const checked = isNil(userChecked) ? ownerChecked : userChecked;
 
@@ -34,18 +38,32 @@ const Checkbox = forwardRef(
       onChange?.(event);
     };
 
+    const handleFocus: React.FocusEventHandler<HTMLInputElement> = (event) => {
+      setHasFocus(true);
+      onFocus?.(event);
+    };
+
+    const handleBlur: React.FocusEventHandler<HTMLInputElement> = (event) => {
+      setHasFocus(false);
+      onBlur?.(event);
+    };
+
     const state = {
+      focus: hasFocus,
       indeterminate,
       checked,
       disabled,
     };
 
     return (
-      <div
+      <span
         ref={ref}
         className={cx(
           'Checkbox',
           {
+            'Checkbox--focus': hasFocus,
+            'Checkbox--indeterminate': indeterminate,
+            'Checkbox--checked': checked,
             'Checkbox--disabled': disabled,
           },
           convertCSToClassName(cs?.container, state),
@@ -53,9 +71,18 @@ const Checkbox = forwardRef(
         )}
       >
         <span>
-          <input id={id} type="checkbox" checked={checked} disabled={disabled} onChange={handleChange} />
+          <input
+            id={id}
+            type="checkbox"
+            checked={checked}
+            disabled={disabled}
+            onChange={handleChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
           <span
             className={cx('Checkbox-customInput', {
+              'Checkbox-customInput--focus': hasFocus,
               'Checkbox-customInput--indeterminate': indeterminate,
               'Checkbox-customInput--checked': checked,
               'Checkbox-customInput--disabled': disabled,
@@ -65,7 +92,7 @@ const Checkbox = forwardRef(
         <label htmlFor={id} className={cx('Checkbox-label', convertCSToClassName(cs?.label, state))}>
           {children}
         </label>
-      </div>
+      </span>
     );
   },
 );

@@ -5,13 +5,15 @@ export interface CustomStyles {
   label?: CSSObject;
 }
 
-export interface CheckboxProps {
+type PickedInputHTMLAttributes = Pick<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'checked' | 'disabled' | 'onChange' | 'onFocus' | 'onBlur'
+>;
+
+export interface CheckboxProps extends PickedInputHTMLAttributes {
   className?: string;
   children?: React.ReactNode;
   cs?: CustomStyles;
   indeterminate?: boolean;
-  checked?: boolean;
   defaultChecked?: boolean;
-  disabled?: boolean;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
