@@ -15,7 +15,7 @@ const Checkbox = forwardRef(
       cs,
       indeterminate = false,
       checked: userChecked,
-      defaultChecked = false,
+      defaultChecked,
       disabled = false,
       onChange,
       onFocus,
@@ -25,7 +25,7 @@ const Checkbox = forwardRef(
   ) => {
     const id = useId();
 
-    const [ownerChecked, setOwnerChecked] = useState(defaultChecked);
+    const [ownerChecked, setOwnerChecked] = useState(defaultChecked ?? false);
     const [hasFocus, setHasFocus] = useState<boolean>(false);
 
     const checked = isNil(userChecked) ? ownerChecked : userChecked;
@@ -78,7 +78,8 @@ const Checkbox = forwardRef(
             type="checkbox"
             name={name}
             value={value}
-            checked={checked}
+            checked={userChecked}
+            defaultChecked={defaultChecked}
             disabled={disabled}
             onChange={handleChange}
             onFocus={handleFocus}
