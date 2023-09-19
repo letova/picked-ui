@@ -9,9 +9,9 @@ const Checkbox = forwardRef(
   (
     {
       className,
-      children,
       name,
       value,
+      label,
       cs,
       indeterminate = false,
       checked: userChecked,
@@ -94,9 +94,11 @@ const Checkbox = forwardRef(
             })}
           />
         </span>
-        <label htmlFor={id} className={cx('Checkbox-label', convertCSToClassName(cs?.label, state))}>
-          {children}
-        </label>
+        {label ? (
+          <label htmlFor={id} className={cx('Checkbox-label', convertCSToClassName(cs?.label, state))}>
+            {label}
+          </label>
+        ) : null}
       </span>
     );
   },
