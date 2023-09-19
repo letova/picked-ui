@@ -12,7 +12,8 @@ type PickedInputHTMLAttributes = Pick<
 
 export interface CheckboxProps extends PickedInputHTMLAttributes {
   className?: string;
-  children?: React.ReactNode;
+  label?: React.ReactNode;
   cs?: CustomStyles;
   indeterminate?: boolean;
+  // autoFocus?: boolean;
 }
