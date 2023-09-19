@@ -10,6 +10,8 @@ const Checkbox = forwardRef(
     {
       className,
       children,
+      name,
+      value,
       cs,
       indeterminate = false,
       checked: userChecked,
@@ -19,7 +21,7 @@ const Checkbox = forwardRef(
       onFocus,
       onBlur,
     }: CheckboxProps,
-    ref: ForwardedRef<HTMLDivElement>,
+    ref: ForwardedRef<HTMLSpanElement>,
   ) => {
     const id = useId();
 
@@ -74,6 +76,8 @@ const Checkbox = forwardRef(
           <input
             id={id}
             type="checkbox"
+            name={name}
+            value={value}
             checked={checked}
             disabled={disabled}
             onChange={handleChange}

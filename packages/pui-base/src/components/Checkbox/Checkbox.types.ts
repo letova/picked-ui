@@ -7,7 +7,7 @@ export interface CustomStyles {
 
 type PickedInputHTMLAttributes = Pick<
   React.InputHTMLAttributes<HTMLInputElement>,
-  'checked' | 'disabled' | 'onChange' | 'onFocus' | 'onBlur'
+  'name' | 'value' | 'checked' | 'disabled' | 'onChange' | 'onFocus' | 'onBlur'
 >;
 
 export interface CheckboxProps extends PickedInputHTMLAttributes {
