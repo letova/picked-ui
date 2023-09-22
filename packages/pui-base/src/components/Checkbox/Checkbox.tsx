@@ -1,5 +1,5 @@
 import { cx } from '@emotion/css';
-import React, { ForwardedRef, forwardRef, useId, useState } from 'react';
+import React, { ForwardedRef, forwardRef, useEffect, useId, useRef, useState } from 'react';
 
 import { convertCSToClassName, isNil } from '../../utils';
 
@@ -17,6 +17,7 @@ const Checkbox = forwardRef(
       checked: userChecked,
       defaultChecked,
       disabled = false,
+      autoFocus,
       onChange,
       onFocus,
       onBlur,
@@ -24,11 +25,18 @@ const Checkbox = forwardRef(
     ref: ForwardedRef<HTMLSpanElement>,
   ) => {
     const id = useId();
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const [ownerChecked, setOwnerChecked] = useState(defaultChecked ?? false);
     const [hasFocus, setHasFocus] = useState<boolean>(false);
 
     const checked = isNil(userChecked) ? ownerChecked : userChecked;
+
+    useEffect(() => {
+      if (autoFocus) {
+        inputRef.current?.focus();
+      }
+    }, [autoFocus]);
 
     const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
       const value = event.target.checked;
@@ -74,6 +82,7 @@ const Checkbox = forwardRef(
       >
         <span>
           <input
+            ref={inputRef}
             id={id}
             type="checkbox"
             name={name}

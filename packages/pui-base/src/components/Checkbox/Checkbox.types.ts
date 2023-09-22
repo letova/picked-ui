@@ -15,5 +15,5 @@ export interface CheckboxProps extends PickedInputHTMLAttributes {
   label?: React.ReactNode;
   cs?: CustomStyles;
   indeterminate?: boolean;
-  // autoFocus?: boolean;
+  autoFocus?: boolean;
 }
