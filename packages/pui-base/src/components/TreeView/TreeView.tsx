@@ -3,15 +3,24 @@ import { cx } from '@emotion/css';
 
 import { TreeContext, NodeType, TreeViewProps } from './TreeView.types';
 
+import { convertCSToClassName } from '../../utils';
+
 const TreeItem = (props: NodeType & { context: TreeContext }) => {
   const { id, label, children, context } = props;
-  const { getStateById } = context;
+  const { cs, getStateById } = context;
   const { selected, expanded } = getStateById(id);
 
   return (
-    <li className="TreeItem" role="treeitem" aria-selected={selected} aria-expanded={expanded}>
-      <div className="TreeItem-content">
-        <button className="TreeItem-expandButton">+</button>
+    <li
+      className={cx('TreeItem', convertCSToClassName(cs?.treeItem))}
+      role="treeitem"
+      aria-selected={selected}
+      aria-expanded={expanded}
+    >
+      <div className={cx('TreeItem-content', convertCSToClassName(cs?.content))}>
+        <button className={cx('TreeItem-expandButton', convertCSToClassName(cs?.expandButton))}>
+          {expanded ? '-' : '+'}
+        </button>
         <span className="TreeItem-label">{label}</span>
       </div>
       {children ? <Group className="TreeItem-group" data={children} context={context} /> : null}
@@ -20,10 +29,13 @@ const TreeItem = (props: NodeType & { context: TreeContext }) => {
 };
 
 const Group = ({ className, data, context }: { className: string; data: NodeType[]; context: TreeContext }) => {
-  const { level } = context;
+  const { level, cs } = context;
 
   return (
-    <ul className={cx('Group', className)} role={level === 0 ? 'tree' : 'group'}>
+    <ul
+      className={cx('Group', convertCSToClassName(cs?.group, { level }), className)}
+      role={level === 0 ? 'tree' : 'group'}
+    >
       {data.map((node) => {
         return <TreeItem key={node.id} {...node} context={{ ...context, level: level + 1 }} />;
       })}
@@ -31,15 +43,20 @@ const Group = ({ className, data, context }: { className: string; data: NodeType
   );
 };
 
-const TreeView = forwardRef(({ className, data }: TreeViewProps, ref: ForwardedRef<HTMLDivElement>) => {
+const TreeView = forwardRef(({ className, data, cs }: TreeViewProps, ref: ForwardedRef<HTMLDivElement>) => {
   const context: TreeContext = {
-    level: 0,
+    level: 1,
+    cs,
     getStateById: () => ({ selected: false, expanded: false, indeterminate: false }),
   };
 
   return (
-    <div ref={ref} className={cx('TreeView', className)}>
-      {!data?.length ? <div>No data</div> : <Group className="TreeView-group" data={data} context={context} />}
+    <div ref={ref} className={cx('TreeView', convertCSToClassName(cs?.container), className)}>
+      {!data?.length ? (
+        <div className={cx('TreeView-noDataView', convertCSToClassName(cs?.noDataView))}>No data</div>
+      ) : (
+        <Group className="TreeView-group" data={data} context={context} />
+      )}
     </div>
   );
 });

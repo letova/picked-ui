@@ -1,3 +1,16 @@
+import { CSSObject } from '@emotion/css';
+
+import { GetCSSObjectFn } from '../../utils';
+
+export interface CustomStyles {
+  container?: CSSObject;
+  noDataView?: CSSObject;
+  group?: CSSObject;
+  treeItem?: CSSObject | GetCSSObjectFn;
+  content?: CSSObject;
+  expandButton?: CSSObject | GetCSSObjectFn;
+}
+
 export interface NodeType {
   id: string;
   label: string;
@@ -28,6 +41,7 @@ export interface TreeViewProps {
    * List of nodes
    */
   data?: NodeType[];
+  cs?: CustomStyles;
   /**
    * Show checkbox for each tree item
    */
@@ -54,5 +68,6 @@ interface NodeState {
 
 export interface TreeContext {
   level: number;
+  cs?: CustomStyles;
   getStateById: (id: string) => NodeState;
 }
