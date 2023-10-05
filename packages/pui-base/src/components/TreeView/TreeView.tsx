@@ -1,14 +1,15 @@
 import { ForwardedRef, forwardRef } from 'react';
 import { cx } from '@emotion/css';
 
-import { TreeContext, NodeType, TreeViewProps } from './TreeView.types';
-
 import { convertCSToClassName } from '../../utils';
+
+import { TreeContext, NodeType, TreeViewProps } from './TreeView.types';
+import { prepareMapsFromProps } from './utils';
 
 const TreeItem = (props: NodeType & { context: TreeContext }) => {
   const { id, label, children, context } = props;
   const { cs, getStateById } = context;
-  const { selected, expanded } = getStateById(id);
+  const { selected = false, expanded = false } = getStateById(id);
 
   return (
     <li
@@ -18,12 +19,14 @@ const TreeItem = (props: NodeType & { context: TreeContext }) => {
       aria-expanded={expanded}
     >
       <div className={cx('TreeItem-content', convertCSToClassName(cs?.content))}>
-        <button className={cx('TreeItem-expandButton', convertCSToClassName(cs?.expandButton))}>
-          {expanded ? '-' : '+'}
-        </button>
+        {children ? (
+          <button className={cx('TreeItem-expandButton', convertCSToClassName(cs?.expandButton))}>
+            {expanded ? '-' : '+'}
+          </button>
+        ) : null}
         <span className="TreeItem-label">{label}</span>
       </div>
-      {children ? <Group className="TreeItem-group" data={children} context={context} /> : null}
+      {children && expanded ? <Group className="TreeItem-group" data={children} context={context} /> : null}
     </li>
   );
 };
@@ -43,11 +46,16 @@ const Group = ({ className, data, context }: { className: string; data: NodeType
   );
 };
 
-const TreeView = forwardRef(({ className, data, cs }: TreeViewProps, ref: ForwardedRef<HTMLDivElement>) => {
+const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElement>) => {
+  const { className, data, cs } = props;
+  const { stateMap } = prepareMapsFromProps(props); // TODO: create hook
+
+  console.log('stateMap', stateMap);
+
   const context: TreeContext = {
     level: 1,
     cs,
-    getStateById: () => ({ selected: false, expanded: false, indeterminate: false }),
+    getStateById: (id) => stateMap[id],
   };
 
   return (

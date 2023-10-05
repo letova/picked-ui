@@ -60,10 +60,18 @@ export interface TreeViewProps {
  * PRIVATE TYPES
  */
 
-interface NodeState {
+export interface NodeState {
   selected: boolean;
   expanded: boolean;
+  disabled: boolean;
+  disabledByParent: boolean;
   indeterminate: boolean;
+}
+
+export interface NodeMetadata {
+  parentId: string | undefined;
+  left: number;
+  right: number;
 }
 
 export interface TreeContext {
