@@ -1,1 +1,0 @@
-export { UNCHECKED_DATA, PARTIALLY_CHECKED_DATA } from './data';
