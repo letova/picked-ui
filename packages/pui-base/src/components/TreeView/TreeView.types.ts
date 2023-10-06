@@ -64,7 +64,6 @@ export interface NodeState {
   selected: boolean;
   expanded: boolean;
   disabled: boolean;
-  disabledByParent: boolean;
   indeterminate: boolean;
 }
 

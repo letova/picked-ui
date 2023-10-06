@@ -1,66 +1,50 @@
 import { NodeMetadata, NodeState, NodeType, TreeViewProps } from '../TreeView.types';
 
-const getSelectedIdsMap = ({ selected }: TreeViewProps): Record<string, true> => {
-  if (!selected) {
-    return {};
-  }
-
-  if (selected === 'all') {
-    return {}; // TODO data reduce
-  }
-
-  if (Array.isArray(selected)) {
-    return selected.reduce<Record<string, true>>((result, id) => {
+const getIdsMap = (state: string | string[]): Record<string, true> => {
+  if (Array.isArray(state)) {
+    return state.reduce<Record<string, true>>((result, id) => {
       result[id] = true;
       return result;
     }, {});
   }
 
-  return { [selected]: true };
+  return { [state]: true };
 };
 
-const getExpandedIdsMap = ({ expanded }: TreeViewProps): Record<string, true> => {
-  if (!expanded || typeof expanded === 'number') {
+const getSelectedIdsMap = (selected: TreeViewProps['selected']): Record<string, true> => {
+  if (!selected || selected === 'all') {
     return {};
   }
 
-  if (expanded === 'all') {
-    return {}; // TODO data reduce
-  }
-
-  if (Array.isArray(expanded)) {
-    return expanded.reduce<Record<string, true>>((result, id) => {
-      result[id] = true;
-      return result;
-    }, {});
-  }
-
-  return { [expanded]: true };
+  return getIdsMap(selected);
 };
 
-const getDisabledIdsMap = ({ disabled }: TreeViewProps): Record<string, true> => {
+const getExpandedIdsMap = (expanded: TreeViewProps['expanded']): Record<string, true> => {
+  if (!expanded || expanded === 'all' || typeof expanded === 'number') {
+    return {};
+  }
+
+  return getIdsMap(expanded);
+};
+
+const getDisabledIdsMap = (disabled: TreeViewProps['disabled']): Record<string, true> => {
   if (!disabled) {
     return {};
   }
 
-  if (Array.isArray(disabled)) {
-    return disabled.reduce<Record<string, true>>((result, id) => {
-      result[id] = true;
-      return result;
-    }, {});
-  }
-
-  return { [disabled]: true };
+  return getIdsMap(disabled);
 };
 
 interface ProcessContext {
   parentId?: string;
+  parentIsSelected: boolean;
   parentIsDisabled: boolean;
   level: number;
 }
 
 const INITIAL_PROCESS_CONTEXT: ProcessContext = {
   parentId: undefined,
+  parentIsSelected: false,
   parentIsDisabled: false,
   level: 1,
 };
@@ -69,7 +53,6 @@ const INITIAL_NODE_STATE: NodeState = {
   selected: false,
   expanded: false,
   disabled: false,
-  disabledByParent: false,
   indeterminate: false,
 };
 
@@ -85,11 +68,9 @@ interface Result {
 }
 
 export const prepareMapsFromProps = (props: TreeViewProps): Result => {
-  const selectedIdsMap = getSelectedIdsMap(props);
-  const expandedIdsMap = getExpandedIdsMap(props);
-  const disabledIdsMap = getDisabledIdsMap(props);
-
-  console.log('expandedIdsMap', expandedIdsMap);
+  const selectedIdsMap = getSelectedIdsMap(props.selected);
+  const expandedIdsMap = getExpandedIdsMap(props.expanded);
+  const disabledIdsMap = getDisabledIdsMap(props.disabled);
 
   const stateMap: Record<string, NodeState> = {};
   const metadataMap: Record<string, NodeMetadata> = {};
@@ -106,37 +87,67 @@ export const prepareMapsFromProps = (props: TreeViewProps): Result => {
       const metadata: NodeMetadata = { ...INITIAL_NODE_METADATA };
 
       nestedSetModelCounter += 1;
-      metadata.left = nestedSetModelCounter;
+
       /**
-       * Guess right
+       * Node metadata
        */
-      metadata.right = nestedSetModelCounter + 1;
+      let right = nestedSetModelCounter + 1;
+
+      metadata.left = nestedSetModelCounter;
       metadata.parentId = context.parentId;
 
-      state.indeterminate = false; // TODO
-      state.selected = Boolean(selectedIdsMap[node.id]);
+      /**
+       * Node state
+       */
+      let selected = props.selected === 'all' || Boolean(selectedIdsMap[node.id]) || context.parentIsSelected || false;
+      let indeterminate = false;
+
       state.expanded =
-        typeof props.expanded === 'number' ? props.expanded >= context.level : Boolean(expandedIdsMap[node.id]);
-      state.disabled = Boolean(disabledIdsMap[node.id]);
-      state.disabledByParent = context.parentIsDisabled;
+        props.expanded === 'all' ||
+        Boolean(expandedIdsMap[node.id]) ||
+        (typeof props.expanded === 'number' ? props.expanded <= context.level : false);
+
+      state.disabled = Boolean(disabledIdsMap[node.id]) || context.parentIsDisabled;
 
       if (node.children) {
         process(node.children, {
           parentId: node.id,
+          parentIsSelected: selected,
           parentIsDisabled: state.disabled,
           level: context.level + 1,
         });
 
-        metadata.right = nestedSetModelCounter + 1;
+        if (!selected && node.children.every(({ id }) => stateMap[id].selected)) {
+          selected = true;
+        }
+
+        if (
+          !indeterminate &&
+          !selected &&
+          node.children.some(({ id }) => stateMap[id].selected || stateMap[id].indeterminate)
+        ) {
+          console.log(
+            node.id,
+            node.children.some(({ id }) => stateMap[id].selected),
+          );
+          indeterminate = true;
+        }
+
+        right = nestedSetModelCounter + 1;
       }
 
+      metadata.right = right;
+      state.selected = selected;
+      state.indeterminate = indeterminate;
+
+      /**
+       * Sets maps
+       */
       stateMap[node.id] = state;
-      console.log(node.id, state);
       metadataMap[node.id] = metadata;
+
       nestedSetModelCounter += 1;
     });
-
-    console.log('stateMap it', stateMap);
   };
 
   process(props.data, INITIAL_PROCESS_CONTEXT);
