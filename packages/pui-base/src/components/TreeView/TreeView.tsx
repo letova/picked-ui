@@ -4,7 +4,7 @@ import { cx } from '@emotion/css';
 import { convertCSToClassName } from '../../utils';
 
 import { TreeContext, NodeType, TreeViewProps } from './TreeView.types';
-import { prepareMapsFromProps } from './utils';
+import { prepareMaps } from './utils';
 
 const TreeItem = (props: NodeType & { context: TreeContext }) => {
   const { id, label, children, context } = props;
@@ -48,7 +48,7 @@ const Group = ({ className, data, context }: { className: string; data: NodeType
 
 const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElement>) => {
   const { className, data, cs } = props;
-  const { stateMap } = prepareMapsFromProps(props); // TODO: create hook
+  const { stateMap } = prepareMaps(props); // TODO: create hook
 
   console.log('stateMap', stateMap);
 

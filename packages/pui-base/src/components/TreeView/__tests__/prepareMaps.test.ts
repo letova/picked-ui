@@ -1,11 +1,11 @@
 import { NodeState } from '../TreeView.types';
 
-import { selectedMocks } from '../__testMocks__';
+import { disabledMocks, selectedMocks } from '../__testMocks__';
 
-import { prepareMapsFromProps } from '../utils';
+import { prepareMaps } from '../utils';
 
 const getActualState = (
-  stateName: 'selected' | 'indeterminate',
+  stateName: 'selected' | 'indeterminate' | 'disabled',
   map: Record<string, NodeState>,
   expectedResult: [string, boolean][],
 ) => {
@@ -15,10 +15,10 @@ const getActualState = (
   });
 };
 
-describe('TreeView.prepareMapsFromProps', () => {
+describe('TreeView.prepareMaps', () => {
   describe('calculates the correct selected state with', () => {
     test('the selected leaf node', () => {
-      const { stateMap } = prepareMapsFromProps({ data: selectedMocks.DATA, selected: selectedMocks.SELECTED_LEAF });
+      const { stateMap } = prepareMaps({ data: selectedMocks.DATA, selected: selectedMocks.SELECTED_LEAF });
 
       const actual = getActualState('selected', stateMap, selectedMocks.SELECTED_LEAF_RESULT);
 
@@ -26,7 +26,7 @@ describe('TreeView.prepareMapsFromProps', () => {
     });
 
     test('the selected leaf nodes', () => {
-      const { stateMap } = prepareMapsFromProps({ data: selectedMocks.DATA, selected: selectedMocks.SELECTED_LEAFS });
+      const { stateMap } = prepareMaps({ data: selectedMocks.DATA, selected: selectedMocks.SELECTED_LEAFS });
 
       const actual = getActualState('selected', stateMap, selectedMocks.SELECTED_LEAFS_RESULT);
 
@@ -34,7 +34,7 @@ describe('TreeView.prepareMapsFromProps', () => {
     });
 
     test('the all selected leaf nodes in subtree', () => {
-      const { stateMap } = prepareMapsFromProps({
+      const { stateMap } = prepareMaps({
         data: selectedMocks.DATA,
         selected: selectedMocks.SELECTED_ALL_LEAFS,
       });
@@ -45,7 +45,7 @@ describe('TreeView.prepareMapsFromProps', () => {
     });
 
     test('the root parent', () => {
-      const { stateMap } = prepareMapsFromProps({
+      const { stateMap } = prepareMaps({
         data: selectedMocks.DATA,
         selected: selectedMocks.SELECTED_ROOT_PARENT,
       });
@@ -56,7 +56,7 @@ describe('TreeView.prepareMapsFromProps', () => {
     });
 
     test('the parent', () => {
-      const { stateMap } = prepareMapsFromProps({
+      const { stateMap } = prepareMaps({
         data: selectedMocks.DATA,
         selected: selectedMocks.SELECTED_PARENT,
       });
@@ -67,7 +67,7 @@ describe('TreeView.prepareMapsFromProps', () => {
     });
 
     test('parents', () => {
-      const { stateMap } = prepareMapsFromProps({
+      const { stateMap } = prepareMaps({
         data: selectedMocks.DATA,
         selected: selectedMocks.SELECTED_PARENTS,
       });
@@ -80,7 +80,7 @@ describe('TreeView.prepareMapsFromProps', () => {
 
   describe('calculates the correct indeterminate state with', () => {
     test('the selected leaf node', () => {
-      const { stateMap } = prepareMapsFromProps({ data: selectedMocks.DATA, selected: selectedMocks.SELECTED_LEAF });
+      const { stateMap } = prepareMaps({ data: selectedMocks.DATA, selected: selectedMocks.SELECTED_LEAF });
 
       const actual = getActualState('indeterminate', stateMap, selectedMocks.INDETERMINATE_LEAF_RESULT);
 
@@ -88,7 +88,7 @@ describe('TreeView.prepareMapsFromProps', () => {
     });
 
     test('the selected leaf nodes', () => {
-      const { stateMap } = prepareMapsFromProps({ data: selectedMocks.DATA, selected: selectedMocks.SELECTED_LEAFS });
+      const { stateMap } = prepareMaps({ data: selectedMocks.DATA, selected: selectedMocks.SELECTED_LEAFS });
 
       const actual = getActualState('indeterminate', stateMap, selectedMocks.INDETERMINATE_LEAFS_RESULT);
 
@@ -96,7 +96,7 @@ describe('TreeView.prepareMapsFromProps', () => {
     });
 
     test('the all selected leaf nodes in subtree', () => {
-      const { stateMap } = prepareMapsFromProps({
+      const { stateMap } = prepareMaps({
         data: selectedMocks.DATA,
         selected: selectedMocks.SELECTED_ALL_LEAFS,
       });
@@ -107,7 +107,7 @@ describe('TreeView.prepareMapsFromProps', () => {
     });
 
     test('the root parent', () => {
-      const { stateMap } = prepareMapsFromProps({
+      const { stateMap } = prepareMaps({
         data: selectedMocks.DATA,
         selected: selectedMocks.SELECTED_ROOT_PARENT,
       });
@@ -118,7 +118,7 @@ describe('TreeView.prepareMapsFromProps', () => {
     });
 
     test('the parent', () => {
-      const { stateMap } = prepareMapsFromProps({
+      const { stateMap } = prepareMaps({
         data: selectedMocks.DATA,
         selected: selectedMocks.SELECTED_PARENT,
       });
@@ -129,7 +129,7 @@ describe('TreeView.prepareMapsFromProps', () => {
     });
 
     test('the parents', () => {
-      const { stateMap } = prepareMapsFromProps({
+      const { stateMap } = prepareMaps({
         data: selectedMocks.DATA,
         selected: selectedMocks.SELECTED_PARENTS,
       });
@@ -137,6 +137,27 @@ describe('TreeView.prepareMapsFromProps', () => {
       const actual = getActualState('indeterminate', stateMap, selectedMocks.INDETERMINATE_PARENTS_RESULT);
 
       expect(actual).toEqual(selectedMocks.INDETERMINATE_PARENTS_RESULT);
+    });
+  });
+
+  describe('calculates the correct disabled state with', () => {
+    test('the disabled leaf node', () => {
+      const { stateMap } = prepareMaps({ data: disabledMocks.DATA, disabled: disabledMocks.DISABLED_LEAF });
+
+      const actual = getActualState('disabled', stateMap, disabledMocks.DISABLED_LEAF_RESULT);
+
+      expect(actual).toEqual(disabledMocks.DISABLED_LEAF_RESULT);
+    });
+
+    test('the parent', () => {
+      const { stateMap } = prepareMaps({
+        data: disabledMocks.DATA,
+        disabled: disabledMocks.DISABLED_PARENT,
+      });
+
+      const actual = getActualState('disabled', stateMap, disabledMocks.DISABLED_PARENT_RESULT);
+
+      expect(actual).toEqual(disabledMocks.DISABLED_PARENT_RESULT);
     });
   });
 });
