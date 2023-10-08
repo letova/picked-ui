@@ -67,13 +67,27 @@ const DATA = [
 export const Base: Story = {
   render: () => {
     const [expanded, setExpanded] = useState(['1', '2']);
+    const [selected, setSelected] = useState(['1-1']);
 
     const handleNodeExpandChange: TreeViewProps['onNodeExpandChange'] = ({ node, isExpanded }) => {
       const nextState = isExpanded ? [...expanded, node.id] : expanded.filter((id) => id !== node.id);
       setExpanded(nextState);
     };
 
-    return <TreeView data={DATA} expanded={expanded} onNodeExpandChange={handleNodeExpandChange} />;
+    const handleNodeSelectChange: TreeViewProps['onNodeSelectChange'] = ({ node, isSelected }) => {
+      const nextState = isSelected ? [...selected, node.id] : selected.filter((id) => id !== node.id);
+      setSelected(nextState);
+    };
+
+    return (
+      <TreeView
+        data={DATA}
+        expanded={expanded}
+        selected={selected}
+        onNodeExpandChange={handleNodeExpandChange}
+        onNodeSelectChange={handleNodeSelectChange}
+      />
+    );
   },
 };
 

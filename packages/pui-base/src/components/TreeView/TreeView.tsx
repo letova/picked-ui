@@ -8,7 +8,7 @@ import { TreeInformation, useTreeInformation } from './useTreeInformation';
 
 const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) => {
   const { id, label, children, context } = props;
-  const { treeInformationRef, cs, onNodeExpandChange } = context;
+  const { treeInformationRef, cs, onNodeExpandChange, onNodeSelectChange } = context;
 
   const { selected = false, expanded = false } = treeInformationRef.current!.getStateById(id);
 
@@ -19,11 +19,19 @@ const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) =
       aria-expanded={expanded}
       aria-selected={selected}
     >
-      <div className={cx('TreeItem-content', convertCSToClassName(cs?.content, { expanded, selected }))}>
+      <div
+        className={cx('TreeItem-content', convertCSToClassName(cs?.content, { expanded, selected }))}
+        onClick={(event) => {
+          onNodeSelectChange?.({ node: props, isSelected: !selected }, event);
+        }}
+      >
         {children ? (
           <button
             className={cx('TreeItem-expandButton', convertCSToClassName(cs?.expandButton))}
-            onClick={(event) => onNodeExpandChange?.({ node: props, isExpanded: !expanded }, event)}
+            onClick={(event) => {
+              onNodeExpandChange?.({ node: props, isExpanded: !expanded }, event);
+              event.stopPropagation();
+            }}
           >
             {expanded ? '-' : '+'}
           </button>
@@ -59,7 +67,7 @@ const Group = ({
 };
 
 const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElement>) => {
-  const { className, data, expanded, selected, disabled, cs, onNodeExpandChange } = props;
+  const { className, data, expanded, selected, disabled, cs, onNodeExpandChange, onNodeSelectChange } = props;
 
   const treeInformationRef = useTreeInformation(data, { expanded, selected, disabled });
 
@@ -68,6 +76,7 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
     cs,
     treeInformationRef,
     onNodeExpandChange,
+    onNodeSelectChange,
   };
 
   return (

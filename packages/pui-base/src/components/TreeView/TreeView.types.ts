@@ -49,11 +49,11 @@ export interface TreeViewProps {
   /**
    * Callback fired when tree items are expanded/collapsed
    */
-  onNodeExpandChange?: (optios: { node: NodeType; isExpanded: boolean }, event: React.SyntheticEvent) => void;
+  onNodeExpandChange?: (options: { node: NodeType; isExpanded: boolean }, event: React.SyntheticEvent) => void;
   /**
    * Callback fired when tree items are selected/unselected
    */
-  onNodeSelectChange?: (node: NodeType, selected: boolean, event: React.SyntheticEvent) => void;
+  onNodeSelectChange?: (options: { node: NodeType; isSelected: boolean }, event: React.SyntheticEvent) => void;
 }
 
 /**
