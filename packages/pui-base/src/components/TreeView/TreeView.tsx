@@ -4,25 +4,26 @@ import { cx } from '@emotion/css';
 import { convertCSToClassName } from '../../utils';
 
 import { TreeContext, NodeType, TreeViewProps } from './TreeView.types';
-import { prepareMaps } from './utils';
+import { TreeInformation, useTreeInformation } from './useTreeInformation';
 
-const TreeItem = (props: NodeType & { context: TreeContext }) => {
+const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) => {
   const { id, label, children, context } = props;
-  const { cs, getStateById, onNodeExpandChange } = context;
-  const { selected = false, expanded = false } = getStateById(id);
+  const { treeInformationRef, cs, onNodeExpandChange } = context;
+
+  const { selected = false, expanded = false } = treeInformationRef.current!.getStateById(id);
 
   return (
     <li
-      className={cx('TreeItem', convertCSToClassName(cs?.treeItem))}
+      className={cx('TreeItem', { 'TreeItem--selected': selected }, convertCSToClassName(cs?.treeItem))}
       role="treeitem"
-      aria-selected={selected}
       aria-expanded={expanded}
+      aria-selected={selected}
     >
-      <div className={cx('TreeItem-content', convertCSToClassName(cs?.content))}>
+      <div className={cx('TreeItem-content', convertCSToClassName(cs?.content, { expanded, selected }))}>
         {children ? (
           <button
             className={cx('TreeItem-expandButton', convertCSToClassName(cs?.expandButton))}
-            onClick={(event) => onNodeExpandChange?.(props, !expanded, event)}
+            onClick={(event) => onNodeExpandChange?.({ node: props, isExpanded: !expanded }, event)}
           >
             {expanded ? '-' : '+'}
           </button>
@@ -34,7 +35,15 @@ const TreeItem = (props: NodeType & { context: TreeContext }) => {
   );
 };
 
-const Group = ({ className, data, context }: { className: string; data: NodeType[]; context: TreeContext }) => {
+const Group = ({
+  className,
+  data,
+  context,
+}: {
+  className: string;
+  data: NodeType[];
+  context: TreeContext<TreeInformation>;
+}) => {
   const { level, cs } = context;
 
   return (
@@ -50,15 +59,14 @@ const Group = ({ className, data, context }: { className: string; data: NodeType
 };
 
 const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElement>) => {
-  const { className, data, cs, onNodeExpandChange } = props;
-  const { stateMap } = prepareMaps(props); // TODO: create hook
+  const { className, data, expanded, selected, disabled, cs, onNodeExpandChange } = props;
 
-  console.log('stateMap', stateMap);
+  const treeInformationRef = useTreeInformation(data, { expanded, selected, disabled });
 
-  const context: TreeContext = {
+  const context: TreeContext<TreeInformation> = {
     level: 1,
     cs,
-    getStateById: (id) => stateMap[id],
+    treeInformationRef,
     onNodeExpandChange,
   };
 

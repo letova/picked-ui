@@ -68,7 +68,7 @@ export const Base: Story = {
   render: () => {
     const [expanded, setExpanded] = useState(['1', '2']);
 
-    const handleNodeExpandChange: TreeViewProps['onNodeExpandChange'] = (node, isExpanded) => {
+    const handleNodeExpandChange: TreeViewProps['onNodeExpandChange'] = ({ node, isExpanded }) => {
       const nextState = isExpanded ? [...expanded, node.id] : expanded.filter((id) => id !== node.id);
       setExpanded(nextState);
     };

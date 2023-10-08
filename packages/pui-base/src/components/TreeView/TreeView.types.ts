@@ -49,7 +49,7 @@ export interface TreeViewProps {
   /**
    * Callback fired when tree items are expanded/collapsed
    */
-  onNodeExpandChange?: (node: NodeType, expanded: boolean, event: React.SyntheticEvent) => void;
+  onNodeExpandChange?: (optios: { node: NodeType; isExpanded: boolean }, event: React.SyntheticEvent) => void;
   /**
    * Callback fired when tree items are selected/unselected
    */
@@ -73,8 +73,8 @@ export interface NodeMetadata {
   right: number;
 }
 
-export interface TreeContext extends Pick<TreeViewProps, 'onNodeExpandChange' | 'onNodeSelectChange'> {
+export interface TreeContext<T> extends Pick<TreeViewProps, 'onNodeExpandChange' | 'onNodeSelectChange'> {
   level: number;
   cs?: CustomStyles;
-  getStateById: (id: string) => NodeState;
+  treeInformationRef: React.RefObject<T>;
 }
