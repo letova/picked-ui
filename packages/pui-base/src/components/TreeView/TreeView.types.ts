@@ -73,7 +73,7 @@ export interface NodeMetadata {
   right: number;
 }
 
-export interface TreeContext {
+export interface TreeContext extends Pick<TreeViewProps, 'onNodeExpandChange' | 'onNodeSelectChange'> {
   level: number;
   cs?: CustomStyles;
   getStateById: (id: string) => NodeState;

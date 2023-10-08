@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { TreeView } from '../index';
+import { TreeView, TreeViewProps } from '../index';
 
 const meta = {
   title: 'Components/TreeView',
@@ -64,8 +65,15 @@ const DATA = [
 ];
 
 export const Base: Story = {
-  args: {
-    data: DATA,
+  render: () => {
+    const [expanded, setExpanded] = useState(['1', '2']);
+
+    const handleNodeExpandChange: TreeViewProps['onNodeExpandChange'] = (node, isExpanded) => {
+      const nextState = isExpanded ? [...expanded, node.id] : expanded.filter((id) => id !== node.id);
+      setExpanded(nextState);
+    };
+
+    return <TreeView data={DATA} expanded={expanded} onNodeExpandChange={handleNodeExpandChange} />;
   },
 };
 

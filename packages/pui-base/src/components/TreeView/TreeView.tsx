@@ -8,7 +8,7 @@ import { prepareMaps } from './utils';
 
 const TreeItem = (props: NodeType & { context: TreeContext }) => {
   const { id, label, children, context } = props;
-  const { cs, getStateById } = context;
+  const { cs, getStateById, onNodeExpandChange } = context;
   const { selected = false, expanded = false } = getStateById(id);
 
   return (
@@ -20,7 +20,10 @@ const TreeItem = (props: NodeType & { context: TreeContext }) => {
     >
       <div className={cx('TreeItem-content', convertCSToClassName(cs?.content))}>
         {children ? (
-          <button className={cx('TreeItem-expandButton', convertCSToClassName(cs?.expandButton))}>
+          <button
+            className={cx('TreeItem-expandButton', convertCSToClassName(cs?.expandButton))}
+            onClick={(event) => onNodeExpandChange?.(props, !expanded, event)}
+          >
             {expanded ? '-' : '+'}
           </button>
         ) : null}
@@ -47,7 +50,7 @@ const Group = ({ className, data, context }: { className: string; data: NodeType
 };
 
 const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElement>) => {
-  const { className, data, cs } = props;
+  const { className, data, cs, onNodeExpandChange } = props;
   const { stateMap } = prepareMaps(props); // TODO: create hook
 
   console.log('stateMap', stateMap);
@@ -56,6 +59,7 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
     level: 1,
     cs,
     getStateById: (id) => stateMap[id],
+    onNodeExpandChange,
   };
 
   return (
