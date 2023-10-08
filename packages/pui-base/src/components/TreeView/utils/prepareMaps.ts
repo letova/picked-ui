@@ -105,7 +105,7 @@ export const prepareMaps = (props: TreeViewProps): PrepareMapsResult => {
       state.expanded =
         props.expanded === 'all' ||
         Boolean(expandedIdsMap[node.id]) ||
-        (typeof props.expanded === 'number' ? props.expanded <= context.level : false);
+        (typeof props.expanded === 'number' ? context.level <= props.expanded : false);
 
       state.disabled = Boolean(disabledIdsMap[node.id]) || context.parentIsDisabled;
 

@@ -26,13 +26,13 @@ export interface TreeViewProps {
    */
   mode?: 'single-select' | 'multi-select';
   /**
-   * Selected node id/ids or "all" value
-   */
-  selected?: string | string[];
-  /**
    * Expanded node id/ids, level or "all" value
    */
   expanded?: string | string[] | number;
+  /**
+   * Selected node id/ids or "all" value
+   */
+  selected?: string | string[];
   /**
    * Disabled node id/ids
    */
@@ -61,10 +61,10 @@ export interface TreeViewProps {
  */
 
 export interface NodeState {
-  selected: boolean;
   expanded: boolean;
-  disabled: boolean;
+  selected: boolean;
   indeterminate: boolean;
+  disabled: boolean;
 }
 
 export interface NodeMetadata {
