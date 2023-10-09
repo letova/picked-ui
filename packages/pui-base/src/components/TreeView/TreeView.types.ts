@@ -56,7 +56,10 @@ export interface TreeViewProps {
   /**
    * Callback fired when tree items are selected/unselected
    */
-  onNodeSelectChange?: (options: { node: NodeType; isSelected: boolean }, event: React.SyntheticEvent) => void;
+  onNodeSelectChange?: (
+    options: { node: NodeType; isSelected: boolean; selectedIds: string[] },
+    event: React.SyntheticEvent,
+  ) => void;
 }
 
 /**
@@ -76,7 +79,7 @@ export interface NodeMetadata {
   right: number;
 }
 
-export interface TreeContext<T> extends Pick<TreeViewProps, 'onNodeExpandChange' | 'onNodeSelectChange'> {
+export interface TreeContext<T> extends Pick<TreeViewProps, 'selected' | 'onNodeExpandChange' | 'onNodeSelectChange'> {
   level: number;
   cs?: CustomStyles;
   treeInformationRef: React.RefObject<T>;

@@ -73,9 +73,8 @@ export const Base: Story = {
       setExpanded(expandedIds);
     };
 
-    const handleNodeSelectChange: TreeViewProps['onNodeSelectChange'] = ({ node, isSelected }) => {
-      const nextState = isSelected ? [...selected, node.id] : selected.filter((id) => id !== node.id);
-      setSelected(nextState);
+    const handleNodeSelectChange: TreeViewProps['onNodeSelectChange'] = ({ selectedIds }) => {
+      setSelected(selectedIds);
     };
 
     return (

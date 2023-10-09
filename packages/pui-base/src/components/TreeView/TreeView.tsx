@@ -8,7 +8,7 @@ import { TreeInformation, useTreeInformation } from './useTreeInformation';
 
 const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) => {
   const { id, label, children, context } = props;
-  const { treeInformationRef, cs, onNodeExpandChange, onNodeSelectChange } = context;
+  const { selected: userSelected, treeInformationRef, cs, onNodeExpandChange, onNodeSelectChange } = context;
 
   const { selected = false, expanded = false } = treeInformationRef.current!.getStateById(id);
 
@@ -22,7 +22,19 @@ const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) =
       <div
         className={cx('TreeItem-content', convertCSToClassName(cs?.content, { expanded, selected }))}
         onClick={(event) => {
-          onNodeSelectChange?.({ node: props, isSelected: !selected }, event);
+          const currentSelectedIds =
+            userSelected === 'all'
+              ? treeInformationRef.current!.selectedIds
+              : ([] as string[]).concat(userSelected || []);
+
+          onNodeSelectChange?.(
+            {
+              node: props,
+              isSelected: !selected,
+              selectedIds: !selected ? currentSelectedIds.concat(id) : currentSelectedIds.filter((sId) => sId !== id),
+            },
+            event,
+          );
         }}
       >
         {children ? (
@@ -30,11 +42,17 @@ const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) =
             className={cx('TreeItem-expandButton', convertCSToClassName(cs?.expandButton))}
             onClick={(event) => {
               const currentExpandedIds = treeInformationRef.current!.expandedIds;
-              const nextExpandedIds = !expanded
-                ? currentExpandedIds.concat(id)
-                : currentExpandedIds.filter((eId) => eId !== id);
 
-              onNodeExpandChange?.({ node: props, isExpanded: !expanded, expandedIds: nextExpandedIds }, event);
+              onNodeExpandChange?.(
+                {
+                  node: props,
+                  isExpanded: !expanded,
+                  expandedIds: !expanded
+                    ? currentExpandedIds.concat(id)
+                    : currentExpandedIds.filter((eId) => eId !== id),
+                },
+                event,
+              );
               event.stopPropagation();
             }}
           >
@@ -79,6 +97,7 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
   const context: TreeContext<TreeInformation> = {
     level: 1,
     cs,
+    selected,
     treeInformationRef,
     onNodeExpandChange,
     onNodeSelectChange,
