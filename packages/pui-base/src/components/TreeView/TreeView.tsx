@@ -29,7 +29,12 @@ const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) =
           <button
             className={cx('TreeItem-expandButton', convertCSToClassName(cs?.expandButton))}
             onClick={(event) => {
-              onNodeExpandChange?.({ node: props, isExpanded: !expanded }, event);
+              const currentExpandedIds = treeInformationRef.current!.expandedIds;
+              const nextExpandedIds = !expanded
+                ? currentExpandedIds.concat(id)
+                : currentExpandedIds.filter((eId) => eId !== id);
+
+              onNodeExpandChange?.({ node: props, isExpanded: !expanded, expandedIds: nextExpandedIds }, event);
               event.stopPropagation();
             }}
           >

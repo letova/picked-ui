@@ -44,7 +44,10 @@ class TreeInformation {
   }
 
   public update(data: NodeType[], state: TreeInformationUserState) {
-    const { stateMap, metadataMap } = prepareMaps({ data, ...state });
+    const { stateMap, metadataMap, expandedIds, selectedIds } = prepareMaps({ data, ...state });
+
+    this.expandedIds = expandedIds;
+    this.selectedIds = selectedIds;
 
     this.#stateMap = stateMap;
     this.#metadataMap = metadataMap;

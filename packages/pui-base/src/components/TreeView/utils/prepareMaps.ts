@@ -65,6 +65,8 @@ const INITIAL_NODE_METADATA: NodeMetadata = {
 interface PrepareMapsResult {
   stateMap: Record<string, NodeState>;
   metadataMap: Record<string, NodeMetadata>;
+  selectedIds: string[];
+  expandedIds: string[];
 }
 
 export const prepareMaps = (props: TreeViewProps): PrepareMapsResult => {
@@ -74,9 +76,11 @@ export const prepareMaps = (props: TreeViewProps): PrepareMapsResult => {
 
   const stateMap: Record<string, NodeState> = {};
   const metadataMap: Record<string, NodeMetadata> = {};
+  const expandedIds: string[] = [];
+  const selectedIds: string[] = [];
 
   if (!props.data) {
-    return { stateMap: {}, metadataMap: {} };
+    return { stateMap: {}, metadataMap: {}, selectedIds: [], expandedIds: [] };
   }
 
   let nestedSetModelCounter = 0;
@@ -139,6 +143,14 @@ export const prepareMaps = (props: TreeViewProps): PrepareMapsResult => {
       /**
        * Sets maps
        */
+      if (state.expanded) {
+        expandedIds.push(node.id);
+      }
+
+      if (state.selected) {
+        selectedIds.push(node.id);
+      }
+
       stateMap[node.id] = state;
       metadataMap[node.id] = metadata;
 
@@ -148,5 +160,5 @@ export const prepareMaps = (props: TreeViewProps): PrepareMapsResult => {
 
   process(props.data, INITIAL_PROCESS_CONTEXT);
 
-  return { stateMap, metadataMap };
+  return { stateMap, metadataMap, expandedIds, selectedIds };
 };
