@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import { Checkbox } from '../Checkbox';
 
@@ -22,9 +22,7 @@ describe('Checkbox', () => {
 
     expect(input).toBeChecked();
 
-    act(() => {
-      input.click();
-    });
+    fireEvent.click(input);
 
     expect(input).not.toBeChecked();
   });
@@ -36,17 +34,15 @@ describe('Checkbox', () => {
 
     expect(label).toBeInTheDocument();
 
-    act(() => {
-      label.click();
-    });
+    fireEvent.click(label);
 
     expect(screen.getByRole('checkbox')).toBeChecked();
   });
 
   it('the input can be disabled', () => {
-    const { getByRole } = render(<Checkbox disabled />);
+    render(<Checkbox disabled />);
 
-    expect(getByRole('checkbox')).toBeDisabled();
+    expect(screen.getByRole('checkbox')).toBeDisabled();
   });
 
   it('sets focus to the input', () => {
@@ -54,7 +50,6 @@ describe('Checkbox', () => {
 
     const input = screen.getByRole('checkbox');
 
-    expect(document.activeElement).toBe(input);
     expect(input).toHaveFocus();
   });
 });
