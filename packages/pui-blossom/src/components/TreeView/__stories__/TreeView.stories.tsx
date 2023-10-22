@@ -3,6 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { TreeView, TreeViewProps } from '../index';
 
+import { DATA } from '../../../../../pui-base/src/components/TreeView/__testMocks__';
+
 const meta = {
   title: 'Components/TreeView',
   component: TreeView,
@@ -16,82 +18,37 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const DATA = [
-  {
-    id: '1',
-    label: 'Label 1',
-    children: [
-      { id: '1-1', label: 'Label 1-1' },
-      { id: '1-2', label: 'Label 1-2' },
-      {
-        id: '1-3',
-        label: 'Label 1-3',
-        children: [
-          { id: '1-3-1', label: 'Label 1-3-1' },
-          {
-            id: '1-3-2',
-            label: 'Label 1-3-2',
-            children: [
-              { id: '1-3-2-1', label: 'Label 1-3-2-1' },
-              { id: '1-3-2-2', label: 'Label 1-3-2-2' },
-            ],
-          },
-          { id: '1-3-3', label: 'Label 1-3-3' },
-        ],
-      },
-    ],
-  },
-  {
-    id: '2',
-    label: 'Label 2',
-    children: [
-      {
-        id: '2-1',
-        label: 'Label 2-1',
-        children: [
-          {
-            id: '2-1-1',
-            label: 'Label 2-1-1',
-            children: [
-              { id: '2-1-1-1', label: 'Label 2-1-1-1' },
-              { id: '2-1-1-2', label: 'Label 2-1-1-2' },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  { id: '3', label: 'Label 3' },
-];
+const baseRender = (args: any) => {
+  const [expanded, setExpanded] = useState<string | string[]>(['1', '2']);
+  const [selected, setSelected] = useState(['1-1']);
 
-export const Base: Story = {
-  render: () => {
-    const [expanded, setExpanded] = useState<string | string[]>(['1', '2']);
-    const [selected, setSelected] = useState(['1-1']);
+  const handleNodeExpandChange: TreeViewProps['onNodeExpandChange'] = ({ expandedIds }) => {
+    setExpanded(expandedIds);
+  };
 
-    const handleNodeExpandChange: TreeViewProps['onNodeExpandChange'] = ({ expandedIds }) => {
-      setExpanded(expandedIds);
-    };
+  const handleNodeSelectChange: TreeViewProps['onNodeSelectChange'] = ({ selectedIds }) => {
+    setSelected(selectedIds);
+  };
 
-    const handleNodeSelectChange: TreeViewProps['onNodeSelectChange'] = ({ selectedIds }) => {
-      setSelected(selectedIds);
-    };
-
-    return (
-      <TreeView
-        data={DATA}
-        expanded={expanded}
-        selected={selected}
-        onNodeExpandChange={handleNodeExpandChange}
-        onNodeSelectChange={handleNodeSelectChange}
-      />
-    );
-  },
+  return (
+    <TreeView
+      {...args}
+      data={DATA}
+      expanded={expanded}
+      selected={selected}
+      onNodeExpandChange={handleNodeExpandChange}
+      onNodeSelectChange={handleNodeSelectChange}
+    />
+  );
 };
 
-export const SomeExpanded: Story = {
+export const Base: Story = {
+  render: baseRender,
+};
+
+export const Disabled: Story = {
+  render: baseRender,
   args: {
-    expanded: ['1', '1-1', '1-2'],
-    data: DATA,
+    disabled: ['1-3-2'],
   },
 };

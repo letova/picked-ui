@@ -45,14 +45,15 @@ export const getCS = ({ scale: s = 1, cs }: TreeViewProps): TreeViewProps['cs'] 
       content: {
         padding: `${getPxSize(1, s)} 0`,
       },
-      label: ({ selected }: { selected: boolean }) => {
+      label: ({ selected, disabled }: { selected: boolean; disabled: boolean }) => {
         return {
           display: 'inline-block',
           marginLeft: getPxSize(8, s),
           padding: getPxSize(4, s),
           borderRadius: getPxSize(3, s),
+          color: disabled ? 'gray' : ' black',
           background: selected ? Colors.SemitransparentBlack15 : 'transparent',
-          cursor: 'pointer',
+          cursor: disabled ? 'default' : 'pointer',
         };
       },
     },

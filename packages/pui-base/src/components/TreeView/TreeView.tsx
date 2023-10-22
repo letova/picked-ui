@@ -10,9 +10,9 @@ const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) =
   const { id, label, children, context } = props;
   const { selected: userSelected, treeInformationRef, cs, onNodeExpandChange, onNodeSelectChange } = context;
 
-  const { selected = false, expanded = false } = treeInformationRef.current!.getStateById(id);
+  const { expanded = false, selected = false, disabled = false } = treeInformationRef.current!.getStateById(id);
 
-  const state = { selected, expanded, isCurrentLeaf: !children };
+  const state = { expanded, selected, disabled, isCurrentLeaf: !children };
 
   return (
     <li
@@ -24,6 +24,10 @@ const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) =
       <div
         className={cx('TreeItem-content', convertCSToClassName(cs?.content, state))}
         onClick={(event) => {
+          if (disabled) {
+            return;
+          }
+
           const currentSelectedIds =
             userSelected === 'all'
               ? treeInformationRef.current!.selectedIds
