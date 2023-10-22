@@ -1,8 +1,8 @@
-import { NodeState } from '../TreeView.types';
+import { NodeState } from '../../TreeView.types';
 
-import { disabledMocks, expandedMocks, selectedMocks } from '../__testMocks__';
+import { disabledMocks, expandedMocks, selectedMocks } from '../../__testMocks__';
 
-import { prepareMaps } from '../utils';
+import { prepareMaps } from '../../utils';
 
 const getActualState = (
   stateName: 'expanded' | 'selected' | 'indeterminate' | 'disabled',
@@ -63,17 +63,25 @@ describe('TreeView.prepareMaps', () => {
     test('the leaf node', () => {
       const { stateMap } = prepareMaps({ data: selectedMocks.DATA, selected: selectedMocks.SELECTED_LEAF });
 
-      const actual = getActualState('selected', stateMap, selectedMocks.SELECTED_LEAF_RESULT);
+      expect(getActualState('selected', stateMap, selectedMocks.SELECTED_LEAF_RESULT)).toEqual(
+        selectedMocks.SELECTED_LEAF_RESULT,
+      );
 
-      expect(actual).toEqual(selectedMocks.SELECTED_LEAF_RESULT);
+      expect(getActualState('indeterminate', stateMap, selectedMocks.INDETERMINATE_LEAF_RESULT)).toEqual(
+        selectedMocks.INDETERMINATE_LEAF_RESULT,
+      );
     });
 
     test('some leaf nodes', () => {
       const { stateMap } = prepareMaps({ data: selectedMocks.DATA, selected: selectedMocks.SELECTED_LEAFS });
 
-      const actual = getActualState('selected', stateMap, selectedMocks.SELECTED_LEAFS_RESULT);
+      expect(getActualState('selected', stateMap, selectedMocks.SELECTED_LEAFS_RESULT)).toEqual(
+        selectedMocks.SELECTED_LEAFS_RESULT,
+      );
 
-      expect(actual).toEqual(selectedMocks.SELECTED_LEAFS_RESULT);
+      expect(getActualState('indeterminate', stateMap, selectedMocks.INDETERMINATE_LEAFS_RESULT)).toEqual(
+        selectedMocks.INDETERMINATE_LEAFS_RESULT,
+      );
     });
 
     test('all leaf nodes (in subtree)', () => {
@@ -82,9 +90,13 @@ describe('TreeView.prepareMaps', () => {
         selected: selectedMocks.SELECTED_ALL_LEAFS,
       });
 
-      const actual = getActualState('selected', stateMap, selectedMocks.SELECTED_ALL_LEAFS_RESULT);
+      expect(getActualState('selected', stateMap, selectedMocks.SELECTED_ALL_LEAFS_RESULT)).toEqual(
+        selectedMocks.SELECTED_ALL_LEAFS_RESULT,
+      );
 
-      expect(actual).toEqual(selectedMocks.SELECTED_ALL_LEAFS_RESULT);
+      expect(getActualState('indeterminate', stateMap, selectedMocks.INDETERMINATE_ALL_LEAFS_RESULT)).toEqual(
+        selectedMocks.INDETERMINATE_ALL_LEAFS_RESULT,
+      );
     });
 
     test('the root parent', () => {
@@ -93,9 +105,13 @@ describe('TreeView.prepareMaps', () => {
         selected: selectedMocks.SELECTED_ROOT_PARENT,
       });
 
-      const actual = getActualState('selected', stateMap, selectedMocks.SELECTED_ROOT_PARENT_RESULT);
+      expect(getActualState('selected', stateMap, selectedMocks.SELECTED_ROOT_PARENT_RESULT)).toEqual(
+        selectedMocks.SELECTED_ROOT_PARENT_RESULT,
+      );
 
-      expect(actual).toEqual(selectedMocks.SELECTED_ROOT_PARENT_RESULT);
+      expect(getActualState('indeterminate', stateMap, selectedMocks.INDETERMINATE_ROOT_PARENT_RESULT)).toEqual(
+        selectedMocks.INDETERMINATE_ROOT_PARENT_RESULT,
+      );
     });
 
     test('the parent', () => {
@@ -104,9 +120,13 @@ describe('TreeView.prepareMaps', () => {
         selected: selectedMocks.SELECTED_PARENT,
       });
 
-      const actual = getActualState('selected', stateMap, selectedMocks.SELECTED_PARENT_RESULT);
+      expect(getActualState('selected', stateMap, selectedMocks.SELECTED_PARENT_RESULT)).toEqual(
+        selectedMocks.SELECTED_PARENT_RESULT,
+      );
 
-      expect(actual).toEqual(selectedMocks.SELECTED_PARENT_RESULT);
+      expect(getActualState('indeterminate', stateMap, selectedMocks.INDETERMINATE_PARENT_RESULT)).toEqual(
+        selectedMocks.INDETERMINATE_PARENT_RESULT,
+      );
     });
 
     test('parents', () => {
@@ -115,71 +135,28 @@ describe('TreeView.prepareMaps', () => {
         selected: selectedMocks.SELECTED_PARENTS,
       });
 
-      const actual = getActualState('selected', stateMap, selectedMocks.SELECTED_PARENTS_RESULT);
+      expect(getActualState('selected', stateMap, selectedMocks.SELECTED_PARENTS_RESULT)).toEqual(
+        selectedMocks.SELECTED_PARENTS_RESULT,
+      );
 
-      expect(actual).toEqual(selectedMocks.SELECTED_PARENTS_RESULT);
-    });
-  });
-
-  describe('calculates the correct indeterminate state map with', () => {
-    test('the leaf node', () => {
-      const { stateMap } = prepareMaps({ data: selectedMocks.DATA, selected: selectedMocks.SELECTED_LEAF });
-
-      const actual = getActualState('indeterminate', stateMap, selectedMocks.INDETERMINATE_LEAF_RESULT);
-
-      expect(actual).toEqual(selectedMocks.INDETERMINATE_LEAF_RESULT);
+      expect(getActualState('indeterminate', stateMap, selectedMocks.INDETERMINATE_PARENTS_RESULT)).toEqual(
+        selectedMocks.INDETERMINATE_PARENTS_RESULT,
+      );
     });
 
-    test('leaf nodes', () => {
-      const { stateMap } = prepareMaps({ data: selectedMocks.DATA, selected: selectedMocks.SELECTED_LEAFS });
-
-      const actual = getActualState('indeterminate', stateMap, selectedMocks.INDETERMINATE_LEAFS_RESULT);
-
-      expect(actual).toEqual(selectedMocks.INDETERMINATE_LEAFS_RESULT);
-    });
-
-    test('all leaf nodes (in subtree)', () => {
+    test('all', () => {
       const { stateMap } = prepareMaps({
         data: selectedMocks.DATA,
-        selected: selectedMocks.SELECTED_ALL_LEAFS,
+        selected: selectedMocks.SELECTED_ALL,
       });
 
-      const actual = getActualState('indeterminate', stateMap, selectedMocks.INDETERMINATE_ALL_LEAFS_RESULT);
+      expect(getActualState('selected', stateMap, selectedMocks.SELECTED_ALL_RESULT)).toEqual(
+        selectedMocks.SELECTED_ALL_RESULT,
+      );
 
-      expect(actual).toEqual(selectedMocks.INDETERMINATE_ALL_LEAFS_RESULT);
-    });
-
-    test('the root parent', () => {
-      const { stateMap } = prepareMaps({
-        data: selectedMocks.DATA,
-        selected: selectedMocks.SELECTED_ROOT_PARENT,
-      });
-
-      const actual = getActualState('indeterminate', stateMap, selectedMocks.INDETERMINATE_ROOT_PARENT_RESULT);
-
-      expect(actual).toEqual(selectedMocks.INDETERMINATE_ROOT_PARENT_RESULT);
-    });
-
-    test('the parent', () => {
-      const { stateMap } = prepareMaps({
-        data: selectedMocks.DATA,
-        selected: selectedMocks.SELECTED_PARENT,
-      });
-
-      const actual = getActualState('indeterminate', stateMap, selectedMocks.INDETERMINATE_PARENT_RESULT);
-
-      expect(actual).toEqual(selectedMocks.INDETERMINATE_PARENT_RESULT);
-    });
-
-    test('parents', () => {
-      const { stateMap } = prepareMaps({
-        data: selectedMocks.DATA,
-        selected: selectedMocks.SELECTED_PARENTS,
-      });
-
-      const actual = getActualState('indeterminate', stateMap, selectedMocks.INDETERMINATE_PARENTS_RESULT);
-
-      expect(actual).toEqual(selectedMocks.INDETERMINATE_PARENTS_RESULT);
+      expect(getActualState('indeterminate', stateMap, selectedMocks.INDETERMINATE_ALL_RESULT)).toEqual(
+        selectedMocks.INDETERMINATE_ALL_RESULT,
+      );
     });
   });
 
