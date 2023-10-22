@@ -6,7 +6,7 @@ import { TreeViewProps } from './TreeView.types';
 
 export enum Colors {
   Black = '#000',
-  SemitransparentBlack25 = 'rgba(0, 0, 0, 0.25)',
+  SemitransparentBlack15 = 'rgba(0, 0, 0, 0.15)',
 }
 
 export const getClassName = ({ scale: s = 1 }: TreeViewProps) => {
@@ -26,7 +26,6 @@ export const getCS = ({ scale: s = 1, cs }: TreeViewProps): TreeViewProps['cs'] 
         return {
           width: getPxSize(16, s),
           height: getPxSize(16, s),
-          marginRight: getPxSize(8, s),
           padding: `0 ${getPxSize(3, s)}`,
           border: `${getPxSize(1, s)} solid ${Colors.Black}`,
           borderRadius: getPxSize(3, s),
@@ -43,10 +42,17 @@ export const getCS = ({ scale: s = 1, cs }: TreeViewProps): TreeViewProps['cs'] 
           boxSizing: 'border-box',
         };
       },
-      content: ({ selected }: { selected: boolean }) => {
+      content: {
+        padding: `${getPxSize(1, s)} 0`,
+      },
+      label: ({ selected }: { selected: boolean }) => {
         return {
-          padding: `${getPxSize(8, s)} 0`,
-          background: selected ? Colors.SemitransparentBlack25 : 'transparent',
+          display: 'inline-block',
+          marginLeft: getPxSize(8, s),
+          padding: getPxSize(4, s),
+          borderRadius: getPxSize(3, s),
+          background: selected ? Colors.SemitransparentBlack15 : 'transparent',
+          cursor: 'pointer',
         };
       },
     },

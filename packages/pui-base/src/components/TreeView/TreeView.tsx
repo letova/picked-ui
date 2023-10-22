@@ -12,6 +12,8 @@ const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) =
 
   const { selected = false, expanded = false } = treeInformationRef.current!.getStateById(id);
 
+  const state = { selected, expanded, isCurrentLeaf: !children };
+
   return (
     <li
       className={cx('TreeItem', { 'TreeItem--selected': selected }, convertCSToClassName(cs?.treeItem))}
@@ -20,7 +22,7 @@ const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) =
       aria-selected={selected}
     >
       <div
-        className={cx('TreeItem-content', convertCSToClassName(cs?.content, { expanded, selected }))}
+        className={cx('TreeItem-content', convertCSToClassName(cs?.content, state))}
         onClick={(event) => {
           const currentSelectedIds =
             userSelected === 'all'
@@ -59,7 +61,7 @@ const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) =
             {expanded ? '-' : '+'}
           </button>
         ) : null}
-        <span className="TreeItem-label">{label}</span>
+        <span className={cx('TreeItem-label', convertCSToClassName(cs?.label, state))}>{label}</span>
       </div>
       {children && expanded ? <Group className="TreeItem-group" data={children} context={context} /> : null}
     </li>

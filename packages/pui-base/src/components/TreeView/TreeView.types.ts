@@ -9,6 +9,7 @@ export interface CustomStyles {
   treeItem?: CSSObject | GetCSSObjectFn;
   content?: CSSObject;
   expandButton?: CSSObject | GetCSSObjectFn;
+  label?: CSSObject | GetCSSObjectFn;
 }
 
 export interface NodeType {
