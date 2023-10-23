@@ -58,6 +58,7 @@ const INITIAL_NODE_STATE: NodeState = {
 
 const INITIAL_NODE_METADATA: NodeMetadata = {
   parentId: undefined,
+  descendantIds: undefined,
   left: 0,
   right: 0,
 };
@@ -67,6 +68,7 @@ interface PrepareMapsResult {
   metadataMap: Record<string, NodeMetadata>;
   selectedIds: string[];
   expandedIds: string[];
+  disabledIds: string[];
 }
 
 export const prepareMaps = (props: TreeViewProps): PrepareMapsResult => {
@@ -78,9 +80,10 @@ export const prepareMaps = (props: TreeViewProps): PrepareMapsResult => {
   const metadataMap: Record<string, NodeMetadata> = {};
   const expandedIds: string[] = [];
   const selectedIds: string[] = [];
+  const disabledIds: string[] = [];
 
   if (!props.data) {
-    return { stateMap: {}, metadataMap: {}, selectedIds: [], expandedIds: [] };
+    return { stateMap: {}, metadataMap: {}, selectedIds: [], expandedIds: [], disabledIds: [] };
   }
 
   let nestedSetModelCounter = 0;
@@ -133,6 +136,45 @@ export const prepareMaps = (props: TreeViewProps): PrepareMapsResult => {
           indeterminate = true;
         }
 
+        const descendantIds: string[] = [];
+        let hasEnabledSelectedLeafs = false;
+        let hasEnabledUnselectedLeafs = false;
+        let hasDisabledSelectedLeafs = false;
+        let hasDisabledUnselectedLeafs = false;
+
+        node.children.forEach((childNode) => {
+          const { selected, disabled } = stateMap[childNode.id];
+          const { descendantIds, ...restChildMetadata } = metadataMap[childNode.id];
+          const next = descendantIds ? [childNode.id, ...descendantIds] : [childNode.id];
+          descendantIds?.push(...next);
+
+          hasEnabledSelectedLeafs =
+            (!childNode.children && selected && !disabled) ||
+            restChildMetadata.hasEnabledSelectedLeafs ||
+            hasEnabledSelectedLeafs;
+
+          hasEnabledUnselectedLeafs =
+            (!childNode.children && !selected && !disabled) ||
+            restChildMetadata.hasEnabledUnselectedLeafs ||
+            hasEnabledUnselectedLeafs;
+
+          hasDisabledSelectedLeafs =
+            (!childNode.children && selected && disabled) ||
+            restChildMetadata.hasDisabledSelectedLeafs ||
+            hasDisabledSelectedLeafs;
+
+          hasDisabledUnselectedLeafs =
+            (!childNode.children && !selected && disabled) ||
+            restChildMetadata.hasDisabledUnselectedLeafs ||
+            hasDisabledUnselectedLeafs;
+        });
+
+        metadata.hasEnabledSelectedLeafs = hasEnabledSelectedLeafs;
+        metadata.hasEnabledUnselectedLeafs = hasEnabledUnselectedLeafs;
+        metadata.hasDisabledSelectedLeafs = hasDisabledSelectedLeafs;
+        metadata.hasDisabledUnselectedLeafs = hasDisabledUnselectedLeafs;
+        metadata.descendantIds = descendantIds;
+
         right = nestedSetModelCounter + 1;
       }
 
@@ -151,6 +193,10 @@ export const prepareMaps = (props: TreeViewProps): PrepareMapsResult => {
         selectedIds.push(node.id);
       }
 
+      if (state.disabled) {
+        disabledIds.push(node.id);
+      }
+
       stateMap[node.id] = state;
       metadataMap[node.id] = metadata;
 
@@ -160,5 +206,5 @@ export const prepareMaps = (props: TreeViewProps): PrepareMapsResult => {
 
   process(props.data, INITIAL_PROCESS_CONTEXT);
 
-  return { stateMap, metadataMap, expandedIds, selectedIds };
+  return { stateMap, metadataMap, expandedIds, selectedIds, disabledIds };
 };

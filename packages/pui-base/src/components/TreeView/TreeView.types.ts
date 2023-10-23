@@ -55,7 +55,7 @@ export interface TreeViewProps {
     event: React.SyntheticEvent,
   ) => void;
   /**
-   * Callback fired when tree items are selected/unselected
+   * Callback fired when tree items are selected/unselected. Selected ids order is not guaranteed
    */
   onNodeSelectChange?: (
     options: { node: NodeType; isSelected: boolean; selectedIds: string[] },
@@ -76,8 +76,13 @@ export interface NodeState {
 
 export interface NodeMetadata {
   parentId: string | undefined;
+  descendantIds: string[] | undefined;
   left: number;
   right: number;
+  hasEnabledSelectedLeafs?: boolean;
+  hasEnabledUnselectedLeafs?: boolean;
+  hasDisabledSelectedLeafs?: boolean;
+  hasDisabledUnselectedLeafs?: boolean;
 }
 
 export interface TreeContext<T> extends Pick<TreeViewProps, 'selected' | 'onNodeExpandChange' | 'onNodeSelectChange'> {

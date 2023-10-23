@@ -2,7 +2,7 @@ import { useRef } from 'react';
 
 import { NodeMetadata, NodeState, NodeType, TreeViewProps } from './TreeView.types';
 
-import { prepareMaps } from './utils';
+import { calculateSelectedIds, prepareMaps } from './utils';
 
 const STATE_FIELDS = ['expanded', 'selected', 'disabled'];
 
@@ -11,8 +11,9 @@ type TreeInformationUserState = Pick<TreeViewProps, 'expanded' | 'selected' | 'd
 class TreeInformation {
   public expandedIds: string[];
   public selectedIds: string[];
+  public disabledIds: string[];
 
-  #prevData: NodeType[];
+  #data: NodeType[];
   #prevState: TreeInformationUserState;
   #stateMap: Record<string, NodeState>;
   #metadataMap: Record<string, NodeMetadata>;
@@ -20,8 +21,9 @@ class TreeInformation {
   constructor(data: NodeType[], state: TreeInformationUserState) {
     this.expandedIds = [];
     this.selectedIds = [];
+    this.disabledIds = [];
 
-    this.#prevData = [];
+    this.#data = data;
     this.#prevState = STATE_FIELDS.reduce<TreeInformationUserState>((result, field) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore fix type
@@ -44,17 +46,18 @@ class TreeInformation {
   }
 
   public update(data: NodeType[], state: TreeInformationUserState) {
-    const { stateMap, metadataMap, expandedIds, selectedIds } = prepareMaps({ data, ...state });
+    const { stateMap, metadataMap, expandedIds, selectedIds, disabledIds } = prepareMaps({ data, ...state });
 
     this.expandedIds = expandedIds;
     this.selectedIds = selectedIds;
+    this.disabledIds = disabledIds;
 
     this.#stateMap = stateMap;
     this.#metadataMap = metadataMap;
   }
 
   public shouldUpdate(nextData: NodeType[], nextState: TreeInformationUserState) {
-    if (nextData !== this.#prevData) {
+    if (nextData !== this.#data) {
       return true;
     }
 
@@ -65,6 +68,15 @@ class TreeInformation {
     }
 
     return false;
+  }
+
+  public calculateSelectedIds(triggerNodeId: string) {
+    return calculateSelectedIds(this.#data, {
+      triggerNodeId,
+      selectedIds: this.selectedIds,
+      disabledIds: this.disabledIds,
+      getMetadataById: this.getMetadataById.bind(this),
+    });
   }
 }
 

@@ -7,8 +7,9 @@ import { TreeContext, NodeType, TreeViewProps } from './TreeView.types';
 import { TreeInformation, useTreeInformation } from './useTreeInformation';
 
 const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) => {
-  const { id, label, children, context } = props;
-  const { selected: userSelected, treeInformationRef, cs, onNodeExpandChange, onNodeSelectChange } = context;
+  const { context, ...node } = props;
+  const { id, label, children } = node;
+  const { treeInformationRef, cs, onNodeExpandChange, onNodeSelectChange } = context;
 
   const { expanded = false, selected = false, disabled = false } = treeInformationRef.current!.getStateById(id);
 
@@ -28,16 +29,12 @@ const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) =
             return;
           }
 
-          const currentSelectedIds =
-            userSelected === 'all'
-              ? treeInformationRef.current!.selectedIds
-              : ([] as string[]).concat(userSelected || []);
-
           onNodeSelectChange?.(
             {
-              node: props,
+              node,
               isSelected: !selected,
-              selectedIds: !selected ? currentSelectedIds.concat(id) : currentSelectedIds.filter((sId) => sId !== id),
+              // todo: remove empty array?
+              selectedIds: treeInformationRef.current!.calculateSelectedIds(id) || [],
             },
             event,
           );
