@@ -2,7 +2,7 @@ import { useRef } from 'react';
 
 import { NodeMetadata, NodeState, NodeType, TreeViewProps } from './TreeView.types';
 
-import { calculateSelectedIds, prepareMaps } from './utils';
+import { calculateSelectedIds, prepareMapsForMultiSelect, prepareMapsForSingleSelect } from './utils';
 
 const STATE_FIELDS = ['expanded', 'selected', 'disabled'];
 
@@ -18,7 +18,7 @@ class TreeInformation {
   #stateMap: Record<string, NodeState>;
   #metadataMap: Record<string, NodeMetadata>;
 
-  constructor(data: NodeType[], state: TreeInformationUserState) {
+  constructor(mode: TreeViewProps['mode'], data: NodeType[], state: TreeInformationUserState) {
     this.expandedIds = [];
     this.selectedIds = [];
     this.disabledIds = [];
@@ -34,7 +34,7 @@ class TreeInformation {
     this.#stateMap = {};
     this.#metadataMap = {};
 
-    this.update(data, state);
+    this.update(mode, data, state);
   }
 
   public getStateById(id: string) {
@@ -45,8 +45,13 @@ class TreeInformation {
     return this.#metadataMap[id];
   }
 
-  public update(data: NodeType[], state: TreeInformationUserState) {
-    const { stateMap, metadataMap, expandedIds, selectedIds, disabledIds } = prepareMaps({ data, ...state });
+  public update(mode: TreeViewProps['mode'], data: NodeType[], state: TreeInformationUserState) {
+    const prepareMaps = mode === 'single-select' ? prepareMapsForSingleSelect : prepareMapsForMultiSelect;
+
+    const { stateMap, metadataMap, expandedIds, selectedIds, disabledIds } = prepareMaps({
+      data,
+      ...state,
+    });
 
     this.expandedIds = expandedIds;
     this.selectedIds = selectedIds;
@@ -81,13 +86,14 @@ class TreeInformation {
 }
 
 const useTreeInformation = (
+  mode: TreeViewProps['mode'],
   data: NodeType[] | undefined = [],
   state: Pick<TreeViewProps, 'expanded' | 'selected' | 'disabled'>,
 ) => {
-  const informationRef = useRef(new TreeInformation(data, state));
+  const informationRef = useRef(new TreeInformation(mode, data, state));
 
   if (informationRef.current.shouldUpdate(data, state)) {
-    informationRef.current.update(data, state);
+    informationRef.current.update(mode, data, state);
   }
 
   return informationRef;

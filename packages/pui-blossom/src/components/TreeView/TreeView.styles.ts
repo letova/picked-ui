@@ -6,6 +6,7 @@ import { TreeViewProps } from './TreeView.types';
 
 export enum Colors {
   Black = '#000',
+  SemitransparentBlack05 = 'rgba(0, 0, 0, 0.05)',
   SemitransparentBlack15 = 'rgba(0, 0, 0, 0.15)',
 }
 
@@ -45,14 +46,26 @@ export const getCS = ({ scale: s = 1, cs }: TreeViewProps): TreeViewProps['cs'] 
       content: {
         padding: `${getPxSize(1, s)} 0`,
       },
-      label: ({ selected, disabled }: { selected: boolean; disabled: boolean }) => {
+      label: ({
+        indeterminate,
+        selected,
+        disabled,
+      }: {
+        indeterminate: boolean;
+        selected: boolean;
+        disabled: boolean;
+      }) => {
         return {
           display: 'inline-block',
           marginLeft: getPxSize(8, s),
           padding: getPxSize(4, s),
           borderRadius: getPxSize(3, s),
           color: disabled ? 'gray' : ' black',
-          background: selected ? Colors.SemitransparentBlack15 : 'transparent',
+          background: selected
+            ? Colors.SemitransparentBlack15
+            : indeterminate
+            ? Colors.SemitransparentBlack05
+            : 'transparent',
           cursor: disabled ? 'default' : 'pointer',
         };
       },

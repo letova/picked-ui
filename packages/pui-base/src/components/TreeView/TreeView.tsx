@@ -9,11 +9,16 @@ import { TreeInformation, useTreeInformation } from './useTreeInformation';
 const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) => {
   const { context, ...node } = props;
   const { id, label, children } = node;
-  const { treeInformationRef, cs, onNodeExpandChange, onNodeSelectChange } = context;
+  const { mode, treeInformationRef, cs, onNodeExpandChange, onNodeSelectChange } = context;
 
-  const { expanded = false, selected = false, disabled = false } = treeInformationRef.current!.getStateById(id);
+  const {
+    expanded = false,
+    indeterminate = false,
+    selected = false,
+    disabled = false,
+  } = treeInformationRef.current!.getStateById(id);
 
-  const state = { expanded, selected, disabled, isCurrentLeaf: !children };
+  const state = { expanded, indeterminate, selected, disabled, isCurrentLeaf: !children };
 
   return (
     <li
@@ -33,8 +38,7 @@ const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) =
             {
               node,
               isSelected: !selected,
-              // todo: remove empty array?
-              selectedIds: treeInformationRef.current!.calculateSelectedIds(id) || [],
+              selectedIds: mode === 'single-select' ? id : treeInformationRef.current!.calculateSelectedIds(id),
             },
             event,
           );
@@ -93,14 +97,24 @@ const Group = ({
 };
 
 const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElement>) => {
-  const { className, data, expanded, selected, disabled, cs, onNodeExpandChange, onNodeSelectChange } = props;
+  const {
+    className,
+    mode = 'single-select',
+    data,
+    expanded,
+    selected,
+    disabled,
+    cs,
+    onNodeExpandChange,
+    onNodeSelectChange,
+  } = props;
 
-  const treeInformationRef = useTreeInformation(data, { expanded, selected, disabled });
+  const treeInformationRef = useTreeInformation(mode, data, { expanded, selected, disabled });
 
   const context: TreeContext<TreeInformation> = {
+    mode,
     level: 1,
     cs,
-    selected,
     treeInformationRef,
     onNodeExpandChange,
     onNodeSelectChange,

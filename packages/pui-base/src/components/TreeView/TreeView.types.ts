@@ -23,7 +23,7 @@ export interface NodeType {
 export interface TreeViewProps {
   className?: string;
   /**
-   * Defines how the dropdown is rendered / behaves
+   * Defines how the component behaves
    */
   mode?: 'single-select' | 'multi-select';
   /**
@@ -31,7 +31,8 @@ export interface TreeViewProps {
    */
   expanded?: string | string[] | number;
   /**
-   * Selected node id/ids or "all" value
+   * Single-select: selected node id
+   * Multi-select: selected node id/ids or "all" value
    */
   selected?: string | string[];
   /**
@@ -42,6 +43,9 @@ export interface TreeViewProps {
    * List of nodes
    */
   data?: NodeType[];
+  /**
+   * Custom styles object
+   */
   cs?: CustomStyles;
   /**
    * Show checkbox for each tree item
@@ -51,14 +55,14 @@ export interface TreeViewProps {
    * Callback fired when tree items are expanded/collapsed
    */
   onNodeExpandChange?: (
-    options: { node: NodeType; isExpanded: boolean; expandedIds: string[] },
+    options: { node: NodeType; isExpanded: boolean; expandedIds: string[] | undefined },
     event: React.SyntheticEvent,
   ) => void;
   /**
    * Callback fired when tree items are selected/unselected. Selected ids order is not guaranteed
    */
   onNodeSelectChange?: (
-    options: { node: NodeType; isSelected: boolean; selectedIds: string[] },
+    options: { node: NodeType; isSelected: boolean; selectedIds: string | string[] | undefined },
     event: React.SyntheticEvent,
   ) => void;
 }
@@ -85,7 +89,8 @@ export interface NodeMetadata {
   hasDisabledUnselectedLeafs?: boolean;
 }
 
-export interface TreeContext<T> extends Pick<TreeViewProps, 'selected' | 'onNodeExpandChange' | 'onNodeSelectChange'> {
+export interface TreeContext<T> extends Pick<TreeViewProps, 'onNodeExpandChange' | 'onNodeSelectChange'> {
+  mode: NonNullable<TreeViewProps['mode']>;
   level: number;
   cs?: CustomStyles;
   treeInformationRef: React.RefObject<T>;

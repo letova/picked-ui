@@ -2,7 +2,7 @@ import { NodeState } from '../../TreeView.types';
 
 import { disabledMocks, expandedMocks, selectedMocks } from '../../__testMocks__';
 
-import { prepareMaps } from '../../utils';
+import { prepareMapsForMultiSelect as prepareMaps } from '../../utils';
 
 const getActualState = (
   stateName: 'expanded' | 'selected' | 'indeterminate' | 'disabled',

@@ -1,39 +1,6 @@
 import { NodeMetadata, NodeState, NodeType, TreeViewProps } from '../TreeView.types';
 
-const getIdsMap = (state: string | string[]): Record<string, true> => {
-  if (Array.isArray(state)) {
-    return state.reduce<Record<string, true>>((result, id) => {
-      result[id] = true;
-      return result;
-    }, {});
-  }
-
-  return { [state]: true };
-};
-
-const getSelectedIdsMap = (selected: TreeViewProps['selected']): Record<string, true> => {
-  if (!selected || selected === 'all') {
-    return {};
-  }
-
-  return getIdsMap(selected);
-};
-
-const getExpandedIdsMap = (expanded: TreeViewProps['expanded']): Record<string, true> => {
-  if (!expanded || expanded === 'all' || typeof expanded === 'number') {
-    return {};
-  }
-
-  return getIdsMap(expanded);
-};
-
-const getDisabledIdsMap = (disabled: TreeViewProps['disabled']): Record<string, true> => {
-  if (!disabled) {
-    return {};
-  }
-
-  return getIdsMap(disabled);
-};
+import { getDisabledIdsMap, getExpandedIdsMap, getSelectedIdsMap } from './maps';
 
 interface ProcessContext {
   parentId?: string;
@@ -71,7 +38,7 @@ interface PrepareMapsResult {
   disabledIds: string[];
 }
 
-export const prepareMaps = (props: TreeViewProps): PrepareMapsResult => {
+export const prepareMapsForMultiSelect = (props: TreeViewProps): PrepareMapsResult => {
   const selectedIdsMap = getSelectedIdsMap(props.selected);
   const expandedIdsMap = getExpandedIdsMap(props.expanded);
   const disabledIdsMap = getDisabledIdsMap(props.disabled);
@@ -83,7 +50,7 @@ export const prepareMaps = (props: TreeViewProps): PrepareMapsResult => {
   const disabledIds: string[] = [];
 
   if (!props.data) {
-    return { stateMap: {}, metadataMap: {}, selectedIds: [], expandedIds: [], disabledIds: [] };
+    return { stateMap, metadataMap, selectedIds, expandedIds, disabledIds };
   }
 
   let nestedSetModelCounter = 0;
