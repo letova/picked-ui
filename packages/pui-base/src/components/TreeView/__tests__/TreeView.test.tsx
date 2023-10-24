@@ -125,4 +125,26 @@ describe('TreeView', () => {
 
     expect(mockFn).toHaveBeenCalledWith([]);
   });
+
+  it('correctly calls the "onNodeSelectChange" when select root parent that has disabled nodes and unselected nodes', () => {
+    const mockFn = jest.fn();
+
+    const handleNodeSelectChange: TreeViewProps['onNodeSelectChange'] = (options) => {
+      mockFn(options.selectedIds.sort());
+    };
+
+    render(
+      <TreeView
+        data={DATA}
+        expanded="all"
+        selected={['1-1', '1-3-1', '1-3-3']}
+        disabled={'1-3-2'}
+        onNodeSelectChange={handleNodeSelectChange}
+      />,
+    );
+
+    fireEvent.click(screen.getByText('Label 1'));
+
+    expect(mockFn).toHaveBeenCalledWith(['1-1', '1-2', '1-3-1', '1-3-3']);
+  });
 });

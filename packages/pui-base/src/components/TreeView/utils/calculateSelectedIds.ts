@@ -21,6 +21,20 @@ export const calculateSelectedIds = (
 
   const nextSelectedIds: string[] = [];
 
+  const processDisabledNode = (node: NodeType) => {
+    if (initialSelectedIdsSet.has(node.id)) {
+      nextSelectedIds.push(node.id);
+    }
+
+    if (node.children) {
+      forEachTree(node.children, (childNode) => {
+        if (initialSelectedIdsSet.has(childNode.id)) {
+          nextSelectedIds.push(childNode.id);
+        }
+      });
+    }
+  };
+
   const process = (currentData: NodeType[], currentTriggerNodeId: string, selectedIdsSet: Set<string>) => {
     return currentData.forEach((node) => {
       /**
@@ -29,6 +43,9 @@ export const calculateSelectedIds = (
       const isSelected = selectedIdsSet.has(node.id);
 
       if (node.id === currentTriggerNodeId) {
+        /**
+         * Toggle state when node is initial trigger node
+         */
         let desireIsSelected = node.id === triggerNodeId ? !isSelected : isSelected;
 
         /**
@@ -55,8 +72,16 @@ export const calculateSelectedIds = (
          * TRIGER NODE with DISABLED descendants
          */
         if (hasDisabledSelectedLeafs || hasDisabledUnselectedLeafs) {
-          desireIsSelected = desireIsSelected && !!hasEnabledUnselectedLeafs;
+          /**
+           * Recalculate the desired state for the initial trigger node and its subtree, depending on the presence of unselected current leaves
+           */
+          if (node.id === triggerNodeId) {
+            desireIsSelected = desireIsSelected && !!hasEnabledUnselectedLeafs;
+          }
 
+          /**
+           * Calculate the actual state of current node, depending on the possibility of being selected
+           */
           const nextIsSelected = desireIsSelected
             ? !hasDisabledUnselectedLeafs
             : !(hasEnabledSelectedLeafs || hasEnabledUnselectedLeafs || hasDisabledUnselectedLeafs);
@@ -67,6 +92,7 @@ export const calculateSelectedIds = (
 
           node.children.forEach((childNode) => {
             if (disabledIdsSet.has(childNode.id)) {
+              processDisabledNode(childNode);
               return;
             }
 
@@ -102,8 +128,6 @@ export const calculateSelectedIds = (
       /**
        * Changed state come from trigger node branch
        */
-      const initialIsSelected = initialSelectedIdsSet.has(node.id);
-
       const isDisabled = disabledIdsSet.has(node.id);
 
       if (!node.children) {
@@ -114,16 +138,7 @@ export const calculateSelectedIds = (
       }
 
       if (isDisabled) {
-        if (initialIsSelected) {
-          nextSelectedIds.push(node.id);
-
-          if (node.children) {
-            forEachTree(node.children, (childNode) => {
-              nextSelectedIds.push(childNode.id);
-            });
-          }
-        }
-
+        processDisabledNode(node);
         return;
       }
 
