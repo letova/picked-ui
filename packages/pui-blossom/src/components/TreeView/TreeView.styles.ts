@@ -27,7 +27,7 @@ export const getCS = ({ scale: s = 1, cs }: TreeViewProps): TreeViewProps['cs'] 
         return {
           width: getPxSize(16, s),
           height: getPxSize(16, s),
-          marginRight: getPxSize(8, s),
+          marginRight: getPxSize(4, s),
           padding: `0 ${getPxSize(3, s)}`,
           border: `${getPxSize(1, s)} solid ${Colors.Black}`,
           borderRadius: getPxSize(3, s),
@@ -62,7 +62,7 @@ export const getCS = ({ scale: s = 1, cs }: TreeViewProps): TreeViewProps['cs'] 
         return {
           display: 'inline-flex',
           alignItems: 'center',
-          marginLeft: isCurrentLeaf ? getPxSize(24, s) : 0,
+          marginLeft: isCurrentLeaf ? getPxSize(20, s) : 0,
           padding: getPxSize(4, s),
           borderRadius: getPxSize(3, s),
           color: disabled ? 'gray' : ' black',
