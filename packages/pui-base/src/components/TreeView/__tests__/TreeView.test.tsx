@@ -97,7 +97,7 @@ describe('TreeView', () => {
       const mockFn = jest.fn();
 
       const handleNodeSelectChange: TreeViewProps['onNodeSelectChange'] = (options) => {
-        mockFn(options.selectedIds?.sort());
+        mockFn(Array.isArray(options.selectedIds) ? options.selectedIds?.sort() : options.selectedIds);
       };
 
       render(
