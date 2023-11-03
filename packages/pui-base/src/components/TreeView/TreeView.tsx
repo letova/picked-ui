@@ -22,7 +22,16 @@ const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) =
 
   return (
     <li
-      className={cx('TreeItem', { 'TreeItem--selected': selected }, convertCSToClassName(cs?.treeItem))}
+      className={cx(
+        'TreeItem',
+        {
+          'TreeItem--expanded': expanded,
+          'TreeItem--indeterminate': indeterminate,
+          'TreeItem--selected': selected,
+          'TreeItem--disabled': disabled,
+        },
+        convertCSToClassName(cs?.treeItem, state),
+      )}
       role="treeitem"
       aria-expanded={expanded}
       aria-selected={selected}
