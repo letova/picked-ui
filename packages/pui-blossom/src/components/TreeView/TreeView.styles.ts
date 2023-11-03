@@ -27,6 +27,7 @@ export const getCS = ({ scale: s = 1, cs }: TreeViewProps): TreeViewProps['cs'] 
         return {
           width: getPxSize(16, s),
           height: getPxSize(16, s),
+          marginRight: getPxSize(8, s),
           padding: `0 ${getPxSize(3, s)}`,
           border: `${getPxSize(1, s)} solid ${Colors.Black}`,
           borderRadius: getPxSize(3, s),
@@ -36,36 +37,35 @@ export const getCS = ({ scale: s = 1, cs }: TreeViewProps): TreeViewProps['cs'] 
       },
       group: ({ level }: { level: number }) => {
         return {
-          marginLeft: level === 1 ? 0 : getPxSize(8, s),
+          marginLeft: level === 1 ? 0 : getPxSize(11, s),
           paddingLeft: level === 1 ? 0 : getPxSize(8, s),
           borderLeft: level === 1 ? 'none' : `${getPxSize(1, s)} solid ${Colors.Black}`,
           listStyleType: 'none',
           boxSizing: 'border-box',
         };
       },
-      content: {
-        padding: `${getPxSize(1, s)} 0`,
-      },
-      label: ({
-        indeterminate,
-        selected,
-        disabled,
-      }: {
-        indeterminate: boolean;
-        selected: boolean;
-        disabled: boolean;
-      }) => {
+      content: ({ selected, indeterminate }: { indeterminate: boolean; selected: boolean }) => {
         return {
-          display: 'inline-block',
-          marginLeft: getPxSize(8, s),
-          padding: getPxSize(4, s),
+          display: 'flex',
+          alignItems: 'center',
+          marginBottom: getPxSize(1, s),
+          padding: `0 ${getPxSize(4, s)}`,
           borderRadius: getPxSize(3, s),
-          color: disabled ? 'gray' : ' black',
           background: selected
             ? Colors.SemitransparentBlack15
             : indeterminate
             ? Colors.SemitransparentBlack05
             : 'transparent',
+        };
+      },
+      label: ({ disabled, isCurrentLeaf }: { disabled: boolean; isCurrentLeaf: boolean }) => {
+        return {
+          display: 'inline-flex',
+          alignItems: 'center',
+          marginLeft: isCurrentLeaf ? getPxSize(24, s) : 0,
+          padding: getPxSize(4, s),
+          borderRadius: getPxSize(3, s),
+          color: disabled ? 'gray' : ' black',
           cursor: disabled ? 'default' : 'pointer',
         };
       },

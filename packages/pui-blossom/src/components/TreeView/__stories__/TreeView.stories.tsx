@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { CSSProperties, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { TreeView, TreeViewProps } from '../index';
@@ -90,5 +90,32 @@ export const MultiDisabled: Story = {
   args: {
     mode: 'multi-select',
     disabled: ['1-3-2'],
+  },
+};
+
+const CHECKBOX_STYLE: CSSProperties = {
+  display: 'inline-flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '12px',
+  width: '12px',
+  marginRight: '4px',
+  border: '1px solid black',
+  borderRadius: '3px',
+  background: 'white',
+};
+
+export const MultiWithCheckbox: Story = {
+  render: multiRender,
+  args: {
+    mode: 'multi-select',
+    disabled: ['1-3-2'],
+    slots: {
+      labelStartDecorator: {
+        component: ({ selected, indeterminate }) => {
+          return <span style={CHECKBOX_STYLE}>{selected ? '\u{02713}' : indeterminate ? '-' : ''}</span>;
+        },
+      },
+    },
   },
 };

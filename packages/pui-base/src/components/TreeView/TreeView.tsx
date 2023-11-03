@@ -1,7 +1,7 @@
 import { ForwardedRef, forwardRef } from 'react';
 import { cx } from '@emotion/css';
 
-import { convertCSToClassName } from '../../utils';
+import { convertCSToClassName, getElementFromSlot } from '../../utils';
 
 import { TreeContext, NodeType, TreeViewProps } from './TreeView.types';
 import { TreeInformation, useTreeInformation } from './useTreeInformation';
@@ -9,7 +9,8 @@ import { TreeInformation, useTreeInformation } from './useTreeInformation';
 const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) => {
   const { context, ...node } = props;
   const { id, label, children } = node;
-  const { mode, treeInformationRef, cs, onNodeExpandChange, onNodeSelectChange } = context;
+  const { mode, treeInformationRef, slots = {}, cs, onNodeExpandChange, onNodeSelectChange } = context;
+  const { labelStartDecorator, labelEndDecorator } = slots;
 
   const {
     expanded = false,
@@ -19,6 +20,10 @@ const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) =
   } = treeInformationRef.current!.getStateById(id);
 
   const state = { expanded, indeterminate, selected, disabled, isCurrentLeaf: !children };
+
+  const labelStartDecoratorElement = getElementFromSlot(`${id}startDecorator`, labelStartDecorator, state);
+
+  const labelEndDecoratorElement = getElementFromSlot(`${id}endDecorator`, labelEndDecorator, state);
 
   return (
     <li
@@ -75,7 +80,11 @@ const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) =
             {expanded ? '-' : '+'}
           </button>
         ) : null}
-        <span className={cx('TreeItem-label', convertCSToClassName(cs?.label, state))}>{label}</span>
+        <span className={cx('TreeItem-label', convertCSToClassName(cs?.label, state))}>
+          {labelStartDecoratorElement}
+          {label}
+          {labelEndDecoratorElement}
+        </span>
       </div>
       {children && expanded ? <Group className="TreeItem-group" data={children} context={context} /> : null}
     </li>
@@ -113,16 +122,17 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
     expanded,
     selected,
     disabled,
+    slots = {},
     cs,
     onNodeExpandChange,
     onNodeSelectChange,
   } = props;
-
   const treeInformationRef = useTreeInformation(mode, data, { expanded, selected, disabled });
 
   const context: TreeContext<TreeInformation> = {
     mode,
     level: 1,
+    slots,
     cs,
     treeInformationRef,
     onNodeExpandChange,

@@ -11,10 +11,12 @@ export const getElementFromSlot = (_id: string, slotProps?: SlotProps, ownerProp
     return null;
   }
 
-  const props = {
-    ...ownerProps,
-    ...slotProps.props,
-  };
+  const props = slotProps.props
+    ? {
+        ...ownerProps,
+        ...slotProps.props,
+      }
+    : ownerProps;
 
   if (slotProps.component) {
     if (typeof slotProps.component === 'string') {

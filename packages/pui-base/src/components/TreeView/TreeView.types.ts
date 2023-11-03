@@ -44,6 +44,13 @@ export interface TreeViewProps {
    */
   data?: NodeType[];
   /**
+   * Slots
+   */
+  slots?: {
+    labelStartDecorator?: { component: React.ElementType<any>; props?: Record<string, unknown> };
+    labelEndDecorator?: { component: React.ElementType<any>; props?: Record<string, unknown> };
+  };
+  /**
    * Custom styles object
    */
   cs?: CustomStyles;
@@ -92,6 +99,7 @@ export interface NodeMetadata {
 export interface TreeContext<T> extends Pick<TreeViewProps, 'onNodeExpandChange' | 'onNodeSelectChange'> {
   mode: NonNullable<TreeViewProps['mode']>;
   level: number;
+  slots?: TreeViewProps['slots'];
   cs?: CustomStyles;
   treeInformationRef: React.RefObject<T>;
 }
