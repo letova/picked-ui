@@ -24,7 +24,7 @@ describe('TreeView', () => {
 
       fireEvent.click(screen.getByText('Label 1-3'));
 
-      expect(mockFn).toHaveBeenCalledWith(['1-3']);
+      expect(mockFn).toHaveBeenCalledWith('1-3');
     });
 
     it('don\'t calls the "onNodeSelectChange" when select disabled nodes', () => {
