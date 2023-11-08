@@ -1,4 +1,4 @@
-import { ForwardedRef, forwardRef } from 'react';
+import { ForwardedRef, forwardRef, useImperativeHandle } from 'react';
 import { cx } from '@emotion/css';
 
 import { convertCSToClassName, getElementFromSlot } from '../../utils';
@@ -116,6 +116,7 @@ const Group = ({
 const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElement>) => {
   const {
     className,
+    apiRef,
     mode = 'single-select',
     data,
     expanded,
@@ -127,6 +128,21 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
     onNodeSelectChange,
   } = props;
   const treeInformationRef = useTreeInformation(mode, data, { expanded, selected, disabled });
+
+  useImperativeHandle(
+    apiRef,
+    () => {
+      return {
+        getStateById: (id: string) => {
+          return treeInformationRef.current.getStateById(id);
+        },
+        getMetadataById: (id: string) => {
+          return treeInformationRef.current.getMetadataById(id);
+        },
+      };
+    },
+    [],
+  );
 
   const context: TreeContext<TreeInformation> = {
     mode,

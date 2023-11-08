@@ -1,3 +1,4 @@
+import { RefObject } from 'react';
 import { CSSObject } from '@emotion/css';
 
 import { GetCSSObjectFn } from '../../utils';
@@ -20,8 +21,17 @@ export interface NodeType {
   isLeaf?: boolean;
 }
 
+export interface Api {
+  getStateById: (id: string) => NodeState | undefined;
+  getMetadataById: (id: string) => NodeMetadata | undefined;
+}
+
 export interface TreeViewProps {
   className?: string;
+  /**
+   * TreeView API
+   */
+  apiRef?: RefObject<Api>;
   /**
    * Defines how the component behaves
    */

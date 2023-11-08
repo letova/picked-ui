@@ -1,9 +1,11 @@
-import { CSSProperties, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { CSSProperties, useEffect, useRef, useState } from 'react';
 
 import { TreeView, TreeViewProps } from '../index';
 
 import { DATA } from '../../../../../pui-base/src/components/TreeView/__testMocks__';
+
+import { TreeViewApi } from '../TreeView';
 
 const meta = {
   title: 'Components/TreeView',
@@ -18,7 +20,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const baseRender = (args: any) => {
+const baseRender: Story['render'] = (args: TreeViewProps) => {
   const [expanded, setExpanded] = useState<string | string[] | undefined>('all');
   const [selected, setSelected] = useState<string | undefined>('1-1');
 
@@ -27,32 +29,7 @@ const baseRender = (args: any) => {
   };
 
   const handleNodeSelectChange: TreeViewProps['onNodeSelectChange'] = ({ selectedIds }) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    setSelected(selectedIds as any);
-  };
-
-  return (
-    <TreeView
-      {...args}
-      data={DATA}
-      expanded={expanded}
-      selected={selected}
-      onNodeExpandChange={handleNodeExpandChange}
-      onNodeSelectChange={handleNodeSelectChange}
-    />
-  );
-};
-
-const multiRender = (args: any) => {
-  const [expanded, setExpanded] = useState<string | string[] | undefined>('all');
-  const [selected, setSelected] = useState<string | string[] | undefined>(['1-1']);
-
-  const handleNodeExpandChange: TreeViewProps['onNodeExpandChange'] = ({ expandedIds }) => {
-    setExpanded(expandedIds);
-  };
-
-  const handleNodeSelectChange: TreeViewProps['onNodeSelectChange'] = ({ selectedIds }) => {
-    setSelected(selectedIds);
+    setSelected(selectedIds as string);
   };
 
   return (
@@ -78,8 +55,68 @@ export const Disabled: Story = {
   },
 };
 
+/* MODE MULTI-SELECT */
+
+const useMultiTreeViewState = () => {
+  const [expanded, setExpanded] = useState<string | string[] | undefined>('all');
+  const [selected, setSelected] = useState<string | string[] | undefined>(['1-1']);
+
+  const handleNodeExpandChange: TreeViewProps['onNodeExpandChange'] = ({ expandedIds }) => {
+    setExpanded(expandedIds);
+  };
+
+  const handleNodeSelectChange: TreeViewProps['onNodeSelectChange'] = ({ selectedIds }) => {
+    setSelected(selectedIds);
+  };
+
+  return { expanded, selected, onNodeExpandChange: handleNodeExpandChange, onNodeSelectChange: handleNodeSelectChange };
+};
+
+const multiRender: Story['render'] = (args: TreeViewProps) => {
+  const state = useMultiTreeViewState();
+
+  return (
+    <TreeView
+      {...args}
+      data={DATA}
+      expanded={state.expanded}
+      selected={state.selected}
+      onNodeExpandChange={state.onNodeExpandChange}
+      onNodeSelectChange={state.onNodeSelectChange}
+    />
+  );
+};
+
 export const Multi: Story = {
   render: multiRender,
+  args: {
+    mode: 'multi-select',
+  },
+};
+
+const multiRenderWithApi: Story['render'] = (args: TreeViewProps) => {
+  const state = useMultiTreeViewState();
+  const apiRef = useRef<TreeViewApi>(null);
+
+  useEffect(() => {
+    console.log('Metadata for node 1-1', apiRef.current!.getStateById('1-1'));
+  }, []);
+
+  return (
+    <TreeView
+      {...args}
+      apiRef={apiRef}
+      data={DATA}
+      expanded={state.expanded}
+      selected={state.selected}
+      onNodeExpandChange={state.onNodeExpandChange}
+      onNodeSelectChange={state.onNodeSelectChange}
+    />
+  );
+};
+
+export const MultiApi: Story = {
+  render: multiRenderWithApi,
   args: {
     mode: 'multi-select',
   },
