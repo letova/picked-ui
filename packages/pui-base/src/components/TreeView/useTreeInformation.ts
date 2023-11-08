@@ -14,7 +14,7 @@ class TreeInformation {
   public disabledIds: string[];
 
   #data: NodeType[];
-  #prevState: TreeInformationUserState;
+  #state: TreeInformationUserState;
   #stateMap: Record<string, NodeState>;
   #metadataMap: Record<string, NodeMetadata>;
 
@@ -23,18 +23,23 @@ class TreeInformation {
     this.selectedIds = [];
     this.disabledIds = [];
 
-    this.#data = data;
-    this.#prevState = STATE_FIELDS.reduce<TreeInformationUserState>((result, field) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore fix type
-      result[field] = undefined;
-      return result;
-    }, {});
-
+    this.#data = [];
+    this.#state = {};
     this.#stateMap = {};
     this.#metadataMap = {};
 
     this.update(mode, data, state);
+  }
+
+  private updateDeps(data: NodeType[], state: TreeInformationUserState) {
+    this.#data = data;
+    this.#state = STATE_FIELDS.reduce<TreeInformationUserState>((result, field) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore fix type
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      result[field] = state[field];
+      return result;
+    }, {});
   }
 
   public getStateById(id: string) {
@@ -59,6 +64,8 @@ class TreeInformation {
 
     this.#stateMap = stateMap;
     this.#metadataMap = metadataMap;
+
+    this.updateDeps(data, state);
   }
 
   public shouldUpdate(nextData: NodeType[], nextState: TreeInformationUserState) {
@@ -68,7 +75,7 @@ class TreeInformation {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore fix type
-    if (STATE_FIELDS.some((field) => nextState[field] !== this.#prevState[field])) {
+    if (STATE_FIELDS.some((field) => nextState[field] !== this.#state[field])) {
       return true;
     }
 

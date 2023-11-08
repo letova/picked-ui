@@ -22,7 +22,6 @@ const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) =
   const state = { expanded, indeterminate, selected, disabled, isCurrentLeaf: !children };
 
   const labelStartDecoratorElement = getElementFromSlot(`${id}startDecorator`, labelStartDecorator, state);
-
   const labelEndDecoratorElement = getElementFromSlot(`${id}endDecorator`, labelEndDecorator, state);
 
   return (

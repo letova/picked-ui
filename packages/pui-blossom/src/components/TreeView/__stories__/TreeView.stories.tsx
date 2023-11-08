@@ -103,6 +103,7 @@ const CHECKBOX_STYLE: CSSProperties = {
   border: '1px solid black',
   borderRadius: '3px',
   background: 'white',
+  color: 'royalblue',
 };
 
 export const MultiWithCheckbox: Story = {
@@ -113,7 +114,7 @@ export const MultiWithCheckbox: Story = {
     slots: {
       labelStartDecorator: {
         component: ({ selected, indeterminate }) => {
-          return <span style={CHECKBOX_STYLE}>{selected ? '\u{02713}' : indeterminate ? '-' : ''}</span>;
+          return <span style={CHECKBOX_STYLE}>{selected ? '\u{02713}' : indeterminate ? '\u{25FC}' : ''}</span>;
         },
       },
     },
