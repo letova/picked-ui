@@ -1,5 +1,5 @@
 import { css, cx } from '@emotion/css';
-import { ForwardedRef, forwardRef } from 'react';
+import { ForwardedRef, forwardRef, useId } from 'react';
 
 import { convertCSToClassName, getElementFromSlot } from '../../utils';
 
@@ -11,16 +11,16 @@ const Chip = forwardRef(
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
     const clickable = !!onClick;
-    const id = String(new Date().getMilliseconds());
+    const id = useId();
 
     const { startDecorator, endDecorator } = slots;
 
-    const startDecoratorElement = getElementFromSlot(`${id}startDecorator`, startDecorator, {
+    const startDecoratorElement = getElementFromSlot(startDecorator, {
       className: 'Chip-startDecorator',
       disabled,
     });
 
-    const endDecoratorElement = getElementFromSlot(`${id}endDecorator`, endDecorator, {
+    const endDecoratorElement = getElementFromSlot(endDecorator, {
       className: 'Chip-endDecorator',
       disabled,
     });
