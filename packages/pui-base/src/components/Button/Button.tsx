@@ -1,5 +1,5 @@
 import { cx } from '@emotion/css';
-import { ForwardedRef, forwardRef } from 'react';
+import { ForwardedRef, forwardRef, useState } from 'react';
 
 import { ButtonProps } from './Button.types';
 
@@ -7,18 +7,31 @@ import { getElementFromSlot } from '../../utils';
 
 const Button = forwardRef(
   (
-    { className, children, slots = {}, disabled = false, ...restProps }: ButtonProps,
+    {
+      className,
+      children,
+      slots = {},
+      startDecorator,
+      endDecorator,
+      highlighted = false,
+      disabled = false,
+      ...restProps
+    }: ButtonProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ) => {
-    const { startDecorator, endDecorator } = slots;
+    const [hasFocus, setFocus] = useState(false);
 
-    const startDecoratorElement = getElementFromSlot(startDecorator, {
+    const startDecoratorElement = getElementFromSlot(slots.startDecorator, {
       className: 'Button-startDecorator',
+      focus: hasFocus,
+      highlighted,
       disabled,
     });
 
-    const endDecoratorElement = getElementFromSlot(endDecorator, {
+    const endDecoratorElement = getElementFromSlot(slots.endDecorator, {
       className: 'Button-endDecorator',
+      focus: hasFocus,
+      highlighted,
       disabled,
     });
 
@@ -26,12 +39,18 @@ const Button = forwardRef(
       <button
         {...restProps}
         ref={ref}
-        className={cx('Button', { 'Button--disabled': disabled }, className)}
+        className={cx(
+          'Button',
+          { 'Button--focus': hasFocus, 'Button--highlighted': highlighted, 'Button--disabled': disabled },
+          className,
+        )}
         disabled={disabled}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
       >
-        {startDecoratorElement}
+        {startDecoratorElement || startDecorator}
         {children}
-        {endDecoratorElement}
+        {endDecoratorElement || endDecorator}
       </button>
     );
   },

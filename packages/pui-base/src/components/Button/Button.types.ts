@@ -2,8 +2,11 @@ type OmitedButtonHTMLAttributes = Omit<React.ButtonHTMLAttributes<HTMLButtonElem
 
 export interface ButtonProps extends OmitedButtonHTMLAttributes {
   children?: React.ReactNode;
+  startDecorator?: React.ReactElement | string | number;
+  endDecorator?: React.ReactElement | string | number;
   slots?: {
     startDecorator?: { component: React.ElementType<any>; props?: Record<string, unknown> };
     endDecorator?: { component: React.ElementType<any>; props?: Record<string, unknown> };
   };
+  highlighted?: boolean;
 }
