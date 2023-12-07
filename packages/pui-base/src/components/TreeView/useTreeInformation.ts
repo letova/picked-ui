@@ -97,13 +97,17 @@ const useTreeInformation = (
   data: NodeType[] | undefined = [],
   state: Pick<TreeViewProps, 'expanded' | 'selected' | 'disabled'>,
 ) => {
-  const informationRef = useRef(new TreeInformation(mode, data, state));
+  const informationRef: React.MutableRefObject<TreeInformation | null> = useRef(null);
+
+  if (informationRef.current === null) {
+    informationRef.current = new TreeInformation(mode, data, state);
+  }
 
   if (informationRef.current.shouldUpdate(data, state)) {
     informationRef.current.update(mode, data, state);
   }
 
-  return informationRef;
+  return informationRef as React.MutableRefObject<TreeInformation>;
 };
 
 export { useTreeInformation, TreeInformation };
