@@ -95,7 +95,7 @@ class TreeInformation {
 const useTreeInformation = (
   mode: TreeViewProps['mode'],
   data: NodeType[] | undefined = [],
-  state: Pick<TreeViewProps, 'expanded' | 'selected' | 'disabled'>,
+  state: Pick<TreeViewProps, 'expanded' | 'selected' | 'disabled' | 'search'>,
 ) => {
   const informationRef: React.MutableRefObject<TreeInformation | null> = useRef(null);
 

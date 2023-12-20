@@ -1,3 +1,5 @@
+import { isNil } from '../../../utils';
+
 import { NodeMetadata, NodeState, NodeType, TreeViewProps } from '../TreeView.types';
 
 import { getDisabledIdsMap, getExpandedIdsMap } from './maps';
@@ -6,12 +8,14 @@ interface ProcessContext {
   parentId?: string;
   parentIsDisabled: boolean;
   level: number;
+  hidden: boolean;
 }
 
 const INITIAL_PROCESS_CONTEXT: ProcessContext = {
   parentId: undefined,
   parentIsDisabled: false,
   level: 1,
+  hidden: false,
 };
 
 const INITIAL_NODE_STATE: NodeState = {
@@ -19,6 +23,7 @@ const INITIAL_NODE_STATE: NodeState = {
   expanded: false,
   disabled: false,
   indeterminate: false,
+  hidden: false,
 };
 
 const INITIAL_NODE_METADATA: NodeMetadata = {
@@ -66,10 +71,13 @@ export const prepareMapsForSingleSelect = (props: TreeViewProps): PrepareMapsRes
 
       metadata.left = nestedSetModelCounter;
       metadata.parentId = context.parentId;
+      metadata.searchMatch = props.search?.match(node);
 
       /**
        * Node state
        */
+      let hidden = isNil(props.search) ? false : !(metadata.searchMatch!.result || !context.hidden);
+
       if (props.selected === 'all' || Array.isArray(props.selected)) {
         throw new Error(`TreeView: received an invalid prop: 'selected'!`);
       }
@@ -89,14 +97,21 @@ export const prepareMapsForSingleSelect = (props: TreeViewProps): PrepareMapsRes
           parentId: node.id,
           parentIsDisabled: state.disabled,
           level: context.level + 1,
+          hidden,
         });
 
         const descendantIds: string[] = [];
 
         node.children.forEach((childNode) => {
           const { descendantIds } = metadataMap[childNode.id];
+          const { hidden: childHidden } = stateMap[childNode.id];
+
           const next = descendantIds ? [childNode.id, ...descendantIds] : [childNode.id];
           descendantIds?.push(...next);
+
+          if (hidden && !childHidden) {
+            hidden = false;
+          }
         });
 
         metadata.descendantIds = descendantIds;
@@ -105,6 +120,7 @@ export const prepareMapsForSingleSelect = (props: TreeViewProps): PrepareMapsRes
       }
 
       metadata.right = right;
+      state.hidden = hidden;
 
       /**
        * Sets maps
@@ -128,7 +144,7 @@ export const prepareMapsForSingleSelect = (props: TreeViewProps): PrepareMapsRes
     });
   };
 
-  process(props.data, INITIAL_PROCESS_CONTEXT);
+  process(props.data, isNil(props.search) ? INITIAL_PROCESS_CONTEXT : { ...INITIAL_PROCESS_CONTEXT, hidden: true });
 
   return { stateMap, metadataMap, expandedIds, selectedIds, disabledIds };
 };

@@ -55,6 +55,17 @@ export const Disabled: Story = {
   },
 };
 
+export const Search: Story = {
+  render: baseRender,
+  args: {
+    search: {
+      match: (node) => {
+        return { result: node.label.includes('1-3') };
+      },
+    },
+  },
+};
+
 /* MODE MULTI-SELECT */
 
 const useMultiTreeViewState = () => {
@@ -153,6 +164,18 @@ export const MultiWithCheckbox: Story = {
         component: ({ selected, indeterminate }) => {
           return <span style={CHECKBOX_STYLE}>{selected ? '\u{02713}' : indeterminate ? '\u{25FC}' : ''}</span>;
         },
+      },
+    },
+  },
+};
+
+export const MultiSearch: Story = {
+  render: multiRender,
+  args: {
+    mode: 'multi-select',
+    search: {
+      match: (node) => {
+        return { result: node.label.includes('1-3') };
       },
     },
   },

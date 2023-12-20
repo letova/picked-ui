@@ -17,6 +17,7 @@ const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) =
     indeterminate = false,
     selected = false,
     disabled = false,
+    hidden = false,
   } = treeInformationRef.current!.getStateById(id);
 
   const state = { expanded, indeterminate, selected, disabled, isCurrentLeaf: !children };
@@ -40,51 +41,53 @@ const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) =
       aria-expanded={expanded}
       aria-selected={selected}
     >
-      <div
-        className={cx('TreeItem-content', convertCSToClassName(cs?.content, state))}
-        onClick={(event) => {
-          if (disabled) {
-            return;
-          }
+      {hidden ? null : (
+        <div
+          className={cx('TreeItem-content', convertCSToClassName(cs?.content, state))}
+          onClick={(event) => {
+            if (disabled) {
+              return;
+            }
 
-          onNodeSelectChange?.(
-            {
-              node,
-              isSelected: !selected,
-              selectedIds: mode === 'single-select' ? id : treeInformationRef.current!.calculateSelectedIds(id),
-            },
-            event,
-          );
-        }}
-      >
-        {children ? (
-          <button
-            className={cx('TreeItem-expandButton', convertCSToClassName(cs?.expandButton))}
-            onClick={(event) => {
-              const currentExpandedIds = treeInformationRef.current!.expandedIds;
+            onNodeSelectChange?.(
+              {
+                node,
+                isSelected: !selected,
+                selectedIds: mode === 'single-select' ? id : treeInformationRef.current!.calculateSelectedIds(id),
+              },
+              event,
+            );
+          }}
+        >
+          {children ? (
+            <button
+              className={cx('TreeItem-expandButton', convertCSToClassName(cs?.expandButton))}
+              onClick={(event) => {
+                const currentExpandedIds = treeInformationRef.current!.expandedIds;
 
-              onNodeExpandChange?.(
-                {
-                  node: props,
-                  isExpanded: !expanded,
-                  expandedIds: !expanded
-                    ? currentExpandedIds.concat(id)
-                    : currentExpandedIds.filter((eId) => eId !== id),
-                },
-                event,
-              );
-              event.stopPropagation();
-            }}
-          >
-            {expanded ? '-' : '+'}
-          </button>
-        ) : null}
-        <span className={cx('TreeItem-label', convertCSToClassName(cs?.label, state))}>
-          {labelStartDecoratorElement}
-          {label}
-          {labelEndDecoratorElement}
-        </span>
-      </div>
+                onNodeExpandChange?.(
+                  {
+                    node: props,
+                    isExpanded: !expanded,
+                    expandedIds: !expanded
+                      ? currentExpandedIds.concat(id)
+                      : currentExpandedIds.filter((eId) => eId !== id),
+                  },
+                  event,
+                );
+                event.stopPropagation();
+              }}
+            >
+              {expanded ? '-' : '+'}
+            </button>
+          ) : null}
+          <span className={cx('TreeItem-label', convertCSToClassName(cs?.label, state))}>
+            {labelStartDecoratorElement}
+            {label}
+            {labelEndDecoratorElement}
+          </span>
+        </div>
+      )}
       {children && expanded ? <Group className="TreeItem-group" data={children} context={context} /> : null}
     </li>
   );
@@ -122,12 +125,13 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
     expanded,
     selected,
     disabled,
+    search,
     slots = {},
     cs,
     onNodeExpandChange,
     onNodeSelectChange,
   } = props;
-  const treeInformationRef = useTreeInformation(mode, data, { expanded, selected, disabled });
+  const treeInformationRef = useTreeInformation(mode, data, { expanded, selected, disabled, search });
 
   useImperativeHandle(
     apiRef,

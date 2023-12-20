@@ -13,6 +13,16 @@ export interface CustomStyles {
   label?: CSSObject | GetCSSObjectFn;
 }
 
+export interface MatchResult {
+  result: boolean;
+  html?: string;
+}
+
+export interface SearchOptions {
+  // value?: string;
+  match: (node: NodeType) => MatchResult | undefined;
+}
+
 export interface NodeType {
   id: string;
   label: string;
@@ -53,6 +63,7 @@ export interface TreeViewProps {
    * List of nodes
    */
   data?: NodeType[];
+  search?: SearchOptions;
   /**
    * Slots
    */
@@ -93,6 +104,7 @@ export interface NodeState {
   selected: boolean;
   indeterminate: boolean;
   disabled: boolean;
+  hidden: boolean;
 }
 
 export interface NodeMetadata {
@@ -100,6 +112,7 @@ export interface NodeMetadata {
   descendantIds: string[] | undefined;
   left: number;
   right: number;
+  searchMatch?: MatchResult;
   hasEnabledSelectedLeafs?: boolean;
   hasEnabledUnselectedLeafs?: boolean;
   hasDisabledSelectedLeafs?: boolean;
