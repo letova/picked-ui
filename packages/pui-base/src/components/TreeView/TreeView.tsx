@@ -1,15 +1,50 @@
-import { ForwardedRef, forwardRef, useImperativeHandle } from 'react';
+import { ForwardedRef, forwardRef, useImperativeHandle, useState } from 'react';
 import { cx } from '@emotion/css';
 
 import { convertCSToClassName, getElementFromSlot } from '../../utils';
 
-import { TreeContext, NodeType, TreeViewProps } from './TreeView.types';
+import { TreeContext, NodeType, TreeViewProps, LoadingExpandButtonProps } from './TreeView.types';
 import { TreeInformation, useTreeInformation } from './useTreeInformation';
+
+const LoadingExpandButton = ({ className, node, expanded, onClick, onLoadData }: LoadingExpandButtonProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const hasChildren = Boolean(node.children?.length);
+  const hasUnloadedNodeChildren = !hasChildren && !node.isLeaf && Boolean(onLoadData);
+
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+    if (!isLoading && hasUnloadedNodeChildren) {
+      setIsLoading(true);
+
+      onLoadData(node)
+        .then(() => {
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setIsLoading(false);
+        });
+    } else {
+      onClick?.(event);
+    }
+  };
+
+  if (!hasChildren && !hasUnloadedNodeChildren) {
+    return null;
+  }
+
+  return isLoading ? (
+    '...'
+  ) : (
+    <button className={className} onClick={handleClick}>
+      {expanded ? '-' : '+'}
+    </button>
+  );
+};
 
 const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) => {
   const { context, ...node } = props;
   const { id, label, children } = node;
-  const { mode, treeInformationRef, slots = {}, cs, onNodeExpandChange, onNodeSelectChange } = context;
+  const { mode, treeInformationRef, slots = {}, cs, onNodeExpandChange, onNodeSelectChange, onLoadData } = context;
   const { labelStartDecorator, labelEndDecorator } = slots;
 
   const {
@@ -24,6 +59,20 @@ const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) =
 
   const labelStartDecoratorElement = getElementFromSlot(labelStartDecorator, state);
   const labelEndDecoratorElement = getElementFromSlot(labelEndDecorator, state);
+
+  const handleExpandButtonClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+    const currentExpandedIds = treeInformationRef.current!.expandedIds;
+
+    onNodeExpandChange?.(
+      {
+        node: props,
+        isExpanded: !expanded,
+        expandedIds: !expanded ? currentExpandedIds.concat(id) : currentExpandedIds.filter((eId) => eId !== id),
+      },
+      event,
+    );
+    event.stopPropagation();
+  };
 
   return (
     <li
@@ -59,24 +108,18 @@ const TreeItem = (props: NodeType & { context: TreeContext<TreeInformation> }) =
             );
           }}
         >
-          {children ? (
+          {onLoadData ? (
+            <LoadingExpandButton
+              className={cx('TreeItem-expandButton', convertCSToClassName(cs?.expandButton))}
+              node={node}
+              expanded={expanded}
+              onClick={handleExpandButtonClick}
+              onLoadData={onLoadData}
+            />
+          ) : children ? (
             <button
               className={cx('TreeItem-expandButton', convertCSToClassName(cs?.expandButton))}
-              onClick={(event) => {
-                const currentExpandedIds = treeInformationRef.current!.expandedIds;
-
-                onNodeExpandChange?.(
-                  {
-                    node: props,
-                    isExpanded: !expanded,
-                    expandedIds: !expanded
-                      ? currentExpandedIds.concat(id)
-                      : currentExpandedIds.filter((eId) => eId !== id),
-                  },
-                  event,
-                );
-                event.stopPropagation();
-              }}
+              onClick={handleExpandButtonClick}
             >
               {expanded ? '-' : '+'}
             </button>
@@ -130,6 +173,7 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
     cs,
     onNodeExpandChange,
     onNodeSelectChange,
+    onLoadData,
   } = props;
   const treeInformationRef = useTreeInformation(mode, data, { expanded, selected, disabled, search });
 
@@ -156,6 +200,7 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
     treeInformationRef,
     onNodeExpandChange,
     onNodeSelectChange,
+    onLoadData,
   };
 
   return (

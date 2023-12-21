@@ -93,6 +93,10 @@ export interface TreeViewProps {
     options: { node: NodeType; isSelected: boolean; selectedIds: string | string[] | undefined },
     event: React.SyntheticEvent,
   ) => void;
+  /**
+   * Load data asynchronously
+   */
+  onLoadData?: (node: NodeType) => Promise<unknown>;
 }
 
 /**
@@ -119,10 +123,19 @@ export interface NodeMetadata {
   hasDisabledUnselectedLeafs?: boolean;
 }
 
-export interface TreeContext<T> extends Pick<TreeViewProps, 'onNodeExpandChange' | 'onNodeSelectChange'> {
+export interface TreeContext<T>
+  extends Pick<TreeViewProps, 'onNodeExpandChange' | 'onNodeSelectChange' | 'onLoadData'> {
   mode: NonNullable<TreeViewProps['mode']>;
   level: number;
   slots?: TreeViewProps['slots'];
   cs?: CustomStyles;
   treeInformationRef: React.RefObject<T>;
+}
+
+export interface LoadingExpandButtonProps {
+  className?: string;
+  node: NodeType;
+  expanded: boolean;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  onLoadData: NonNullable<TreeViewProps['onLoadData']>;
 }
