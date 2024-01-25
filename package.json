@@ -12,6 +12,9 @@
     "storybook": "storybook dev -p 6006",
     "test": "jest"
   },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint"
+  },
   "workspaces": [
     "packages/*"
   ],
