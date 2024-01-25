@@ -3,7 +3,7 @@ import { CSSProperties, useEffect, useRef, useState } from 'react';
 
 import { TreeView, TreeViewProps } from '../index';
 
-import { DATA } from '../../../../../pui-base/src/components/TreeView/__testMocks__';
+import { DATA } from '../../../../../base/src/components/TreeView/__testMocks__';
 
 import { TreeViewApi } from '../TreeView';
 

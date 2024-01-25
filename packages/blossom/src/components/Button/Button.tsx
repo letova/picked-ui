@@ -1,7 +1,7 @@
 import { cx } from '@emotion/css';
 import { ForwardedRef, forwardRef } from 'react';
 
-import { Button as BaseButton } from '../../../../pui-base/src/components/Button';
+import { Button as BaseButton } from '../../../../base/src/components/Button';
 
 import { ButtonProps } from './Button.types';
 import { getClassName } from './Button.styles';

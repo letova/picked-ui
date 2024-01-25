@@ -1,4 +1,4 @@
-import { ChipProps as BaseChipProps } from '../../../../pui-base/src/components/Chip';
+import { ChipProps as BaseChipProps } from '../../../../base/src/components/Chip';
 
 // import { HexColor } from '../../types';
 

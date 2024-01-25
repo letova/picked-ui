@@ -1,7 +1,7 @@
 import { cx } from '@emotion/css';
 import { ForwardedRef, forwardRef } from 'react';
 
-import { TreeView as BaseTreeView, Api } from '../../../../pui-base/src/components/TreeView';
+import { TreeView as BaseTreeView, Api } from '../../../../base/src/components/TreeView';
 
 import { TreeViewProps } from './TreeView.types';
 import { getCS, getClassName } from './TreeView.styles';
