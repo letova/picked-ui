@@ -1,4 +1,4 @@
-import { HeadingProps as BaseHeadingProps } from '../../../../base/src/components/Heading';
+import { HeadingProps as BaseHeadingProps } from '@picked-ui/base';
 
 export interface HeadingProps extends BaseHeadingProps {
   size?: 'xs' | 's' | 'm';

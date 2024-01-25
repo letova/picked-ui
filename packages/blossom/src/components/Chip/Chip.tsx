@@ -1,7 +1,6 @@
 import { cx } from '@emotion/css';
 import { ForwardedRef, forwardRef } from 'react';
-
-import { Chip as BaseChip } from '../../../../base/src/components/Chip';
+import { Chip as BaseChip } from '@picked-ui/base';
 
 import { ChipProps } from './Chip.types';
 import { getCS, getClassName } from './Chip.styles';

@@ -1,7 +1,6 @@
 import { cx } from '@emotion/css';
 import { ForwardedRef, forwardRef } from 'react';
-
-import { Paper as BasePaper } from '../../../../base/src/components/Paper';
+import { Paper as BasePaper } from '@picked-ui/base';
 
 import { PaperProps } from './Paper.types';
 import { getClassName } from './Paper.styles';

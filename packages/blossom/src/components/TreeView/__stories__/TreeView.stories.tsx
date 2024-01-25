@@ -3,9 +3,9 @@ import { CSSProperties, useEffect, useRef, useState } from 'react';
 
 import { TreeView, TreeViewProps } from '../index';
 
-import { DATA } from '../../../../../base/src/components/TreeView/__testMocks__';
-
 import { TreeViewApi } from '../TreeView';
+
+import { DATA } from '../__testMocks__';
 
 const meta = {
   title: 'Components/TreeView',

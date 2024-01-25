@@ -4,6 +4,7 @@ package-lock.json
 
 # output
 dist
+packages/*/dist
 
 # misc
 .DS_Store

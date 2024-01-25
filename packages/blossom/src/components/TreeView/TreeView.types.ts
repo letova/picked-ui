@@ -1,6 +1,5 @@
 import { CSSObject } from '@emotion/css';
-
-import { TreeViewProps as BaseTreeViewProps } from '../../../../base/src/components/TreeView';
+import { TreeViewProps as BaseTreeViewProps } from '@picked-ui/base';
 
 export interface TreeViewProps extends BaseTreeViewProps {
   variant?: 'plain' | 'line';

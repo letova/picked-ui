@@ -1,4 +1,4 @@
-import { ChipProps as BaseChipProps } from '../../../../base/src/components/Chip';
+import { ChipProps as BaseChipProps } from '@picked-ui/base';
 
 // import { HexColor } from '../../types';
 

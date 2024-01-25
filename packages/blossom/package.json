@@ -1,0 +1,35 @@
+{
+  "name": "@picked-ui/blossom",
+  "version": "0.0.1",
+  "description": "A library of React UI components",
+  "author": "Olga Letova",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "check-format": "npm run prettier -- --list-different",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint --ignore-path ../../.gitignore .",
+    "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|json|ts|tsx)\"",
+    "test": "cd ../../ && jest packages/base"
+  },
+  "dependencies": {
+    "@emotion/css": "11.11.2",
+    "@picked-ui/base": "0.0.1",
+    "lodash.merge": "4.6.2"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/lodash.merge": "4.6.7",
+    "@types/react": "18.2.48",
+    "@types/react-dom": "18.2.18",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  }
+}
