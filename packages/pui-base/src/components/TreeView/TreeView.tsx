@@ -149,7 +149,7 @@ const Group = ({
 
   return (
     <ul
-      className={cx('Group', convertCSToClassName(cs?.group, { level }), className)}
+      className={cx('TreeGroup', convertCSToClassName(cs?.group, { level }), className)}
       role={level === 0 ? 'tree' : 'group'}
     >
       {data.map((node) => {
