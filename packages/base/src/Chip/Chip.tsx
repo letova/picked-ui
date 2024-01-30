@@ -5,7 +5,7 @@ import { convertCSToClassName, getElementFromSlot } from '../utils';
 
 import { ChipProps } from './Chip.types';
 
-const Chip = forwardRef(
+export const Chip = forwardRef(
   (
     { className, children, slots = {}, cs, disabled = false, onClick }: ChipProps,
     ref: ForwardedRef<HTMLDivElement>,
@@ -55,5 +55,3 @@ const Chip = forwardRef(
     );
   },
 );
-
-export { Chip };
