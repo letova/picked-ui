@@ -1,9 +1,9 @@
 import { cx } from '@emotion/css';
 import { ForwardedRef, forwardRef, useState } from 'react';
 
-import { ButtonProps } from './Button.types';
-
 import { getElementFromSlot } from '../utils';
+
+import { ButtonProps } from './Button.types';
 
 export const Button = forwardRef(
   (

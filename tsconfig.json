@@ -36,6 +36,6 @@
     // Completeness
     "skipLibCheck": true
   },
-  "include": ["tests", "packages", "babel.config.js", "jest.config.js"],
+  "include": ["tests", "packages"],
   "exclude": ["**/node_modules"]
 }

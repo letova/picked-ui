@@ -5,8 +5,13 @@ module.exports = {
     jest: true,
     node: true,
   },
-  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended-type-checked'],
-  ignorePatterns: ['__mocks__'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended-type-checked',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
+  ],
+  ignorePatterns: ['__mocks__', '.eslintrc.js', 'babel.config.js', 'jest.config.js'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: ['./tsconfig.json'],
@@ -16,6 +21,13 @@ module.exports = {
   root: true,
   rules: {
     '@typescript-eslint/no-explicit-any': 'off',
+    'import/no-named-as-default': 'off',
+    'import/order': [
+      'error',
+      {
+        groups: ['builtin', 'external', 'parent', 'sibling', 'index'],
+      },
+    ],
     'testing-library/consistent-data-testid': [2, { testIdPattern: '^[a-z0-9]+(?:-[a-z0-9]+)*$' }],
   },
   overrides: [
