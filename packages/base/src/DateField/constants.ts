@@ -19,3 +19,43 @@ export const SECTIONS: DateFieldSection[] = [
 ];
 
 export const SELECTABLE_SECTIONS = SECTIONS.filter((section) => section.type !== 'literal');
+
+export const DATE_TIME_FORMAT_OPTIONS_MAP = {
+  // Year
+  YY: { month: '2-digit' },
+  YYYY: { month: 'numeric' },
+  // Month
+  M: { month: 'numeric' },
+  MM: { month: '2-digit' },
+  MMM: { month: 'short' },
+  MMMM: { month: 'long' },
+  // Day of Month
+  D: { day: 'numeric' },
+  Do: { day: '2-digit' }, // ???
+  DD: { day: '2-digit' },
+  // Day of Week
+  d: { weekday: 'narrow' }, // ???
+  ddd: { weekday: 'short' },
+  dddd: { weekday: 'long' },
+  // Hour
+  H: { hour: 'numeric' },
+  HH: { hour: '2-digit' },
+  h: { hour: 'numeric', hour12: true },
+  hh: { hour: '2-digit', hour12: true },
+  // Minute
+  m: { minute: 'numeric' },
+  mm: { minute: '2-digit' },
+  //Second
+  s: { second: 'numeric' },
+  ss: { second: '2-digit' },
+  // Fractional Second
+  S: null,
+  SS: null,
+  SSS: null,
+  // AM / PM
+  A: { hour: 'numeric', hour12: true }, // split ???
+  a: { hour: 'numeric', hour12: true }, // split & lowercase ???
+  // Timezone
+  Z: null,
+  ZZ: null,
+};
