@@ -20,42 +20,45 @@ export const SECTIONS: DateFieldSection[] = [
 
 export const SELECTABLE_SECTIONS = SECTIONS.filter((section) => section.type !== 'literal');
 
-export const DATE_TIME_FORMAT_OPTIONS_MAP = {
+const initGetValue = (options: Intl.DateTimeFormatOptions) => (date: Date) =>
+  new Intl.DateTimeFormat('ru-RU', options).format(date);
+
+export const DATE_TIME_FORMAT_MAP = {
   // Year
-  YY: { month: '2-digit' },
-  YYYY: { month: 'numeric' },
+  YY: { type: 'year', getValue: initGetValue({ year: '2-digit' }) },
+  YYYY: { type: 'year', getValue: initGetValue({ year: 'numeric' }) },
   // Month
-  M: { month: 'numeric' },
-  MM: { month: '2-digit' },
-  MMM: { month: 'short' },
-  MMMM: { month: 'long' },
+  M: { type: 'month', getValue: initGetValue({ month: 'numeric' }) },
+  MM: { type: 'month', getValue: initGetValue({ month: '2-digit' }) },
+  MMM: { type: 'month', getValue: initGetValue({ month: 'short' }) },
+  MMMM: { type: 'month', getValue: initGetValue({ month: 'long' }) },
   // Day of Month
-  D: { day: 'numeric' },
-  Do: { day: '2-digit' }, // ???
-  DD: { day: '2-digit' },
+  D: { type: 'day', getValue: initGetValue({ day: 'numeric' }) },
+  Do: { type: 'day', getValue: initGetValue({ day: '2-digit' }) }, // todo: fix this
+  DD: { type: 'day', getValue: initGetValue({ day: '2-digit' }) },
   // Day of Week
-  d: { weekday: 'narrow' }, // ???
-  ddd: { weekday: 'short' },
-  dddd: { weekday: 'long' },
+  d: { type: 'weekday', getValue: initGetValue({ weekday: 'narrow' }) }, // todo: fix this
+  ddd: { type: 'weekday', getValue: initGetValue({ weekday: 'short' }) },
+  dddd: { type: 'weekday', getValue: initGetValue({ weekday: 'long' }) },
   // Hour
-  H: { hour: 'numeric' },
-  HH: { hour: '2-digit' },
-  h: { hour: 'numeric', hour12: true },
-  hh: { hour: '2-digit', hour12: true },
+  H: { type: 'hour', getValue: initGetValue({ hour: 'numeric' }) },
+  HH: { type: 'hour', getValue: initGetValue({ hour: '2-digit' }) },
+  h: { type: 'hour', getValue: initGetValue({ hour: 'numeric', hour12: true }) },
+  hh: { type: 'hour', getValue: initGetValue({ hour: '2-digit', hour12: true }) },
   // Minute
-  m: { minute: 'numeric' },
-  mm: { minute: '2-digit' },
+  m: { type: 'minute', getValue: initGetValue({ minute: 'numeric' }) },
+  mm: { type: 'minute', getValue: initGetValue({ minute: '2-digit' }) },
   //Second
-  s: { second: 'numeric' },
-  ss: { second: '2-digit' },
+  s: { type: 'second', getValue: initGetValue({ second: 'numeric' }) },
+  ss: { type: 'second', getValue: initGetValue({ second: '2-digit' }) },
   // Fractional Second
-  S: null,
-  SS: null,
-  SSS: null,
+  S: { type: 'fractionalSecond', getValue: (date: Date) => date.getMilliseconds() },
+  SS: { type: 'fractionalSecond', getValue: (date: Date) => date.getMilliseconds() },
+  SSS: { type: 'fractionalSecond', getValue: (date: Date) => date.getMilliseconds() },
   // AM / PM
-  A: { hour: 'numeric', hour12: true }, // split ???
-  a: { hour: 'numeric', hour12: true }, // split & lowercase ???
+  A: { type: 'dayPeriod', getValue: initGetValue({ hour: 'numeric', hour12: true }) }, // todo: split
+  a: { type: 'dayPeriod', getValue: initGetValue({ hour: 'numeric', hour12: true }) }, // todo: split & lowercase
   // Timezone
-  Z: null,
-  ZZ: null,
+  Z: { type: 'timeZoneName' },
+  ZZ: { type: 'timeZoneName' },
 };

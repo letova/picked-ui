@@ -16,7 +16,7 @@ export const DateField = ({ readOnly, onFocus, onBlur }: React.InputHTMLAttribut
     const selectionStart = inputRef.current!.selectionStart ?? 0;
 
     const nextSelectableSectionIndex = SELECTABLE_SECTIONS.findIndex(
-      (section) => selectionStart >= section.startIndex && selectionStart >= section.endIndex,
+      (section) => selectionStart >= section.startIndex && selectionStart <= section.endIndex,
     );
 
     setSelectableSectionIndex(nextSelectableSectionIndex === -1 ? 0 : nextSelectableSectionIndex);
