@@ -1,6 +1,6 @@
 export { convertCSToClassName } from './customStyles';
 export type { GetCSSObjectFn } from './customStyles';
-export { roundFractionDigits } from './number';
+export { roundFractionDigits, isNumeric } from './number';
 export { getElementFromSlot } from './slots';
 export { mapTree, forEachTree } from './tree';
 

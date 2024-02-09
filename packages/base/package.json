@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@emotion/css": "11.11.2",
+    "dayjs": "1.11.10",
     "lodash.merge": "4.6.2"
   },
   "peerDependencies": {
