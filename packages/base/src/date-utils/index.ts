@@ -7,7 +7,7 @@ import 'dayjs/locale/ru';
  */
 dayjs.locale('ru');
 
-export const format = (value: string | Date | undefined, token: string): string => {
+export const formatDate = (value: string | Date | undefined, token: string): string => {
   return dayjs(value).format(token);
 };
 

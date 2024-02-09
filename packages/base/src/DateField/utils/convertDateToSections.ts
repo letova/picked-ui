@@ -1,6 +1,5 @@
-import dayjs from 'dayjs';
-
 import { isNumeric } from '../../utils';
+import { formatDate } from '../../date-utils';
 
 import { TOKEN_TO_TYPE_MAP } from '../constants';
 import { DateFieldSection } from '../DateField.types';
@@ -15,18 +14,24 @@ export const convertDateToSections = (value: Date, format: string) => {
     const char = format[i];
     const { type } = TOKEN_TO_TYPE_MAP[char] || { type: 'literal' };
 
-    const finalizeSection = () => {
+    const pushSection = () => {
       if (!section) {
         return;
       }
 
       if (section.type !== 'literal') {
-        section.value = dayjs(value).format(section.token);
+        section.value = formatDate(value, section.token);
 
         if (isNumeric(section.value)) {
           section.contentType = 'numeric';
         }
 
+        /**
+         * The number of characters in the value is not always equal
+         * to the number of characters in the token
+         *
+         * For example: MMMM --> February
+         */
         if (section.token.length !== section.value.length) {
           const offset = section.value.length - section.token.length;
           section.endIndex = section.endIndex + offset;
@@ -40,12 +45,17 @@ export const convertDateToSections = (value: Date, format: string) => {
       section = undefined;
     };
 
-    // Section change
+    /**
+     * Section change
+     * @todo Add case handling with format without separators: MMDD-YYYY
+     */
     if (section && section.type !== type) {
-      finalizeSection();
+      pushSection();
     }
 
-    // Empty section
+    /**
+     * Section init
+     */
     if (!section) {
       section = {
         type,
@@ -62,8 +72,11 @@ export const convertDateToSections = (value: Date, format: string) => {
     section.token = `${section.token}${char}`;
     section.endIndex = i + indexOffset + 1;
 
+    /**
+     * Last char
+     */
     if (i === format.length - 1) {
-      finalizeSection();
+      pushSection();
     }
   }
 
