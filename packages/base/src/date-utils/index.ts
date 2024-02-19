@@ -23,6 +23,18 @@ export const getDaysInMonth = (value: string | Date | undefined): number => {
  * SET
  */
 
+export const setYear = (value: string | Date | undefined, year: number): Date => {
+  return dayjs(value).year(year).toDate();
+};
+
+export const setMonth = (value: string | Date | undefined, month: number): Date => {
+  return dayjs(value).month(month).toDate();
+};
+
+export const setDate = (value: string | Date | undefined, date: number): Date => {
+  return dayjs(value).date(date).toDate();
+};
+
 export const setHour = (value: string | Date | undefined, hour: number): Date => {
   return dayjs(value).hour(hour).toDate();
 };
@@ -35,7 +47,7 @@ export const setSecond = (value: string | Date | undefined, second: number): Dat
   return dayjs(value).second(second).toDate();
 };
 
-export const setMilisecond = (value: string | Date | undefined, millisecond: number): Date => {
+export const setMillisecond = (value: string | Date | undefined, millisecond: number): Date => {
   return dayjs(value).millisecond(millisecond).toDate();
 };
 
