@@ -10,7 +10,8 @@
     "lint": "eslint --ignore-path .gitignore .",
     "prepare": "husky install",
     "storybook": "storybook dev -p 6006",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint"
