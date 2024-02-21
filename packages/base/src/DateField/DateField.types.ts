@@ -1,18 +1,7 @@
-export type DateFieldSectionTypes =
-  | 'year'
-  | 'month'
-  | 'day'
-  | 'weekday'
-  | 'hour'
-  | 'minute'
-  | 'second'
-  | 'fractionalSecond'
-  | 'dayPeriod'
-  | 'timeZoneName'
-  | 'literal';
+import { DateTokenTypes } from '../date-utils';
 
 export interface DateFieldSection {
-  type: DateFieldSectionTypes;
+  type: DateTokenTypes | 'literal';
   value: string;
   token: string;
   contentType: 'text' | 'numeric';
@@ -22,6 +11,8 @@ export interface DateFieldSection {
 
 export interface DateFieldProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'> {
   value: Date;
+  maxValue?: Date;
+  minValue?: Date;
   format?: string;
   onChange?: (date?: Date) => void;
 }

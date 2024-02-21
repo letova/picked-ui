@@ -2,6 +2,17 @@ import dayjs from 'dayjs';
 
 import 'dayjs/locale/ru';
 
+export type DateTokenTypes =
+  | 'year'
+  | 'month'
+  | 'day'
+  | 'weekday'
+  | 'hour'
+  | 'minute'
+  | 'second'
+  | 'fractionalSecond'
+  | 'dayPeriod';
+
 /**
  * @todo set locale dynamically
  */

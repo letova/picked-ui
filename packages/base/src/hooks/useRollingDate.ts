@@ -1,44 +1,41 @@
 import {
+  DateTokenTypes,
   addDay,
   addMonth,
   addYear,
-  setDate,
   setHour,
   setMillisecond,
   setMinute,
-  setMonth,
   setSecond,
-  setYear,
   subtractDay,
   subtractMonth,
   subtractYear,
-} from '../../date-utils';
+} from '../date-utils';
 
-import { DateFieldSectionTypes } from '../DateField.types';
-
-interface DateFieldAction {
-  type?: DateFieldSectionTypes;
-  payload?: number;
+interface RollingDateAction {
+  type: DateTokenTypes;
 }
 
-interface DateFieldActionsOptions {
-  min?: Date;
-  max?: Date;
-}
-
-interface DateFieldActionsParams {
+interface RollingDateActionParams {
   value?: Date;
-  options?: DateFieldActionsOptions;
+  minValue?: Date;
+  maxValue?: Date;
   onChange?: (date: Date | undefined) => void;
 }
 
-export const useDateFieldActions = ({ value, onChange }: DateFieldActionsParams) => {
-  const increment = (action: DateFieldAction) => {
+/**
+ * @todo add incrementToMax | decrementToMin fn-s
+ */
+export const useRollingDate = ({ value, minValue, maxValue, onChange }: RollingDateActionParams) => {
+  /**
+   * @todo move the functions outside the hook
+   */
+  const increment = (action: RollingDateAction) => {
     if (!value) {
       return;
     }
 
-    let nextDate: Date = new Date(value);
+    let nextDate: Date = value;
 
     if (action.type === 'year') {
       nextDate = addYear(nextDate);
@@ -77,15 +74,17 @@ export const useDateFieldActions = ({ value, onChange }: DateFieldActionsParams)
       nextDate = setMillisecond(nextDate, miliseconds + 1 > 999 ? 0 : miliseconds + 1);
     }
 
-    onChange?.(nextDate);
+    if (!maxValue || nextDate.getTime() <= maxValue.getTime()) {
+      onChange?.(nextDate);
+    }
   };
 
-  const decrement = (action: DateFieldAction) => {
+  const decrement = (action: RollingDateAction) => {
     if (!value) {
       return;
     }
 
-    let nextDate: Date = new Date(value);
+    let nextDate: Date = value;
 
     if (action.type === 'year') {
       nextDate = subtractYear(nextDate);
@@ -124,65 +123,13 @@ export const useDateFieldActions = ({ value, onChange }: DateFieldActionsParams)
       nextDate = setMillisecond(nextDate, miliseconds - 1 < 0 ? 999 : miliseconds - 1);
     }
 
-    onChange?.(nextDate);
-  };
-
-  const incrementToMax = (action: DateFieldAction) => {
-    increment(action);
-  };
-
-  const decrementToMin = (action: DateFieldAction) => {
-    decrement(action);
-  };
-
-  const change = (action: DateFieldAction) => {
-    if (!value || action.payload === undefined) {
-      return;
+    if (!minValue || nextDate.getTime() >= minValue.getTime()) {
+      onChange?.(nextDate);
     }
-
-    let nextDate: Date = new Date(value);
-
-    if (action.type === 'year') {
-      nextDate = setYear(nextDate, action.payload);
-    }
-
-    if (action.type === 'month') {
-      nextDate = setMonth(nextDate, action.payload);
-    }
-
-    if (action.type === 'day') {
-      nextDate = setDate(nextDate, action.payload);
-    }
-
-    if (action.type === 'dayPeriod') {
-      const hours = nextDate.getHours();
-      nextDate = setHour(nextDate, hours > 11 ? hours - 12 : hours + 12);
-    }
-
-    if (action.type === 'hour') {
-      nextDate = setHour(nextDate, action.payload);
-    }
-
-    if (action.type === 'minute') {
-      nextDate = setMinute(nextDate, action.payload);
-    }
-
-    if (action.type === 'second') {
-      nextDate = setSecond(nextDate, action.payload);
-    }
-
-    if (action.type === 'fractionalSecond') {
-      nextDate = setMillisecond(nextDate, action.payload);
-    }
-
-    onChange?.(nextDate);
   };
 
   return {
     increment,
     decrement,
-    incrementToMax,
-    decrementToMin,
-    change,
   };
 };
