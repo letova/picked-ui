@@ -11,7 +11,8 @@ export type DateTokenTypes =
   | 'minute'
   | 'second'
   | 'fractionalSecond'
-  | 'dayPeriod';
+  | 'dayPeriod'
+  | 'timeZone';
 
 /**
  * @todo set locale dynamically

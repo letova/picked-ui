@@ -12,5 +12,5 @@ export const TOKEN_TO_TYPE_MAP: Record<string, { type: DateTokenTypes }> = {
   S: { type: 'fractionalSecond' },
   A: { type: 'dayPeriod' },
   a: { type: 'dayPeriod' },
-  // Z: { type: 'timeZoneName' },
+  Z: { type: 'timeZone' },
 };
