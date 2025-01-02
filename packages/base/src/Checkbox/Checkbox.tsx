@@ -49,7 +49,7 @@ export const Checkbox = forwardRef(
     };
 
     const iconElement = getElementFromSlot(slots?.icon, {
-      className: 'Checkbox-icon',
+      className: cx('Checkbox-icon', convertCSToClassName(cs?.icon, state)),
       ...state,
     });
 

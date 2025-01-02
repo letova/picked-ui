@@ -13,7 +13,6 @@ export const getClassName = ({ scale: s = 1 }: CheckboxProps) => {
 };
 
 export const getCS = ({ scale: s = 1, cs }: CheckboxProps): CheckboxProps['cs'] => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return deepMergeCS(
     {
       icon: {

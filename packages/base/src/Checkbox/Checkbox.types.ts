@@ -5,6 +5,7 @@ export interface CheckboxCS {
   inputContainer?: CSSObject;
   input?: CSSObject;
   label?: CSSObject;
+  icon?: CSSObject;
 }
 
 type TopLevelInputHTMLAttributes =

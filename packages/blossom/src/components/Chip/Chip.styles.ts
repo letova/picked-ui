@@ -1,4 +1,4 @@
-import { css } from '@emotion/css';
+import { css, CSSObject } from '@emotion/css';
 
 import { deepMergeCS, getPxSize } from '../../utils';
 
@@ -80,7 +80,7 @@ export const getClassName = ({
   `;
 };
 
-const BUTTON_CS = {
+const BUTTON_CS: CSSObject = {
   position: 'absolute',
   zIndex: 0,
   inset: 0,
@@ -90,14 +90,13 @@ const BUTTON_CS = {
   background: 'transparent',
 };
 
-const LABEL_TEX_OVERFLOW_CS = {
+const LABEL_TEX_OVERFLOW_CS: CSSObject = {
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
   overflow: 'hidden',
 };
 
 export const getCS = ({ maxWidth, cs }: ChipProps): ChipProps['cs'] => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return deepMergeCS(
     {
       action: BUTTON_CS,
