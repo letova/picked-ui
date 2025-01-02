@@ -39,7 +39,8 @@ export interface CheckboxProps extends PickedInputHTMLAttributes {
   >;
   cs?: CheckboxCS;
   /**
-   * Additional third state known as partially checked
+   * Additional third state known as partially checked.
+   * This does not set the native input element to indeterminate.
    */
   indeterminate?: boolean;
 }
