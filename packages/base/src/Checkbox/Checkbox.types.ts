@@ -2,6 +2,8 @@ import { CSSObject } from '@emotion/css';
 
 export interface CheckboxCS {
   container?: CSSObject;
+  inputContainer?: CSSObject;
+  input?: CSSObject;
   label?: CSSObject;
 }
 
@@ -37,6 +39,13 @@ export interface CheckboxProps extends PickedInputHTMLAttributes {
     React.InputHTMLAttributes<HTMLInputElement>,
     TopLevelInputHTMLAttributes | 'type'
   >;
+  /**
+   * Slots
+   */
+  slots?: {
+    icon?: { component: React.ElementType<any>; props?: Record<string, unknown> };
+    label?: { component: React.ElementType<any>; props?: Record<string, unknown> };
+  };
   cs?: CheckboxCS;
   /**
    * Additional third state known as partially checked.

@@ -2,7 +2,7 @@ import { cx } from '@emotion/css';
 import React, { ForwardedRef, forwardRef, useEffect, useId, useRef, useState } from 'react';
 
 import { useForkRef } from '../hooks';
-import { convertCSToClassName, isNil } from '../utils';
+import { convertCSToClassName, getElementFromSlot, isNil } from '../utils';
 
 import { CheckboxProps } from './Checkbox.types';
 
@@ -15,6 +15,7 @@ export const Checkbox = forwardRef(
       value,
       label,
       inputProps,
+      slots,
       cs,
       indeterminate = false,
       checked: userChecked,
@@ -39,6 +40,27 @@ export const Checkbox = forwardRef(
     const [hasFocus, setHasFocus] = useState<boolean>(false);
 
     const checked = isNil(userChecked) ? ownerChecked : userChecked;
+
+    const state = {
+      focus: hasFocus,
+      indeterminate,
+      checked,
+      disabled,
+    };
+
+    const iconElement = getElementFromSlot(slots?.icon, {
+      className: 'Checkbox-icon',
+      ...state,
+    });
+
+    const labelElement = label
+      ? getElementFromSlot(slots?.label || { component: 'label' }, {
+          className: cx('Checkbox-label', convertCSToClassName(cs?.label, state)),
+          children: label,
+          htmlFor: id,
+          ...state,
+        })
+      : null;
 
     useEffect(() => {
       if (autoFocus) {
@@ -66,13 +88,6 @@ export const Checkbox = forwardRef(
       onBlur?.(event);
     };
 
-    const state = {
-      focus: hasFocus,
-      indeterminate,
-      checked,
-      disabled,
-    };
-
     return (
       <span
         ref={ref}
@@ -88,10 +103,13 @@ export const Checkbox = forwardRef(
           className,
         )}
       >
-        <span>
+        <span className={cx('Checkbox-inputContainer', convertCSToClassName(cs?.inputContainer, state))}>
           <input
+            {...restInputProps}
             ref={handleInputRef}
             id={id}
+            className={cx('Checkbox-input', convertCSToClassName(cs?.input, state))}
+            type="checkbox"
             name={name}
             value={value}
             checked={checked}
@@ -100,23 +118,10 @@ export const Checkbox = forwardRef(
             onChange={handleChange}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            {...restInputProps}
-            type="checkbox"
           />
-          <span
-            className={cx('Checkbox-customInput', {
-              'Checkbox-customInput--focus': hasFocus,
-              'Checkbox-customInput--indeterminate': indeterminate,
-              'Checkbox-customInput--checked': checked,
-              'Checkbox-customInput--disabled': disabled,
-            })}
-          />
+          {iconElement}
         </span>
-        {label ? (
-          <label htmlFor={id} className={cx('Checkbox-label', convertCSToClassName(cs?.label, state))}>
-            {label}
-          </label>
-        ) : null}
+        {labelElement}
       </span>
     );
   },

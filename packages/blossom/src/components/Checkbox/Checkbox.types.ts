@@ -1,6 +1,8 @@
 import { CSSObject } from '@emotion/css';
 import { CheckboxProps as BaseCheckboxProps } from '@picked-ui/base';
 
+export type CheckboxIconProps = Pick<BaseCheckboxProps, 'className' | 'checked' | 'indeterminate'>;
+
 export interface CheckboxProps extends BaseCheckboxProps {
   checkedIcon?: React.ReactNode;
   color?: 'base' | 'neutral' | 'danger' | 'success' | 'warning';
