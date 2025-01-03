@@ -3,6 +3,7 @@ import { ForwardedRef, forwardRef } from 'react';
 import { Checkbox as BaseCheckbox } from '@picked-ui/base';
 
 import { Check } from '../../iconComponents/Check';
+import { Remove } from '../../iconComponents/Remove';
 
 import { CheckboxIconProps, CheckboxProps } from './Checkbox.types';
 import { getClassName, getCS } from './Checkbox.styles';
@@ -13,7 +14,7 @@ const CheckboxIcon = ({ className, checked, indeterminate }: CheckboxIconProps) 
   }
 
   if (indeterminate) {
-    return <span>X</span>;
+    return <Remove className={className} />;
   }
 
   return null;

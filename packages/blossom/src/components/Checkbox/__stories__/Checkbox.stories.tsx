@@ -20,3 +20,10 @@ export const Base: Story = {
     label: 'Label',
   },
 };
+
+export const Indeterminate: Story = {
+  args: {
+    label: 'Label',
+    indeterminate: true,
+  },
+};
