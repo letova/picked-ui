@@ -27,3 +27,16 @@ export const Indeterminate: Story = {
     indeterminate: true,
   },
 };
+
+export const Colors: Story = {
+  render: () => {
+    return (
+      <div style={{ display: 'flex', gap: '16px' }}>
+        {['primary', 'secondary', 'success', 'warning', 'danger'].map((color) => (
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          <Checkbox key={color} color={color as any} label={color} defaultChecked />
+        ))}
+      </div>
+    );
+  },
+};

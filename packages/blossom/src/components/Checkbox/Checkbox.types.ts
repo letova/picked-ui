@@ -5,7 +5,7 @@ export type CheckboxIconProps = Pick<BaseCheckboxProps, 'className' | 'checked' 
 
 export interface CheckboxProps extends BaseCheckboxProps {
   checkedIcon?: React.ReactNode;
-  color?: 'base' | 'neutral' | 'danger' | 'success' | 'warning';
+  color?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning';
   customCss?: CSSObject;
   indeterminateIcon?: React.ReactNode;
   scale?: number;

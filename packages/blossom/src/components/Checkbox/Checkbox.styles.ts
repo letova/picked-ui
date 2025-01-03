@@ -1,12 +1,13 @@
 import { css } from '@emotion/css';
 
 import { deepMergeCS, getPxSize } from '../../utils';
+import { OUTLINED_PALETTE_MAP, SOLID_PALETTE_MAP } from './Checkbox.palettes';
 
 import { CheckboxProps } from './Checkbox.types';
 
 const SIZES_MAP = {
   xs: {
-    boxSize: 14,
+    boxSize: 12,
     fontSize: 12,
   },
   s: {
@@ -23,15 +24,24 @@ export const getClassName = ({ scale: s = 1 }: CheckboxProps) => {
   return css`
     display: flex;
     align-items: center;
-    gap: ${getPxSize(6, s)};
+    gap: ${getPxSize(8, s)};
     font-family: 'Arial', sans-serif;
     font-weight: 400;
     font-size: ${getPxSize(14, s)};
   `;
 };
 
-export const getCS = ({ scale: s = 1, size = 's', cs }: CheckboxProps): CheckboxProps['cs'] => {
+export const getCS = ({
+  variant = 'solid',
+  scale: s = 1,
+  size = 's',
+  color = 'primary',
+  cs,
+}: CheckboxProps): CheckboxProps['cs'] => {
   const sizes = SIZES_MAP[size];
+
+  const paletteSource = variant === 'solid' ? SOLID_PALETTE_MAP : OUTLINED_PALETTE_MAP;
+  const palette = paletteSource[color];
 
   return deepMergeCS(
     {
@@ -40,8 +50,9 @@ export const getCS = ({ scale: s = 1, size = 's', cs }: CheckboxProps): Checkbox
         display: 'block',
         width: getPxSize(sizes.boxSize, s),
         height: getPxSize(sizes.boxSize, s),
-        border: `${getPxSize(1, s)} solid lightgray`,
+        border: `${getPxSize(1, s)} solid ${palette.border.normal}`,
         borderRadius: getPxSize(3, s),
+        background: palette.bg.normal,
       },
       input: {
         position: 'absolute',
@@ -51,6 +62,7 @@ export const getCS = ({ scale: s = 1, size = 's', cs }: CheckboxProps): Checkbox
       icon: {
         width: getPxSize(sizes.boxSize, s),
         height: getPxSize(sizes.boxSize, s),
+        fill: palette.text.normal,
       },
       label: {
         fontSize: getPxSize(sizes.fontSize, s),
