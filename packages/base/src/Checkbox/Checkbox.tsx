@@ -23,6 +23,7 @@ export const Checkbox = forwardRef(
       disabled = false,
       autoFocus,
       onChange,
+      onValueChange,
       onFocus,
       onBlur,
     }: CheckboxProps,
@@ -81,6 +82,7 @@ export const Checkbox = forwardRef(
       }
 
       onChange?.(event);
+      onValueChange?.(value);
     };
 
     return (

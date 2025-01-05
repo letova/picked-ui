@@ -28,15 +28,30 @@ export const Indeterminate: Story = {
   },
 };
 
+const COLORS = ['primary', 'secondary', 'success', 'warning', 'danger'] as const;
+
 export const Colors: Story = {
   render: () => {
+    const containerStyle = { display: 'flex', gap: '16px', paddingBottom: '16px' };
+
     return (
-      <div style={{ display: 'flex', gap: '16px' }}>
-        {['primary', 'secondary', 'success', 'warning', 'danger'].map((color) => (
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          <Checkbox key={color} color={color as any} label={color} defaultChecked />
-        ))}
-      </div>
+      <>
+        <div style={containerStyle}>
+          {COLORS.map((color) => (
+            <Checkbox key={color} variant="soft" color={color} label={color} defaultChecked />
+          ))}
+        </div>
+        <div style={containerStyle}>
+          {COLORS.map((color) => (
+            <Checkbox key={color} color={color} label={color} defaultChecked />
+          ))}
+        </div>
+        <div style={containerStyle}>
+          {COLORS.map((color) => (
+            <Checkbox key={color} variant="outlined" color={color} label={color} defaultChecked />
+          ))}
+        </div>
+      </>
     );
   },
 };

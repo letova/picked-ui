@@ -1,26 +1,4 @@
-enum Colors {
-  White = '#fff',
-  Black = '#000',
-  Nobel = '#b4b4b4',
-  GraniteGray = '#666666',
-  MineShaft = '#323232',
-  Seagull = '#6ec7eb',
-  Shakespeare = '#61b1d0',
-  MaximumBlue = '#3ba6d0',
-  Allports = '#0d75a0',
-  MediumAquamarine = '#6bed9d',
-  VeryLightMalachiteGreen = '#63db91',
-  UFOGreen = '#38dc74',
-  PantoneGreen = '#06b845',
-  Jasmine = '#ffe080',
-  Kournikova = '#ffd673',
-  BrightSun = '#ffc840',
-  UCLAGold = '#feb603',
-  LightSalmon = '#ff9e73',
-  Salmon = '#ff8b73',
-  Tomato = '#ff6240',
-  FerrariRed = '#ff2b00',
-}
+import { Colors } from '../../constants';
 
 const WHITE_UNIT = {
   normal: Colors.White,
@@ -68,6 +46,34 @@ const RED_UNIT = {
   normal: Colors.Tomato,
   hover: Colors.Salmon,
   active: Colors.FerrariRed,
+};
+
+export const SOFT_PALETTE_MAP = {
+  primary: {
+    text: WHITE_UNIT,
+    bg: BLUE_UNIT,
+    border: TRANSPARENT_UNIT,
+  },
+  secondary: {
+    text: WHITE_UNIT,
+    bg: GRAY_UNIT,
+    border: TRANSPARENT_UNIT,
+  },
+  success: {
+    text: BLACK_UNIT,
+    bg: GREEN_UNIT,
+    border: TRANSPARENT_UNIT,
+  },
+  warning: {
+    text: BLACK_UNIT,
+    bg: YELLOW_UNIT,
+    border: TRANSPARENT_UNIT,
+  },
+  danger: {
+    text: BLACK_UNIT,
+    bg: RED_UNIT,
+    border: TRANSPARENT_UNIT,
+  },
 };
 
 export const SOLID_PALETTE_MAP = {
@@ -126,30 +132,8 @@ export const OUTLINED_PALETTE_MAP = {
   },
 };
 
-export const SOFT_PALETTE_MAP = {
-  primary: {
-    text: WHITE_UNIT,
-    bg: BLUE_UNIT,
-    border: TRANSPARENT_UNIT,
-  },
-  secondary: {
-    text: WHITE_UNIT,
-    bg: GRAY_UNIT,
-    border: TRANSPARENT_UNIT,
-  },
-  success: {
-    text: BLACK_UNIT,
-    bg: GREEN_UNIT,
-    border: TRANSPARENT_UNIT,
-  },
-  warning: {
-    text: BLACK_UNIT,
-    bg: YELLOW_UNIT,
-    border: TRANSPARENT_UNIT,
-  },
-  danger: {
-    text: BLACK_UNIT,
-    bg: RED_UNIT,
-    border: TRANSPARENT_UNIT,
-  },
+export const VARIANT_PALETTE_MAP = {
+  soft: SOFT_PALETTE_MAP,
+  solid: SOLID_PALETTE_MAP,
+  outlined: OUTLINED_PALETTE_MAP,
 };

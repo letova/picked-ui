@@ -1,8 +1,6 @@
-import { css } from '@emotion/css';
-
 import { deepMergeCS, getPxSize } from '../../utils';
 
-import { OUTLINED_PALETTE_MAP, SOLID_PALETTE_MAP } from './Checkbox.palettes';
+import { VARIANT_PALETTE_MAP } from './Checkbox.palettes';
 import { CheckboxProps } from './Checkbox.types';
 
 const SIZES_MAP = {
@@ -20,17 +18,6 @@ const SIZES_MAP = {
   },
 };
 
-export const getClassName = ({ scale: s = 1 }: CheckboxProps) => {
-  return css`
-    display: flex;
-    align-items: center;
-    gap: ${getPxSize(8, s)};
-    font-family: 'Arial', sans-serif;
-    font-weight: 400;
-    font-size: ${getPxSize(14, s)};
-  `;
-};
-
 export const getCS = ({
   variant = 'solid',
   scale: s = 1,
@@ -40,25 +27,44 @@ export const getCS = ({
 }: CheckboxProps): CheckboxProps['cs'] => {
   const sizes = SIZES_MAP[size];
 
-  const paletteSource = variant === 'solid' ? SOLID_PALETTE_MAP : OUTLINED_PALETTE_MAP;
-  const palette = paletteSource[color];
+  const paletteMap = VARIANT_PALETTE_MAP[variant];
+  const palette = paletteMap[color];
 
   return deepMergeCS(
     {
-      inputContainer: ({ checked, focusVisible }) => ({
+      container: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: getPxSize(8, s),
+        fontFamily: `'Arial', sans-serif`,
+        fontWeight: 400,
+        fontSize: getPxSize(14, s),
+      },
+      inputContainer: ({ focusVisible }) => ({
         flexShrink: 0,
         display: 'block',
         width: getPxSize(sizes.boxSize, s),
         height: getPxSize(sizes.boxSize, s),
         border: `${getPxSize(1, s)} solid ${palette.border.normal}`,
         borderRadius: getPxSize(3, s),
-        backgroundColor: checked ? palette.bg.normal : 'transparent',
+        backgroundColor: palette.bg.normal,
+
+        '&:hover': {
+          backgroundColor: palette.bg.hover,
+        },
+
+        '&:active': {
+          backgroundColor: palette.bg.active,
+        },
+
         ...(focusVisible ? { outline: `${getPxSize(2, s)} solid ${palette.bg.normal}` } : undefined),
       }),
       input: {
         position: 'absolute',
+        margin: 0,
         backgroundColor: 'transparent',
         opacity: 0,
+        cursor: 'pointer',
       },
       icon: {
         width: getPxSize(sizes.boxSize, s),

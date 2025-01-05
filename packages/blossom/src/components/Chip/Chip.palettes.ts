@@ -1,26 +1,4 @@
-enum Colors {
-  White = '#fff',
-  Black = '#000',
-  Nobel = '#b4b4b4',
-  GraniteGray = '#666666',
-  MineShaft = '#323232',
-  Seagull = '#6ec7eb',
-  Shakespeare = '#61b1d0',
-  MaximumBlue = '#3ba6d0',
-  Allports = '#0d75a0',
-  MediumAquamarine = '#6bed9d',
-  VeryLightMalachiteGreen = '#63db91',
-  UFOGreen = '#38dc74',
-  PantoneGreen = '#06b845',
-  Jasmine = '#ffe080',
-  Kournikova = '#ffd673',
-  BrightSun = '#ffc840',
-  UCLAGold = '#feb603',
-  LightSalmon = '#ff9e73',
-  Salmon = '#ff8b73',
-  Tomato = '#ff6240',
-  FerrariRed = '#ff2b00',
-}
+import { Colors } from '../../constants';
 
 const WHITE_UNIT = {
   normal: Colors.White,

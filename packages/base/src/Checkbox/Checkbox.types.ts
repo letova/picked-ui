@@ -55,4 +55,8 @@ export interface CheckboxProps extends PickedInputHTMLAttributes {
    * This does not set the native input element to indeterminate.
    */
   indeterminate?: boolean;
+  /**
+   * Provides the checked value as a callback's argument
+   */
+  onValueChange?: (checked: boolean) => void;
 }
