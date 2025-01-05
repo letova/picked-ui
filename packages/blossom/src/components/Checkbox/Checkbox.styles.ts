@@ -1,8 +1,8 @@
 import { css } from '@emotion/css';
 
 import { deepMergeCS, getPxSize } from '../../utils';
-import { OUTLINED_PALETTE_MAP, SOLID_PALETTE_MAP } from './Checkbox.palettes';
 
+import { OUTLINED_PALETTE_MAP, SOLID_PALETTE_MAP } from './Checkbox.palettes';
 import { CheckboxProps } from './Checkbox.types';
 
 const SIZES_MAP = {
@@ -45,15 +45,16 @@ export const getCS = ({
 
   return deepMergeCS(
     {
-      inputContainer: {
+      inputContainer: ({ checked, focusVisible }) => ({
         flexShrink: 0,
         display: 'block',
         width: getPxSize(sizes.boxSize, s),
         height: getPxSize(sizes.boxSize, s),
         border: `${getPxSize(1, s)} solid ${palette.border.normal}`,
         borderRadius: getPxSize(3, s),
-        background: palette.bg.normal,
-      },
+        backgroundColor: checked ? palette.bg.normal : 'transparent',
+        ...(focusVisible ? { outline: `${getPxSize(2, s)} solid ${palette.bg.normal}` } : undefined),
+      }),
       input: {
         position: 'absolute',
         backgroundColor: 'transparent',

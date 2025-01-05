@@ -1,7 +1,7 @@
 import { cx } from '@emotion/css';
 import React, { ForwardedRef, forwardRef, useEffect, useId, useRef, useState } from 'react';
 
-import { useForkRef } from '../hooks';
+import { useFocus, useForkRef } from '../hooks';
 import { convertCSToClassName, getElementFromSlot, isNil } from '../utils';
 
 import { CheckboxProps } from './Checkbox.types';
@@ -37,12 +37,17 @@ export const Checkbox = forwardRef(
     const handleInputRef = useForkRef(inputRef, ownerInputRef);
 
     const [ownerChecked, setOwnerChecked] = useState(defaultChecked ?? false);
-    const [hasFocus, setHasFocus] = useState<boolean>(false);
+
+    const { hasFocus, hasFocusVisible, ...focusCallbacks } = useFocus({
+      onFocus,
+      onBlur,
+    });
 
     const checked = isNil(userChecked) ? ownerChecked : userChecked;
 
     const state = {
       focus: hasFocus,
+      focusVisible: hasFocusVisible,
       indeterminate,
       checked,
       disabled,
@@ -78,16 +83,6 @@ export const Checkbox = forwardRef(
       onChange?.(event);
     };
 
-    const handleFocus: React.FocusEventHandler<HTMLInputElement> = (event) => {
-      setHasFocus(true);
-      onFocus?.(event);
-    };
-
-    const handleBlur: React.FocusEventHandler<HTMLInputElement> = (event) => {
-      setHasFocus(false);
-      onBlur?.(event);
-    };
-
     return (
       <span
         ref={ref}
@@ -95,6 +90,7 @@ export const Checkbox = forwardRef(
           'Checkbox',
           {
             'Checkbox--focus': hasFocus,
+            'Checkbox--focusVisible': hasFocusVisible,
             'Checkbox--indeterminate': indeterminate,
             'Checkbox--checked': checked,
             'Checkbox--disabled': disabled,
@@ -116,8 +112,7 @@ export const Checkbox = forwardRef(
             defaultChecked={defaultChecked}
             disabled={disabled}
             onChange={handleChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
+            {...focusCallbacks}
           />
           {iconElement}
         </span>

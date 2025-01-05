@@ -1,11 +1,13 @@
 import { CSSObject } from '@emotion/css';
 
+import { GetCSSObjectFn } from '../utils';
+
 export interface CheckboxCS {
-  container?: CSSObject;
-  inputContainer?: CSSObject;
-  input?: CSSObject;
-  label?: CSSObject;
-  icon?: CSSObject;
+  container?: CSSObject | GetCSSObjectFn;
+  inputContainer?: CSSObject | GetCSSObjectFn;
+  input?: CSSObject | GetCSSObjectFn;
+  label?: CSSObject | GetCSSObjectFn;
+  icon?: CSSObject | GetCSSObjectFn;
 }
 
 type TopLevelInputHTMLAttributes =
