@@ -1,4 +1,5 @@
 import { deepMergeCS, getPxSize } from '../../utils';
+import { Colors } from '../../constants';
 
 import { VARIANT_PALETTE_MAP } from './Checkbox.palettes';
 import { CheckboxProps } from './Checkbox.types';
@@ -57,7 +58,9 @@ export const getCS = ({
           backgroundColor: palette.bg.active,
         },
 
-        ...(focusVisible ? { outline: `${getPxSize(2, s)} solid ${palette.bg.normal}` } : undefined),
+        ...(focusVisible
+          ? { outline: `${getPxSize(2, s)} solid ${Colors.ScienceBlue}`, outlineOffset: getPxSize(2, s) }
+          : undefined),
       }),
       input: {
         position: 'absolute',

@@ -8,6 +8,7 @@ export enum Colors {
   Shakespeare = '#61b1d0',
   MaximumBlue = '#3ba6d0',
   Allports = '#0d75a0',
+  ScienceBlue = '#0c6bcc',
   MediumAquamarine = '#6bed9d',
   VeryLightMalachiteGreen = '#63db91',
   UFOGreen = '#38dc74',

@@ -21,10 +21,23 @@ export const Base: Story = {
   },
 };
 
-export const Indeterminate: Story = {
+export const States: Story = {
+  render: () => {
+    const containerStyle = { display: 'flex', gap: '16px' };
+
+    return (
+      <div style={containerStyle}>
+        <Checkbox label="Unchecked" />
+        <Checkbox label="Checked" defaultChecked />
+        <Checkbox label="Indeterminate" indeterminate />
+        <Checkbox label="Disabled" disabled />
+        <Checkbox label="Disabled checked" disabled defaultChecked />
+        <Checkbox label="Disabled indeterminate" disabled indeterminate />
+      </div>
+    );
+  },
   args: {
     label: 'Label',
-    indeterminate: true,
   },
 };
 
@@ -52,6 +65,22 @@ export const Colors: Story = {
           ))}
         </div>
       </>
+    );
+  },
+};
+
+const SIZES = ['xs', 's', 'm'] as const;
+
+export const Sizes: Story = {
+  render: () => {
+    const containerStyle = { display: 'flex', gap: '32px' };
+
+    return (
+      <div style={containerStyle}>
+        {SIZES.map((size) => (
+          <Checkbox key={size} variant="soft" size={size} label="Label" defaultChecked />
+        ))}
+      </div>
     );
   },
 };
