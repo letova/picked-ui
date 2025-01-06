@@ -5,6 +5,7 @@ import { GetCSSObjectFn } from '../utils';
 export interface CheckboxCS {
   container?: CSSObject | GetCSSObjectFn;
   inputContainer?: CSSObject | GetCSSObjectFn;
+  action?: CSSObject | GetCSSObjectFn;
   input?: CSSObject | GetCSSObjectFn;
   label?: CSSObject | GetCSSObjectFn;
   icon?: CSSObject | GetCSSObjectFn;

@@ -19,6 +19,8 @@ const SIZES_MAP = {
   },
 };
 
+const IC_BORDER_SIZE = 1;
+
 export const getCS = ({
   variant = 'solid',
   scale: s = 1,
@@ -34,6 +36,7 @@ export const getCS = ({
   return deepMergeCS(
     {
       container: {
+        position: 'relative',
         display: 'flex',
         alignItems: 'center',
         gap: getPxSize(8, s),
@@ -46,7 +49,7 @@ export const getCS = ({
         display: 'block',
         width: getPxSize(sizes.boxSize, s),
         height: getPxSize(sizes.boxSize, s),
-        border: `${getPxSize(1, s)} solid ${palette.border.normal}`,
+        border: `${getPxSize(IC_BORDER_SIZE, s)} solid ${palette.border.normal}`,
         borderRadius: getPxSize(3, s),
         backgroundColor: palette.bg.normal,
 
@@ -62,9 +65,17 @@ export const getCS = ({
           ? { outline: `${getPxSize(2, s)} solid ${Colors.ScienceBlue}`, outlineOffset: getPxSize(2, s) }
           : undefined),
       }),
-      input: {
+      action: {
         position: 'absolute',
+        top: getPxSize(-IC_BORDER_SIZE, s),
+        left: getPxSize(-IC_BORDER_SIZE, s),
+        width: `calc(100% + ${getPxSize(IC_BORDER_SIZE, s)})`,
+        height: `calc(100% + ${getPxSize(IC_BORDER_SIZE, s)})`,
+      },
+      input: {
         margin: 0,
+        width: '100%',
+        height: '100%',
         backgroundColor: 'transparent',
         opacity: 0,
         cursor: 'pointer',

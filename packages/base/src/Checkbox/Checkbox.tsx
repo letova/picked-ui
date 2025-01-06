@@ -91,31 +91,33 @@ export const Checkbox = forwardRef(
         className={cx(
           'Checkbox',
           {
+            'Checkbox--checked': checked,
+            'Checkbox--disabled': disabled,
             'Checkbox--focus': hasFocus,
             'Checkbox--focusVisible': hasFocusVisible,
             'Checkbox--indeterminate': indeterminate,
-            'Checkbox--checked': checked,
-            'Checkbox--disabled': disabled,
           },
           convertCSToClassName(cs?.container, state),
           className,
         )}
       >
         <span className={cx('Checkbox-inputContainer', convertCSToClassName(cs?.inputContainer, state))}>
-          <input
-            {...restInputProps}
-            ref={handleInputRef}
-            id={id}
-            className={cx('Checkbox-input', convertCSToClassName(cs?.input, state))}
-            type="checkbox"
-            name={name}
-            value={value}
-            checked={checked}
-            defaultChecked={defaultChecked}
-            disabled={disabled}
-            onChange={handleChange}
-            {...focusCallbacks}
-          />
+          <span className={cx('Checkbox-action', convertCSToClassName(cs?.action, state))}>
+            <input
+              {...restInputProps}
+              ref={handleInputRef}
+              id={id}
+              className={cx('Checkbox-input', convertCSToClassName(cs?.input, state))}
+              type="checkbox"
+              name={name}
+              value={value}
+              checked={checked}
+              defaultChecked={defaultChecked}
+              disabled={disabled}
+              onChange={handleChange}
+              {...focusCallbacks}
+            />
+          </span>
           {iconElement}
         </span>
         {labelElement}

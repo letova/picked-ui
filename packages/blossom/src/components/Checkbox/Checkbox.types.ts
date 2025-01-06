@@ -16,6 +16,7 @@ export interface CheckboxProps extends BaseCheckboxProps {
   checkedIcon?: React.ReactNode;
   color?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning';
   disableIcon?: React.ReactNode;
+  focusWrap?: 'input' | 'full';
   indeterminateIcon?: React.ReactNode;
   scale?: number;
   size?: 'xs' | 's' | 'm';
