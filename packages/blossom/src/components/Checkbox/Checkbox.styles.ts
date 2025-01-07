@@ -1,7 +1,7 @@
 import { deepMergeCS, getPxSize } from '../../utils';
 import { Colors } from '../../constants';
 
-import { VARIANT_PALETTE_MAP } from './Checkbox.palettes';
+import { VARIANT_PALETTE_FOR_DISABLED_MAP, VARIANT_PALETTE_MAP } from './Checkbox.palettes';
 import { CheckboxProps } from './Checkbox.types';
 
 const SIZES_MAP = {
@@ -32,6 +32,7 @@ export const getCS = ({
 
   const paletteMap = VARIANT_PALETTE_MAP[variant];
   const palette = paletteMap[color];
+  const disabledPalette = VARIANT_PALETTE_FOR_DISABLED_MAP[variant];
 
   return deepMergeCS(
     {
@@ -40,25 +41,31 @@ export const getCS = ({
         display: 'flex',
         alignItems: 'center',
         gap: getPxSize(8, s),
+        boxSizing: 'border-box',
         fontFamily: `'Arial', sans-serif`,
         fontWeight: 400,
         fontSize: getPxSize(14, s),
+        '& *': {
+          boxSizing: 'inherit',
+        },
       },
-      inputContainer: ({ focusVisible }) => ({
+      inputContainer: ({ disabled, focusVisible }) => ({
         flexShrink: 0,
-        display: 'block',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         width: getPxSize(sizes.boxSize, s),
         height: getPxSize(sizes.boxSize, s),
-        border: `${getPxSize(IC_BORDER_SIZE, s)} solid ${palette.border.normal}`,
+        border: `${getPxSize(IC_BORDER_SIZE, s)} solid ${disabled ? disabledPalette.border : palette.border.normal}`,
         borderRadius: getPxSize(3, s),
-        backgroundColor: palette.bg.normal,
+        backgroundColor: disabled ? disabledPalette.bg : palette.bg.normal,
 
         '&:hover': {
-          backgroundColor: palette.bg.hover,
+          backgroundColor: disabled ? disabledPalette.bg : palette.bg.hover,
         },
 
         '&:active': {
-          backgroundColor: palette.bg.active,
+          backgroundColor: disabled ? disabledPalette.bg : palette.bg.active,
         },
 
         ...(focusVisible
@@ -80,16 +87,17 @@ export const getCS = ({
         opacity: 0,
         cursor: 'pointer',
       },
-      icon: {
+      icon: ({ disabled }) => ({
         width: getPxSize(sizes.boxSize, s),
         height: getPxSize(sizes.boxSize, s),
-        fill: palette.text.normal,
-      },
-      label: {
+        fill: disabled ? disabledPalette.text : palette.text.normal,
+      }),
+      label: ({ disabled }) => ({
         fontSize: getPxSize(sizes.fontSize, s),
         fontWeight: 400,
+        color: disabled ? Colors.Nobel : Colors.Black,
         // text-size-adjust: 100%, ???
-      },
+      }),
     },
     cs,
   );

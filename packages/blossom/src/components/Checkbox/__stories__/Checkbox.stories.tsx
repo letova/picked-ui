@@ -78,7 +78,7 @@ export const Sizes: Story = {
     return (
       <div style={containerStyle}>
         {SIZES.map((size) => (
-          <Checkbox key={size} variant="soft" size={size} label="Label" defaultChecked />
+          <Checkbox key={size} size={size} label="Label" defaultChecked />
         ))}
       </div>
     );
