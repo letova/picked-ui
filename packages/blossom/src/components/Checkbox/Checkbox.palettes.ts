@@ -141,7 +141,7 @@ export const OUTLINED_PALETTE_MAP = {
     bg: TRANSPARENT_UNIT,
     border: BLUE_UNIT,
   },
-  secondary: {
+  neutral: {
     text: GRAY_UNIT,
     bg: TRANSPARENT_UNIT,
     border: GRAY_UNIT,

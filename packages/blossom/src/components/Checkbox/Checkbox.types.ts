@@ -21,7 +21,7 @@ export interface CheckboxProps extends BaseCheckboxProps {
    * The color of the component
    * @default primary
    */
-  color?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning';
+  color?: 'primary' | 'neutral' | 'danger' | 'success' | 'warning';
   /**
    * The icon when disabled is true
    */
