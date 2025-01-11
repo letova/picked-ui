@@ -60,12 +60,15 @@ export const Checkbox = forwardRef(
     });
 
     const labelElement = label
-      ? getElementFromSlot(slots?.label || { component: 'label' }, {
-          className: cx('Checkbox-label', convertCSToClassName(cs?.label, state)),
-          children: label,
-          htmlFor: id,
-          ...state,
-        })
+      ? getElementFromSlot(
+          { component: 'label', ...slots?.label },
+          {
+            className: cx('Checkbox-label', convertCSToClassName(cs?.label, state)),
+            children: label,
+            htmlFor: id,
+            ...state,
+          },
+        )
       : null;
 
     useEffect(() => {

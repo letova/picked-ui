@@ -1,14 +1,12 @@
-import { CSSObject } from '@emotion/css';
-
-import { GetCSSObjectFn } from '../utils';
+import { CustomStyle, Slot } from '../types';
 
 export interface SwitchCS {
-  container?: CSSObject | GetCSSObjectFn;
-  action?: CSSObject | GetCSSObjectFn;
-  input?: CSSObject | GetCSSObjectFn;
-  label?: CSSObject | GetCSSObjectFn;
-  track?: CSSObject | GetCSSObjectFn;
-  thumb?: CSSObject | GetCSSObjectFn;
+  container?: CustomStyle;
+  action?: CustomStyle;
+  input?: CustomStyle;
+  label?: CustomStyle;
+  track?: CustomStyle;
+  thumb?: CustomStyle;
 }
 
 type TopLevelInputHTMLAttributes =
@@ -47,7 +45,8 @@ export interface SwitchProps extends PickedInputHTMLAttributes {
    * Slots
    */
   slots?: {
-    label?: { component: React.ElementType<any>; props?: Record<string, unknown> };
+    track?: Slot;
+    label?: Partial<Slot>;
   };
   cs?: SwitchCS;
   /**

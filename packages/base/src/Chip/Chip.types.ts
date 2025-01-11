@@ -1,5 +1,7 @@
 import { CSSObject } from '@emotion/css';
 
+import { Slot } from '../types';
+
 export interface ChipCS {
   container?: CSSObject;
   action?: CSSObject;
@@ -12,8 +14,8 @@ export interface ChipProps {
   slots?: {
     // TODO sep23: add slot - example: { as: 'a'; props: { href: '#as-link' } };
     // action?: { ... };
-    startDecorator?: { component: React.ElementType<any>; props: Record<string, unknown> };
-    endDecorator?: { component: React.ElementType<any>; props: Record<string, unknown> };
+    startDecorator?: Slot;
+    endDecorator?: Slot;
   };
   cs?: ChipCS;
   disabled?: boolean;

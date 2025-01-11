@@ -1,14 +1,12 @@
-import { CSSObject } from '@emotion/css';
-
-import { GetCSSObjectFn } from '../utils';
+import { CustomStyle, Slot } from '../types';
 
 export interface CheckboxCS {
-  container?: CSSObject | GetCSSObjectFn;
-  inputContainer?: CSSObject | GetCSSObjectFn;
-  action?: CSSObject | GetCSSObjectFn;
-  input?: CSSObject | GetCSSObjectFn;
-  label?: CSSObject | GetCSSObjectFn;
-  icon?: CSSObject | GetCSSObjectFn;
+  container?: CustomStyle;
+  inputContainer?: CustomStyle;
+  action?: CustomStyle;
+  input?: CustomStyle;
+  label?: CustomStyle;
+  icon?: CustomStyle;
 }
 
 type TopLevelInputHTMLAttributes =
@@ -47,8 +45,8 @@ export interface CheckboxProps extends PickedInputHTMLAttributes {
    * Slots
    */
   slots?: {
-    icon?: { component: React.ElementType<any>; props?: Record<string, unknown> };
-    label?: { component: React.ElementType<any>; props?: Record<string, unknown> };
+    icon?: Slot;
+    label?: Partial<Slot>;
   };
   cs?: CheckboxCS;
   /**
