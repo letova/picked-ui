@@ -85,7 +85,7 @@ export const SOFT_PALETTE_MAP = {
     bg: SOFT_BLUE_UNIT,
     border: TRANSPARENT_UNIT,
   },
-  secondary: {
+  neutral: {
     text: WHITE_UNIT,
     bg: SOFT_GRAY_UNIT,
     border: TRANSPARENT_UNIT,
@@ -113,7 +113,7 @@ export const SOLID_PALETTE_MAP = {
     bg: BLUE_UNIT,
     border: TRANSPARENT_UNIT,
   },
-  secondary: {
+  neutral: {
     text: WHITE_UNIT,
     bg: GRAY_UNIT,
     border: TRANSPARENT_UNIT,

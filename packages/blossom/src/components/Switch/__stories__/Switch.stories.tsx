@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Checkbox } from '../index';
+import { Switch } from '../index';
 
 const meta = {
-  title: 'Components/Checkbox',
-  component: Checkbox,
+  title: 'Components/Switch',
+  component: Switch,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
-} satisfies Meta<typeof Checkbox>;
+} satisfies Meta<typeof Switch>;
 
 export default meta;
 
@@ -27,12 +27,10 @@ export const States: Story = {
 
     return (
       <div style={containerStyle}>
-        <Checkbox label="Unchecked" />
-        <Checkbox label="Checked" defaultChecked />
-        <Checkbox label="Indeterminate" indeterminate />
-        <Checkbox label="Disabled" disabled />
-        <Checkbox label="Disabled checked" disabled defaultChecked />
-        <Checkbox label="Disabled indeterminate" disabled indeterminate />
+        <Switch label="Unchecked" />
+        <Switch label="Checked" defaultChecked />
+        <Switch label="Disabled" disabled />
+        <Switch label="Disabled checked" disabled defaultChecked />
       </div>
     );
   },
@@ -51,17 +49,17 @@ export const Colors: Story = {
       <>
         <div style={containerStyle}>
           {COLORS.map((color) => (
-            <Checkbox key={color} variant="soft" color={color} label={color} defaultChecked />
+            <Switch key={color} variant="soft" color={color} label={color} defaultChecked />
           ))}
         </div>
         <div style={containerStyle}>
           {COLORS.map((color) => (
-            <Checkbox key={color} color={color} label={color} defaultChecked />
+            <Switch key={color} color={color} label={color} defaultChecked />
           ))}
         </div>
         <div style={containerStyle}>
           {COLORS.map((color) => (
-            <Checkbox key={color} variant="outlined" color={color} label={color} defaultChecked />
+            <Switch key={color} variant="outlined" color={color} label={color} defaultChecked />
           ))}
         </div>
       </>
@@ -78,7 +76,7 @@ export const Sizes: Story = {
     return (
       <div style={containerStyle}>
         {SIZES.map((size) => (
-          <Checkbox key={size} size={size} label="Label" defaultChecked />
+          <Switch key={size} size={size} label="Label" defaultChecked />
         ))}
       </div>
     );
