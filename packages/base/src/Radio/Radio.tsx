@@ -1,7 +1,7 @@
 import { cx } from '@emotion/css';
-import React, { ForwardedRef, forwardRef, useId, useRef, useState } from 'react';
+import React, { ForwardedRef, forwardRef, useId, useState } from 'react';
 
-import { useFocus, useForkRef } from '../hooks';
+import { useFocus } from '../hooks';
 import { convertCSToClassName, getElementFromSlot, isNil } from '../utils';
 
 import { RadioProps } from './Radio.types';
@@ -32,9 +32,6 @@ export const Radio = forwardRef(
 
     const ownerId = useId();
     const id = userId ?? ownerId;
-
-    const ownerInputRef = useRef<HTMLInputElement>(null);
-    const handleInputRef = useForkRef(inputRef, ownerInputRef);
 
     const [ownerChecked, setOwnerChecked] = useState(defaultChecked ?? false);
 
@@ -99,7 +96,7 @@ export const Radio = forwardRef(
           <span className={cx('Radio-action', convertCSToClassName(cs?.action, state))}>
             <input
               {...restInputProps}
-              ref={handleInputRef}
+              ref={inputRef}
               id={id}
               className={cx('Radio-input', convertCSToClassName(cs?.input, state))}
               type="radio"

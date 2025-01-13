@@ -1,7 +1,7 @@
 import { cx } from '@emotion/css';
-import React, { ForwardedRef, forwardRef, useEffect, useId, useRef, useState } from 'react';
+import React, { ForwardedRef, forwardRef, useId, useState } from 'react';
 
-import { useFocus, useForkRef } from '../hooks';
+import { useFocus } from '../hooks';
 import { convertCSToClassName, getElementFromSlot, isNil } from '../utils';
 
 import { CheckboxProps } from './Checkbox.types';
@@ -33,9 +33,6 @@ export const Checkbox = forwardRef(
 
     const ownerId = useId();
     const id = userId ?? ownerId;
-
-    const ownerInputRef = useRef<HTMLInputElement>(null);
-    const handleInputRef = useForkRef(inputRef, ownerInputRef);
 
     const [ownerChecked, setOwnerChecked] = useState(defaultChecked ?? false);
 
@@ -71,12 +68,6 @@ export const Checkbox = forwardRef(
         )
       : null;
 
-    useEffect(() => {
-      if (autoFocus) {
-        ownerInputRef.current?.focus();
-      }
-    }, [autoFocus]);
-
     const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
       const value = event.target.checked;
 
@@ -108,7 +99,7 @@ export const Checkbox = forwardRef(
           <span className={cx('Checkbox-action', convertCSToClassName(cs?.action, state))}>
             <input
               {...restInputProps}
-              ref={handleInputRef}
+              ref={inputRef}
               id={id}
               className={cx('Checkbox-input', convertCSToClassName(cs?.input, state))}
               type="checkbox"
@@ -117,6 +108,7 @@ export const Checkbox = forwardRef(
               checked={checked}
               defaultChecked={defaultChecked}
               disabled={disabled}
+              autoFocus={autoFocus}
               onChange={handleChange}
               {...focusCallbacks}
             />
