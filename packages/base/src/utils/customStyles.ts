@@ -1,8 +1,8 @@
-import { CSSObject, css } from '@emotion/css';
+import { css } from '@emotion/css';
 
-export type GetCSSObjectFn = (state: Record<string, any>) => CSSObject;
+import { CustomStyle } from '../types';
 
-export const convertCSToClassName = (cs: CSSObject | GetCSSObjectFn | undefined, state: Record<string, any> = {}) => {
+export const convertCSToClassName = (cs: CustomStyle | undefined, state: Record<string, any> = {}) => {
   if (!cs) {
     return null;
   }

@@ -1,3 +1,5 @@
+import { Slot } from '../types';
+
 type OmitedButtonHTMLAttributes = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'ref'>;
 
 export interface ButtonProps extends OmitedButtonHTMLAttributes {
@@ -5,8 +7,8 @@ export interface ButtonProps extends OmitedButtonHTMLAttributes {
   startDecorator?: React.ReactElement | string | number;
   endDecorator?: React.ReactElement | string | number;
   slots?: {
-    startDecorator?: { component: React.ElementType<any>; props?: Record<string, unknown> };
-    endDecorator?: { component: React.ElementType<any>; props?: Record<string, unknown> };
+    startDecorator?: Slot;
+    endDecorator?: Slot;
   };
   highlighted?: boolean;
 }

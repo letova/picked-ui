@@ -93,8 +93,8 @@ export const Switch = forwardRef(
           className,
         )}
       >
-        <span className="Switch-track">
-          <span className="Switch-thumb" />
+        <span className={cx('Switch-track', convertCSToClassName(cs?.track, state))}>
+          <span className={cx('Switch-thumb', convertCSToClassName(cs?.thumb, state))} />
         </span>
         <span className={cx('Switch-action', convertCSToClassName(cs?.action, state))}>
           <input

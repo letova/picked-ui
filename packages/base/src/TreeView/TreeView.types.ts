@@ -1,16 +1,16 @@
 import { RefObject } from 'react';
 import { CSSObject } from '@emotion/css';
 
-import { GetCSSObjectFn } from '../utils';
+import { CustomStyle, Slot } from '../types';
 
 export interface TreeViewCS {
   container?: CSSObject;
   noDataView?: CSSObject;
   group?: CSSObject;
-  treeItem?: CSSObject | GetCSSObjectFn;
+  treeItem?: CustomStyle;
   content?: CSSObject;
-  expandButton?: CSSObject | GetCSSObjectFn;
-  label?: CSSObject | GetCSSObjectFn;
+  expandButton?: CustomStyle;
+  label?: CustomStyle;
 }
 
 export interface TreeViewNodeMatchResult {
@@ -68,8 +68,8 @@ export interface TreeViewProps {
    * Slots
    */
   slots?: {
-    labelStartDecorator?: { component: React.ElementType<any>; props?: Record<string, unknown> };
-    labelEndDecorator?: { component: React.ElementType<any>; props?: Record<string, unknown> };
+    labelStartDecorator?: Slot;
+    labelEndDecorator?: Slot;
   };
   /**
    * Custom styles object

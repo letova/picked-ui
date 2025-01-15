@@ -4,9 +4,9 @@ import React, { ForwardedRef, forwardRef, useId, useState } from 'react';
 import { useFocus } from '../hooks';
 import { convertCSToClassName, getElementFromSlot, isNil } from '../utils';
 
-import { CheckboxProps } from './Checkbox.types';
+import { RadioProps } from './Radio.types';
 
-export const Checkbox = forwardRef(
+export const Radio = forwardRef(
   (
     {
       className,
@@ -17,7 +17,6 @@ export const Checkbox = forwardRef(
       inputProps,
       slots,
       cs,
-      indeterminate = false,
       checked: userChecked,
       defaultChecked,
       disabled = false,
@@ -26,7 +25,7 @@ export const Checkbox = forwardRef(
       onValueChange,
       onFocus,
       onBlur,
-    }: CheckboxProps,
+    }: RadioProps,
     ref: ForwardedRef<HTMLSpanElement>,
   ) => {
     const { ref: inputRef, ...restInputProps } = inputProps || {};
@@ -46,13 +45,12 @@ export const Checkbox = forwardRef(
     const state = {
       focus: hasFocus,
       focusVisible: hasFocusVisible,
-      indeterminate,
       checked,
       disabled,
     };
 
     const iconElement = getElementFromSlot(slots?.icon, {
-      className: cx('Checkbox-icon', convertCSToClassName(cs?.icon, state)),
+      className: cx('Radio-icon', convertCSToClassName(cs?.icon, state)),
       ...state,
     });
 
@@ -60,7 +58,7 @@ export const Checkbox = forwardRef(
       ? getElementFromSlot(
           { component: 'label', ...slots?.label },
           {
-            className: cx('Checkbox-label', convertCSToClassName(cs?.label, state)),
+            className: cx('Radio-label', convertCSToClassName(cs?.label, state)),
             children: label,
             htmlFor: id,
             ...state,
@@ -83,26 +81,25 @@ export const Checkbox = forwardRef(
       <span
         ref={ref}
         className={cx(
-          'Checkbox',
+          'Radio',
           {
-            'Checkbox--checked': checked,
-            'Checkbox--disabled': disabled,
-            'Checkbox--focus': hasFocus,
-            'Checkbox--focusVisible': hasFocusVisible,
-            'Checkbox--indeterminate': indeterminate,
+            'Radio--checked': checked,
+            'Radio--disabled': disabled,
+            'Radio--focus': hasFocus,
+            'Radio--focusVisible': hasFocusVisible,
           },
           convertCSToClassName(cs?.container, state),
           className,
         )}
       >
-        <span className={cx('Checkbox-inputContainer', convertCSToClassName(cs?.inputContainer, state))}>
-          <span className={cx('Checkbox-action', convertCSToClassName(cs?.action, state))}>
+        <span className={cx('Radio-inputContainer', convertCSToClassName(cs?.inputContainer, state))}>
+          <span className={cx('Radio-action', convertCSToClassName(cs?.action, state))}>
             <input
               {...restInputProps}
               ref={inputRef}
               id={id}
-              className={cx('Checkbox-input', convertCSToClassName(cs?.input, state))}
-              type="checkbox"
+              className={cx('Radio-input', convertCSToClassName(cs?.input, state))}
+              type="radio"
               name={name}
               value={value}
               checked={checked}

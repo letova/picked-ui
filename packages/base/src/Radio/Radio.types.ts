@@ -1,12 +1,12 @@
 import { CustomStyle, Slot } from '../types';
 
-export interface SwitchCS {
+export interface RadioCS {
   container?: CustomStyle;
+  inputContainer?: CustomStyle;
   action?: CustomStyle;
   input?: CustomStyle;
   label?: CustomStyle;
-  track?: CustomStyle;
-  thumb?: CustomStyle;
+  icon?: CustomStyle;
 }
 
 type TopLevelInputHTMLAttributes =
@@ -25,13 +25,13 @@ type TopLevelInputHTMLAttributes =
 
 type PickedInputHTMLAttributes = Pick<React.InputHTMLAttributes<HTMLInputElement>, TopLevelInputHTMLAttributes>;
 
-export interface SwitchProps extends PickedInputHTMLAttributes {
+export interface RadioProps extends PickedInputHTMLAttributes {
   /**
    * Class name applied to the root element
    */
   className?: string;
   /**
-   * The label element of the switch
+   * The label element of the checkbox
    */
   label?: React.ReactNode;
   /**
@@ -45,10 +45,10 @@ export interface SwitchProps extends PickedInputHTMLAttributes {
    * Slots
    */
   slots?: {
-    track?: Slot;
+    icon?: Slot;
     label?: Partial<Slot>;
   };
-  cs?: SwitchCS;
+  cs?: RadioCS;
   /**
    * Provides the checked value as a callback's argument
    */
