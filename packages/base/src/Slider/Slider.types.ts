@@ -1,5 +1,7 @@
 import React, { ReactNode } from "react";
 
+import { Slot } from "../types";
+
 export interface Mark {
   label?: ReactNode;
   value: number;
@@ -54,6 +56,14 @@ export interface SliderProps extends PickedInputHTMLAttributes {
    * @default 'horizontal'
    */
   orientation?: Orientation;
+  /** Slots */
+  slots?: {
+    rail?: Slot;
+    track?: Slot;
+    mark?: Slot;
+    thumb?: Slot;
+    input?: Slot;
+  };
   /**
    * The default value of the slider for not controlled component.
    */
