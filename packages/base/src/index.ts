@@ -5,5 +5,6 @@ export * from './ChipList';
 export * from './Heading';
 export * from './Listbox';
 export * from './Paper';
+export * from './Radio';
 export * from './Switch';
 export * from './TreeView';
