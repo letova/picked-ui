@@ -1,3 +1,4 @@
+export { ClassNameGenerator } from './classNameGenerator';
 export { convertCSToClassName } from './customStyles';
 export { roundFractionDigits, isNumeric } from './number';
 export { getElementFromSlot } from './slots';
