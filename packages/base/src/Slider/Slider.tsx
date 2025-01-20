@@ -4,7 +4,6 @@ import { cx } from '@emotion/css';
 import { getElementFromSlot } from "../utils";
 
 import { SliderProps } from "./Slider.types";
-import { filterMarksByAllowedRange } from "./utils/filterMarksByAllowedRange";
 
 export const Slider = forwardRef(
   (
