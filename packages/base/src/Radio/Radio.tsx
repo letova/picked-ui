@@ -2,9 +2,14 @@ import { cx } from '@emotion/css';
 import React, { ForwardedRef, forwardRef, useId, useState } from 'react';
 
 import { useFocus } from '../hooks';
-import { convertCSToClassName, getElementFromSlot, isNil } from '../utils';
+import { ClassNameGenerator, convertCSToClassName, getElementFromSlot, isNil } from '../utils';
 
 import { RadioProps } from './Radio.types';
+
+const getCN = (element?: string, modificator?: string) =>
+  ClassNameGenerator.generate({ block: 'Radio', element, modificator });
+
+const getMCN = (modificator?: string) => ClassNameGenerator.generate({ block: 'Radio', modificator });
 
 export const Radio = forwardRef(
   (
@@ -50,7 +55,7 @@ export const Radio = forwardRef(
     };
 
     const iconElement = getElementFromSlot(slots?.icon, {
-      className: cx('Radio-icon', convertCSToClassName(cs?.icon, state)),
+      className: cx(getCN('icon'), convertCSToClassName(cs?.icon, state)),
       ...state,
     });
 
@@ -58,7 +63,7 @@ export const Radio = forwardRef(
       ? getElementFromSlot(
           { component: 'label', ...slots?.label },
           {
-            className: cx('Radio-label', convertCSToClassName(cs?.label, state)),
+            className: cx(getCN('label'), convertCSToClassName(cs?.label, state)),
             children: label,
             htmlFor: id,
             ...state,
@@ -81,24 +86,24 @@ export const Radio = forwardRef(
       <span
         ref={ref}
         className={cx(
-          'Radio',
+          getCN(),
           {
-            'Radio--checked': checked,
-            'Radio--disabled': disabled,
-            'Radio--focus': hasFocus,
-            'Radio--focusVisible': hasFocusVisible,
+            [getMCN('checked')]: checked,
+            [getMCN('disabled')]: disabled,
+            [getMCN('focus')]: hasFocus,
+            [getMCN('focusVisible')]: hasFocusVisible,
           },
           convertCSToClassName(cs?.container, state),
           className,
         )}
       >
-        <span className={cx('Radio-inputContainer', convertCSToClassName(cs?.inputContainer, state))}>
-          <span className={cx('Radio-action', convertCSToClassName(cs?.action, state))}>
+        <span className={cx(getCN('inputContainer'), convertCSToClassName(cs?.inputContainer, state))}>
+          <span className={cx(getCN('action'), convertCSToClassName(cs?.action, state))}>
             <input
               {...restInputProps}
               ref={inputRef}
               id={id}
-              className={cx('Radio-input', convertCSToClassName(cs?.input, state))}
+              className={cx(getCN('input'), convertCSToClassName(cs?.input, state))}
               type="radio"
               name={name}
               value={value}
