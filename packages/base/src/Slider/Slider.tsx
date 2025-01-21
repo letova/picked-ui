@@ -4,6 +4,7 @@ import { cx } from '@emotion/css';
 import { getElementFromSlot } from "../utils";
 
 import { SliderProps } from "./Slider.types";
+import { useSlider } from "./utils/useSlider";
 
 export const Slider = forwardRef(
   (
@@ -11,7 +12,7 @@ export const Slider = forwardRef(
       className,
       min = 0,
       max = 100,
-      marks = false,
+      marks: userMarks = false,
       step = 1,
       orientation = 'horizontal',
       slots = {},
@@ -69,6 +70,15 @@ export const Slider = forwardRef(
       }
     );
 
+    const {
+      marks,
+    } = useSlider({
+      min,
+      max,
+      step,
+      marks: userMarks,
+    });
+
     return (
       <span
         ref={ref}
@@ -82,13 +92,13 @@ export const Slider = forwardRef(
       >
         {railElement}
         {trackElement}
-        {/* {filterMarksByAllowedRange(marks, min, marks).map((_, index) => {
+        {marks.map((_, index: number) => {
           return (
             <Fragment key={index}>
 
             </Fragment>
           );
-        })} */}
+        })}
       </span>
     );
   },
