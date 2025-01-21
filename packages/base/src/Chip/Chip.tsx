@@ -1,9 +1,14 @@
 import { css, cx } from '@emotion/css';
 import { ForwardedRef, forwardRef, useId } from 'react';
 
-import { convertCSToClassName, getElementFromSlot } from '../utils';
+import { ClassNameGenerator, convertCSToClassName, getElementFromSlot } from '../utils';
 
 import { ChipProps } from './Chip.types';
+
+const getCN = (element?: string, modificator?: string) =>
+  ClassNameGenerator.generate({ block: 'Chip', element, modificator });
+
+const getMCN = (modificator?: string) => ClassNameGenerator.generate({ block: 'Chip', modificator });
 
 export const Chip = forwardRef(
   (
@@ -16,12 +21,12 @@ export const Chip = forwardRef(
     const { startDecorator, endDecorator } = slots;
 
     const startDecoratorElement = getElementFromSlot(startDecorator, {
-      className: 'Chip-startDecorator',
+      className: getCN('startDecorator'),
       disabled,
     });
 
     const endDecoratorElement = getElementFromSlot(endDecorator, {
-      className: 'Chip-endDecorator',
+      className: getCN('endDecorator'),
       disabled,
     });
 
@@ -29,9 +34,9 @@ export const Chip = forwardRef(
       <div
         ref={ref}
         className={cx(
-          'Chip',
+          getCN(),
           {
-            'Chip--disabled': disabled,
+            [getMCN('disabled')]: disabled,
             [css(cs?.container)]: Boolean(cs?.container),
           },
           className,
@@ -40,13 +45,13 @@ export const Chip = forwardRef(
       >
         {clickable && (
           <button
-            className={cx('Chip-action', convertCSToClassName(cs?.action, { disabled }))}
+            className={cx(getCN('action'), convertCSToClassName(cs?.action, { disabled }))}
             aria-labelledby={id}
             disabled={disabled}
             onClick={onClick}
           />
         )}
-        <span id={id} className={cx('Chip-label', convertCSToClassName(cs?.label, { disabled }))}>
+        <span id={id} className={cx(getCN('label'), convertCSToClassName(cs?.label, { disabled }))}>
           {children}
         </span>
         {startDecoratorElement}

@@ -1,8 +1,11 @@
 import { cx } from '@emotion/css';
 
-import { getMapFromStringList } from '../utils';
+import { ClassNameGenerator, getMapFromStringList } from '../utils';
 
 import { ListboxProps } from './Listbox.types';
+
+const getCN = (element?: string, modificator?: string) =>
+  ClassNameGenerator.generate({ block: 'Listbox', element, modificator });
 
 const Options = ({ mode = 'single-select', options, selectedIds = [], disabledIds = [], onChange }: ListboxProps) => {
   const selectedIdsMap = getMapFromStringList(selectedIds);
@@ -45,7 +48,7 @@ export const Listbox = (props: ListboxProps) => {
 
   if (grouped) {
     return (
-      <div className={cx('Listbox', className)} tabIndex={0} role="listbox" aria-labelledby={ariaLabelledBy}>
+      <div className={cx(getCN(), className)} tabIndex={0} role="listbox" aria-labelledby={ariaLabelledBy}>
         {options?.map((group) => {
           return (
             <ul role="group" aria-labelledby={group.id}>
@@ -61,7 +64,7 @@ export const Listbox = (props: ListboxProps) => {
   }
 
   return (
-    <ul className={cx('Listbox', className)} tabIndex={0} role="listbox" aria-labelledby={ariaLabelledBy}>
+    <ul className={cx(getCN(), className)} tabIndex={0} role="listbox" aria-labelledby={ariaLabelledBy}>
       <Options {...props} />
     </ul>
   );

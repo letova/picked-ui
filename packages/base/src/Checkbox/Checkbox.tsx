@@ -2,9 +2,14 @@ import { cx } from '@emotion/css';
 import React, { ForwardedRef, forwardRef, useId, useState } from 'react';
 
 import { useFocus } from '../hooks';
-import { convertCSToClassName, getElementFromSlot, isNil } from '../utils';
+import { ClassNameGenerator, convertCSToClassName, getElementFromSlot, isNil } from '../utils';
 
 import { CheckboxProps } from './Checkbox.types';
+
+const getCN = (element?: string, modificator?: string) =>
+  ClassNameGenerator.generate({ block: 'Checkbox', element, modificator });
+
+const getMCN = (modificator?: string) => ClassNameGenerator.generate({ block: 'Checkbox', modificator });
 
 export const Checkbox = forwardRef(
   (
@@ -52,7 +57,7 @@ export const Checkbox = forwardRef(
     };
 
     const iconElement = getElementFromSlot(slots?.icon, {
-      className: cx('Checkbox-icon', convertCSToClassName(cs?.icon, state)),
+      className: cx(getCN('icon'), convertCSToClassName(cs?.icon, state)),
       ...state,
     });
 
@@ -60,7 +65,7 @@ export const Checkbox = forwardRef(
       ? getElementFromSlot(
           { component: 'label', ...slots?.label },
           {
-            className: cx('Checkbox-label', convertCSToClassName(cs?.label, state)),
+            className: cx(getCN('label'), convertCSToClassName(cs?.label, state)),
             children: label,
             htmlFor: id,
             ...state,
@@ -83,25 +88,25 @@ export const Checkbox = forwardRef(
       <span
         ref={ref}
         className={cx(
-          'Checkbox',
+          getCN(),
           {
-            'Checkbox--checked': checked,
-            'Checkbox--disabled': disabled,
-            'Checkbox--focus': hasFocus,
-            'Checkbox--focusVisible': hasFocusVisible,
-            'Checkbox--indeterminate': indeterminate,
+            [getMCN('checked')]: checked,
+            [getMCN('disabled')]: disabled,
+            [getMCN('focus')]: hasFocus,
+            [getMCN('focusVisible')]: hasFocusVisible,
+            [getMCN('indeterminate')]: indeterminate,
           },
           convertCSToClassName(cs?.container, state),
           className,
         )}
       >
-        <span className={cx('Checkbox-inputContainer', convertCSToClassName(cs?.inputContainer, state))}>
-          <span className={cx('Checkbox-action', convertCSToClassName(cs?.action, state))}>
+        <span className={cx(getCN('inputContainer'), convertCSToClassName(cs?.inputContainer, state))}>
+          <span className={cx(getCN('action'), convertCSToClassName(cs?.action, state))}>
             <input
               {...restInputProps}
               ref={inputRef}
               id={id}
-              className={cx('Checkbox-input', convertCSToClassName(cs?.input, state))}
+              className={cx(getCN('input'), convertCSToClassName(cs?.input, state))}
               type="checkbox"
               name={name}
               value={value}

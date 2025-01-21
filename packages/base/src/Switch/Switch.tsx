@@ -2,9 +2,14 @@ import { cx } from '@emotion/css';
 import { ForwardedRef, forwardRef, useEffect, useId, useRef, useState } from 'react';
 
 import { useFocus, useForkRef } from '../hooks';
-import { convertCSToClassName, getElementFromSlot, isNil } from '../utils';
+import { ClassNameGenerator, convertCSToClassName, getElementFromSlot, isNil } from '../utils';
 
 import { SwitchProps } from './Switch.types';
+
+const getCN = (element?: string, modificator?: string) =>
+  ClassNameGenerator.generate({ block: 'Switch', element, modificator });
+
+const getMCN = (modificator?: string) => ClassNameGenerator.generate({ block: 'Switch', modificator });
 
 export const Switch = forwardRef(
   (
@@ -54,7 +59,7 @@ export const Switch = forwardRef(
 
     const labelElement = label
       ? getElementFromSlot(slots?.label || { component: 'label' }, {
-          className: cx('Switch-label', convertCSToClassName(cs?.label, state)),
+          className: cx(getCN('label'), convertCSToClassName(cs?.label, state)),
           children: label,
           htmlFor: id,
           ...state,
@@ -82,26 +87,26 @@ export const Switch = forwardRef(
       <span
         ref={ref}
         className={cx(
-          'Switch',
+          getCN(),
           {
-            'Switch--checked': checked,
-            'Switch--disabled': disabled,
-            'Switch--focus': hasFocus,
-            'Switch--focusVisible': hasFocusVisible,
+            [getMCN('checked')]: checked,
+            [getMCN('disabled')]: disabled,
+            [getMCN('focus')]: hasFocus,
+            [getMCN('focusVisible')]: hasFocusVisible,
           },
           convertCSToClassName(cs?.container, state),
           className,
         )}
       >
-        <span className={cx('Switch-track', convertCSToClassName(cs?.track, state))}>
-          <span className={cx('Switch-thumb', convertCSToClassName(cs?.thumb, state))} />
+        <span className={cx(getCN('track'), convertCSToClassName(cs?.track, state))}>
+          <span className={cx(getCN('thumb'), convertCSToClassName(cs?.thumb, state))} />
         </span>
-        <span className={cx('Switch-action', convertCSToClassName(cs?.action, state))}>
+        <span className={cx(getCN('action'), convertCSToClassName(cs?.action, state))}>
           <input
             {...restInputProps}
             ref={handleInputRef}
             id={id}
-            className={cx('Switch-input', convertCSToClassName(cs?.input, state))}
+            className={cx(getCN('input'), convertCSToClassName(cs?.input, state))}
             role="switch"
             type="checkbox"
             name={name}

@@ -1,10 +1,13 @@
 import { ForwardedRef, forwardRef, useImperativeHandle, useState } from 'react';
 import { cx } from '@emotion/css';
 
-import { convertCSToClassName, getElementFromSlot } from '../utils';
+import { ClassNameGenerator, convertCSToClassName, getElementFromSlot } from '../utils';
 
 import { TreeContext, TreeViewNode, TreeViewProps, LoadingExpandButtonProps } from './TreeView.types';
 import { TreeInformation, useTreeInformation } from './useTreeInformation';
+
+const getCN = (element?: string, modificator?: string) =>
+  ClassNameGenerator.generate({ block: 'TreeView', element, modificator });
 
 const LoadingExpandButton = ({ className, node, expanded, onClick, onLoadData }: LoadingExpandButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -204,11 +207,11 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
   };
 
   return (
-    <div ref={ref} className={cx('TreeView', convertCSToClassName(cs?.container), className)}>
+    <div ref={ref} className={cx(getCN(), convertCSToClassName(cs?.container), className)}>
       {!data?.length ? (
-        <div className={cx('TreeView-noDataView', convertCSToClassName(cs?.noDataView))}>No data</div>
+        <div className={cx(getCN('noDataView'), convertCSToClassName(cs?.noDataView))}>No data</div>
       ) : (
-        <Group className="TreeView-group" data={data} context={context} />
+        <Group className={getCN('group')} data={data} context={context} />
       )}
     </div>
   );
