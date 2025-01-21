@@ -11,6 +11,7 @@ interface UseSliderParams {
 
 interface UseSliderReturnValue {
     marks: Mark[];
+    values: number[];
 }
 
 export const useSlider = ({
@@ -23,5 +24,6 @@ export const useSlider = ({
 
     return {
         marks,
+        values: [],
     }
 }

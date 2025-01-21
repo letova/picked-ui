@@ -3,7 +3,7 @@ import { cx } from '@emotion/css';
 
 import { getElementFromSlot } from "../utils";
 
-import { SliderProps } from "./Slider.types";
+import { Mark, SliderProps } from "./Slider.types";
 import { useSlider } from "./hooks/useSlider";
 import { getOffsetStyle, valueConverter } from "./utils";
 
@@ -41,28 +41,9 @@ export const Slider = forwardRef(
       }
     );
 
-    const thumbElement = getElementFromSlot(
-      {
-        component: 'span',
-        ...slots.thumb,
-      },
-      {
-        className: 'Slider-thumb',
-      }
-    );
-
-    const inputElement = getElementFromSlot(
-      {
-        component: 'input',
-        ...slots.input,
-      },
-      {
-        className: 'Slider-input',
-      }
-    );
-
     const {
       marks,
+      values,
     } = useSlider({
       min,
       max,
@@ -83,7 +64,7 @@ export const Slider = forwardRef(
       >
         {railElement}
         {trackElement}
-        {marks.map((mark, index: number) => {
+        {marks.map((mark: Mark, index: number) => {
           const percent = valueConverter.valueToPercent(mark.value, min, max);
           const style = getOffsetStyle(orientation, percent);
 
@@ -103,6 +84,39 @@ export const Slider = forwardRef(
               {markElement}
             </Fragment>
           );
+        })}
+        {values.map((val: number, index: number) => {
+          const percent = valueConverter.valueToPercent(val, min, max);
+          const style = getOffsetStyle(orientation, percent);
+
+          const inputElement = getElementFromSlot(
+            {
+              component: 'input',
+              ...slots.input,
+            },
+            {
+              className: 'Slider-input',
+              value: values[index],
+            }
+          );
+
+          const thumbWithInputElement = getElementFromSlot(
+            {
+              component: 'span',
+              ...slots.thumb,
+            },
+            {
+              className: 'Slider-thumb',
+              children: inputElement,
+              style: style
+            }
+          );
+
+          return (
+            <Fragment key={index}>
+              {thumbWithInputElement}
+            </Fragment>
+          )
         })}
       </span>
     );
