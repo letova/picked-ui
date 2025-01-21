@@ -4,7 +4,8 @@ import { cx } from '@emotion/css';
 import { getElementFromSlot } from "../utils";
 
 import { SliderProps } from "./Slider.types";
-import { useSlider } from "./utils/useSlider";
+import { useSlider } from "./hooks/useSlider";
+import { getOffsetStyle, valueConverter } from "./utils";
 
 export const Slider = forwardRef(
   (
@@ -37,16 +38,6 @@ export const Slider = forwardRef(
       },
       {
         className: 'Slider-track',
-      }
-    );
-
-    const markElement = getElementFromSlot(
-      {
-        component: 'span',
-        ...slots.mark
-      },
-      {
-        className: 'Slider-mark',
       }
     );
 
@@ -92,10 +83,24 @@ export const Slider = forwardRef(
       >
         {railElement}
         {trackElement}
-        {marks.map((_, index: number) => {
+        {marks.map((mark, index: number) => {
+          const percent = valueConverter.valueToPercent(mark.value, min, max);
+          const style = getOffsetStyle(orientation, percent);
+
+          const markElement = getElementFromSlot(
+            {
+              component: 'span',
+              ...slots.mark
+            },
+            {
+              className: 'Slider-mark',
+              style: style
+            }
+          );
+
           return (
             <Fragment key={index}>
-
+              {markElement}
             </Fragment>
           );
         })}

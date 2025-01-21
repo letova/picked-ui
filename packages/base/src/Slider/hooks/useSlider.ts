@@ -1,6 +1,6 @@
 import { Mark } from "../Slider.types";
 
-import { getMarksFromOptions } from "./marks";
+import { getMarksFromOptions } from "../utils";
 
 interface UseSliderParams {
     min: number;
