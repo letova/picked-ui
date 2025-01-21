@@ -7,7 +7,7 @@ export interface Mark {
   value: number;
 }
 
-type Orientation = 'horizontal' | 'vertical';
+export type Orientation = 'horizontal' | 'vertical';
 
 type TopLevelInputHTMLAttributes =
   | 'id'
