@@ -20,6 +20,8 @@ export const Switch = forwardRef(
       value,
       label,
       inputProps,
+      startDecorator,
+      endDecorator,
       slots,
       cs,
       checked: userChecked,
@@ -56,6 +58,16 @@ export const Switch = forwardRef(
       checked,
       disabled,
     };
+
+    const startDecoratorElement = getElementFromSlot(slots?.startDecorator, {
+      className: getCN('startDecorator'),
+      ...state,
+    });
+
+    const endDecoratorElement = getElementFromSlot(slots?.endDecorator, {
+      className: getCN('endDecorator'),
+      ...state,
+    });
 
     const labelElement = label
       ? getElementFromSlot(slots?.label || { component: 'label' }, {
@@ -98,6 +110,7 @@ export const Switch = forwardRef(
           className,
         )}
       >
+        {startDecoratorElement || startDecorator}
         <span className={cx(getCN('track'), convertCSToClassName(cs?.track, state))}>
           <span className={cx(getCN('thumb'), convertCSToClassName(cs?.thumb, state))} />
         </span>
@@ -118,6 +131,7 @@ export const Switch = forwardRef(
             {...focusCallbacks}
           />
         </span>
+        {endDecoratorElement || endDecorator}
         {labelElement}
       </span>
     );
