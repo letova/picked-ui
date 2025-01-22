@@ -89,32 +89,20 @@ export const Slider = forwardRef(
           const percent = valueConverter.valueToPercent(val, min, max);
           const style = getOffsetStyle(orientation, percent);
 
-          const inputElement = getElementFromSlot(
-            {
-              component: 'input',
-              ...slots.input,
-            },
-            {
-              className: 'Slider-input',
-              value: values[index],
-            }
-          );
-
-          const thumbWithInputElement = getElementFromSlot(
+          const thumbElement = getElementFromSlot(
             {
               component: 'span',
               ...slots.thumb,
             },
             {
               className: 'Slider-thumb',
-              children: inputElement,
               style: style
             }
           );
 
           return (
             <Fragment key={index}>
-              {thumbWithInputElement}
+              {thumbElement}
             </Fragment>
           )
         })}

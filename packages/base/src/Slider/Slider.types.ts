@@ -9,22 +9,8 @@ export interface Mark {
 
 export type Orientation = 'horizontal' | 'vertical';
 
-type TopLevelInputHTMLAttributes =
-  | 'id'
-  | 'name'
-  | 'checked'
-  | 'defaultChecked'
-  | 'disabled'
-  | 'readOnly'
-  | 'required'
-  | 'autoFocus'
-  | 'onChange'
-  | 'onFocus'
-  | 'onBlur';
 
-type PickedInputHTMLAttributes = Pick<React.InputHTMLAttributes<HTMLInputElement>, TopLevelInputHTMLAttributes>;
-
-export interface SliderProps extends PickedInputHTMLAttributes {
+export interface SliderProps {
   /**
   * Class name applied to the root element.
   */
@@ -56,14 +42,19 @@ export interface SliderProps extends PickedInputHTMLAttributes {
    * @default 'horizontal'
    */
   orientation?: Orientation;
-  /** Slots */
+  /** 
+   * Slots 
+   * */
   slots?: {
     rail?: Slot;
     track?: Slot;
     mark?: Slot;
     thumb?: Slot;
-    input?: Slot;
   };
+  /**
+   * Disabled slider
+   */
+  disabled: boolean;
   /**
    * The default value of the slider for not controlled component.
    */
