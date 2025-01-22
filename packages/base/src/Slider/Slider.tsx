@@ -61,6 +61,7 @@ export const Slider = forwardRef(
         ref={ref}
         className={cx(
           getCN(),
+          getMCN(orientation),
           {
             [getMCN('disabled')]: disabled,
           },
