@@ -1,11 +1,16 @@
 import { ForwardedRef, forwardRef, Fragment } from "react";
 import { cx } from '@emotion/css';
 
-import { getElementFromSlot } from "../utils";
+import { ClassNameGenerator, getElementFromSlot } from "../utils";
 
 import { Mark, SliderProps } from "./Slider.types";
 import { useSlider } from "./hooks/useSlider";
 import { getOffsetStyle, valueConverter } from "./utils";
+
+const getCN = (element?: string, modificator?: string) =>
+  ClassNameGenerator.generate({ block: 'Slider', element, modificator });
+
+const getMCN = (modificator?: string) => ClassNameGenerator.generate({ block: 'Slider', modificator });
 
 export const Slider = forwardRef(
   (
@@ -27,7 +32,7 @@ export const Slider = forwardRef(
         ...slots.rail
       },
       {
-        className: 'Slider-rail',
+        className: getCN('rail'),
       }
     );
 
@@ -37,7 +42,7 @@ export const Slider = forwardRef(
         ...slots.track
       },
       {
-        className: 'Slider-track',
+        className: getCN('track'),
       }
     );
 
@@ -55,9 +60,9 @@ export const Slider = forwardRef(
       <span
         ref={ref}
         className={cx(
-          'Slider',
+          getCN(),
           {
-            'Slider--disabled': disabled,
+            [getMCN('disabled')]: disabled,
           },
           className,
         )}
@@ -74,7 +79,7 @@ export const Slider = forwardRef(
               ...slots.mark
             },
             {
-              className: 'Slider-mark',
+              className: getCN('mark'),
               style: style
             }
           );
@@ -95,7 +100,7 @@ export const Slider = forwardRef(
               ...slots.thumb,
             },
             {
-              className: 'Slider-thumb',
+              className: getCN('thumb'),
               style: style
             }
           );
