@@ -5,16 +5,22 @@ import { SwitchProps } from './Switch.types';
 
 const SIZES_MAP = {
   xs: {
-    boxSize: 12,
-    fontSize: 12,
+    track: { width: 36, height: 20 },
+    thumb: 16,
+    gap: 6,
+    label: 12,
   },
   s: {
-    boxSize: 16,
-    fontSize: 14,
+    track: { width: 40, height: 22 },
+    thumb: 18,
+    gap: 8,
+    label: 14,
   },
   m: {
-    boxSize: 18,
-    fontSize: 16,
+    track: { width: 44, height: 24 },
+    thumb: 20,
+    gap: 10,
+    label: 16,
   },
 };
 
@@ -29,7 +35,7 @@ export const getCS = ({ scale: s = 1, size = 's', cs }: SwitchProps): SwitchProp
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
-        gap: getPxSize(8, s),
+        gap: getPxSize(sizes.gap, s),
         boxSizing: 'border-box',
         fontFamily: `'Arial', sans-serif`,
         fontWeight: 400,
@@ -40,16 +46,16 @@ export const getCS = ({ scale: s = 1, size = 's', cs }: SwitchProps): SwitchProp
       },
       track: {
         position: 'relative',
-        width: getPxSize(40, s),
-        height: getPxSize(24, s),
+        width: getPxSize(sizes.track.width, s),
+        height: getPxSize(sizes.track.height, s),
         borderRadius: getPxSize(18, s),
         background: 'lightgray',
       },
       thumb: ({ checked }) => ({
         position: 'absolute',
         top: '50%',
-        width: getPxSize(20, s),
-        height: getPxSize(20, s),
+        width: getPxSize(sizes.thumb, s),
+        height: getPxSize(sizes.thumb, s),
         background: 'white',
         pointerEvents: 'none',
         transition: `left 0.25s ease`,
@@ -73,7 +79,7 @@ export const getCS = ({ scale: s = 1, size = 's', cs }: SwitchProps): SwitchProp
         cursor: 'pointer',
       },
       label: ({ disabled }) => ({
-        fontSize: getPxSize(sizes.fontSize, s),
+        fontSize: getPxSize(sizes.label, s),
         fontWeight: 400,
         color: disabled ? Colors.Nobel : Colors.Black,
       }),
