@@ -47,7 +47,7 @@ export interface SwitchProps extends PickedInputHTMLAttributes {
    * Slots
    */
   slots?: {
-    track?: Slot;
+    trackContent?: Slot;
     label?: Partial<Slot>;
     startDecorator?: Slot;
     endDecorator?: Slot;

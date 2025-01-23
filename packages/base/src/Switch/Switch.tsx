@@ -69,6 +69,11 @@ export const Switch = forwardRef(
       ...state,
     });
 
+    const trackContentElement = getElementFromSlot(slots?.trackContent, {
+      className: cx(getCN('trackContent')),
+      ...state,
+    });
+
     const labelElement = label
       ? getElementFromSlot(slots?.label || { component: 'label' }, {
           className: cx(getCN('label'), convertCSToClassName(cs?.label, state)),
@@ -112,6 +117,7 @@ export const Switch = forwardRef(
       >
         {startDecoratorElement || startDecorator}
         <span className={cx(getCN('track'), convertCSToClassName(cs?.track, state))}>
+          {trackContentElement}
           <span className={cx(getCN('thumb'), convertCSToClassName(cs?.thumb, state))} />
         </span>
         <span className={cx(getCN('action'), convertCSToClassName(cs?.action, state))}>

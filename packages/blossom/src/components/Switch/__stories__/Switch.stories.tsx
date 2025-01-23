@@ -82,3 +82,22 @@ export const Sizes: Story = {
     );
   },
 };
+
+const TrackContent = () => {
+  return (
+    <>
+      <span style={{ fontSize: '12px', marginLeft: '4px', color: 'white' }}>On</span>
+      <span style={{ fontSize: '12px', marginRight: '6px', color: 'white' }}>Off</span>
+    </>
+  );
+};
+
+export const TrackChild: Story = {
+  args: {
+    slots: {
+      trackContent: { component: TrackContent },
+    },
+    size: 'm',
+    trackWidth: 46,
+  },
+};

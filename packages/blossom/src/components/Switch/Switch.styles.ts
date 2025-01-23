@@ -26,7 +26,14 @@ const SIZES_MAP = {
 
 const IC_BORDER_SIZE = 1;
 
-export const getCS = ({ scale: s = 1, size = 's', cs }: SwitchProps): SwitchProps['cs'] => {
+export const getCS = ({
+  scale: s = 1,
+  size = 's',
+  trackWidth,
+  trackHeight,
+  thumbSize,
+  cs,
+}: SwitchProps): SwitchProps['cs'] => {
   const sizes = SIZES_MAP[size];
 
   return deepMergeCS(
@@ -46,16 +53,19 @@ export const getCS = ({ scale: s = 1, size = 's', cs }: SwitchProps): SwitchProp
       },
       track: {
         position: 'relative',
-        width: getPxSize(sizes.track.width, s),
-        height: getPxSize(sizes.track.height, s),
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: getPxSize(trackWidth ?? sizes.track.width, s),
+        height: getPxSize(trackHeight ?? sizes.track.height, s),
         borderRadius: getPxSize(18, s),
-        background: 'lightgray',
+        background: 'gray',
       },
       thumb: ({ checked }) => ({
         position: 'absolute',
         top: '50%',
-        width: getPxSize(sizes.thumb, s),
-        height: getPxSize(sizes.thumb, s),
+        width: getPxSize(thumbSize ?? sizes.thumb, s),
+        height: getPxSize(thumbSize ?? sizes.thumb, s),
         background: 'white',
         pointerEvents: 'none',
         transition: `left 0.25s ease`,

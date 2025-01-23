@@ -17,6 +17,18 @@ export interface SwitchProps extends BaseSwitchProps {
    */
   size?: 'xs' | 's' | 'm';
   /**
+   * The size of the thumb
+   */
+  thumbSize?: number;
+  /**
+   * The height of the track
+   */
+  trackHeight?: number;
+  /**
+   * The width of the track
+   */
+  trackWidth?: number;
+  /**
    * The variant of the component
    * @default solid
    */
