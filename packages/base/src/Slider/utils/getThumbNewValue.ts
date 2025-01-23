@@ -4,7 +4,7 @@ import { clamp } from "./clamp";
 import { getNearestValueFromArray, getNearestValueFromStep } from "./getNearestValue";
 import { valueConverter } from "./valueConverter";
 
-interface ThumpNewValueParams {
+interface ThumbNewValueParams {
     min: number;
     max: number;
     step: number;
@@ -15,7 +15,10 @@ interface ThumpNewValueParams {
     thumbCoords: ThumbCoords;
 }
 
-const getPercent = (orientation: Orientation, { bottom, height, left, width }: DOMRect, { x, y }: ThumbCoords): number => {
+const getPercent = (orientation: Orientation, sliderDomRect: DOMRect, thumbCoords: ThumbCoords): number => {
+    const { bottom, height, left, width } = sliderDomRect;
+    const { x, y } = thumbCoords;
+
     switch (orientation) {
         case 'horizontal': return (bottom - y) / height;
         case 'vertical': return (x - left) / width;
@@ -23,7 +26,9 @@ const getPercent = (orientation: Orientation, { bottom, height, left, width }: D
     }
 }
 
-const getNewValue = ({ min, max, step, marksValues, thumbMovement }: ThumpNewValueParams, percent: number): number => {
+const getNewValue = (params: ThumbNewValueParams, percent: number): number => {
+    const { min, max, step, marksValues, thumbMovement } = params;
+
     const value: number = valueConverter.percentToValue(percent, min, max);
 
     switch (thumbMovement) {
@@ -33,7 +38,7 @@ const getNewValue = ({ min, max, step, marksValues, thumbMovement }: ThumpNewVal
     }
 }
 
-export const getThumbNewValue = (params: ThumpNewValueParams) => {
+export const getThumbNewValue = (params: ThumbNewValueParams) => {
     const { min, max, orientation, sliderDOMRect, thumbCoords } = params;
 
     const percent = getPercent(orientation, sliderDOMRect, thumbCoords);
