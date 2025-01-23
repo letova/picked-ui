@@ -72,3 +72,11 @@ export interface SliderProps {
    */
   onValueChangeCommitted?: (value: number | number[]) => void;
 }
+
+// FOR UTILS 
+export type ThumbMovement = 'arbitrary' | 'step' | 'mark';
+
+export interface ThumbCoords {
+  x: number;
+  y: number;
+}
