@@ -74,7 +74,16 @@ export interface SliderProps {
 }
 
 // FOR UTILS 
-export type ThumbMovement = 'arbitrary' | 'step' | 'mark';
+/**
+ * Thumb movement type
+ * 
+ * `arbitrary` - can move freely along the rail
+ * 
+ * `step` - can move with a set step
+ * 
+ * `mark` - moves only along the set marks, which are specified by the user
+ */
+export type ThumbMoveType = 'arbitrary' | 'step' | 'mark';
 
 export interface ThumbCoords {
   x: number;

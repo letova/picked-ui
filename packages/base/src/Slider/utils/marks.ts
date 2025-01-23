@@ -30,3 +30,9 @@ export const getMarksFromOptions = ({ min, max, step, marks }: MarksOptions): Ma
         default: return [];
     }
 }
+
+export const getMarksValues = (marks: Mark[]): number[] => {
+    const values: number[] = marks.map(({ value }: Mark) => value);
+
+    return values;
+}

@@ -1,4 +1,4 @@
-import { Orientation, ThumbCoords, ThumbMovement } from "../Slider.types";
+import { Orientation, ThumbCoords, ThumbMoveType } from "../Slider.types";
 
 import { clamp } from "./clamp";
 import { getNearestValueFromArray, getNearestValueFromStep } from "./getNearestValue";
@@ -10,7 +10,7 @@ interface ThumbNewValueParams {
     step: number;
     marksValues: number[];
     orientation: Orientation;
-    thumbMovement: ThumbMovement;
+    thumbMoveType: ThumbMoveType;
     sliderDOMRect: DOMRect;
     thumbCoords: ThumbCoords;
 }
@@ -27,11 +27,11 @@ const getPercent = (orientation: Orientation, sliderDomRect: DOMRect, thumbCoord
 }
 
 const getNewValue = (params: ThumbNewValueParams, percent: number): number => {
-    const { min, max, step, marksValues, thumbMovement } = params;
+    const { min, max, step, marksValues, thumbMoveType } = params;
 
     const value: number = valueConverter.percentToValue(percent, min, max);
 
-    switch (thumbMovement) {
+    switch (thumbMoveType) {
         case 'step': return getNearestValueFromStep(value, step, min);
         case 'mark': return getNearestValueFromArray(marksValues, value);
         default: return value;
