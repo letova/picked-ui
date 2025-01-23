@@ -1,5 +1,12 @@
 import { Mark } from "../Slider.types";
 
+interface MarksOptions {
+    min: number;
+    max: number;
+    step: number;
+    marks?: boolean | Mark[];
+}
+
 const filterMarksByAllowedRange = (marks: Mark[], min: number, max: number): Mark[] => {
     const marksFiltered: Mark[] = marks.filter((mark) => mark.value >= min && mark.value <= max);
 
@@ -14,13 +21,6 @@ const getMarksByStep = (min: number, max: number, step: number): Mark[] => {
     };
 
     return marks;
-}
-
-interface MarksOptions {
-    min: number;
-    max: number;
-    step: number;
-    marks?: boolean | Mark[];
 }
 
 export const getMarksFromOptions = ({ min, max, step, marks }: MarksOptions): Mark[] => {
