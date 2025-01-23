@@ -1,6 +1,7 @@
 import { Mark } from "../Slider.types";
 
-import { getMarksFromOptions } from "../utils";
+import { getMarksFromParams } from "../utils";
+import { getThumbMoveType } from "../utils/getThumbMoveType";
 
 interface UseSliderParams {
     min: number;
@@ -20,7 +21,8 @@ export const useSlider = ({
     step,
     marks: marksParam,
 }: UseSliderParams): UseSliderReturnValue => {
-    const marks = getMarksFromOptions({ min, max, step, marks: marksParam });
+    const thumbMoveType = getThumbMoveType(marksParam);
+    const marks = getMarksFromParams({ min, max, step, marks: marksParam, thumbMoveType });
 
     return {
         marks,

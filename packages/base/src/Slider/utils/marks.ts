@@ -1,10 +1,11 @@
-import { Mark } from "../Slider.types";
+import { Mark, ThumbMoveType } from "../Slider.types";
 
-interface MarksOptions {
+interface MarksParams {
     min: number;
     max: number;
     step: number;
     marks?: boolean | Mark[];
+    thumbMoveType: ThumbMoveType;
 }
 
 const filterMarksByAllowedRange = (marks: Mark[], min: number, max: number): Mark[] => {
@@ -23,10 +24,10 @@ const getMarksByStep = (min: number, max: number, step: number): Mark[] => {
     return marks;
 }
 
-export const getMarksFromOptions = ({ min, max, step, marks }: MarksOptions): Mark[] => {
-    switch (typeof marks) {
-        case 'object': return filterMarksByAllowedRange(marks, min, max);
-        case 'boolean': return step ? getMarksByStep(min, max, step) : [];
+export const getMarksFromParams = ({ min, max, step, marks, thumbMoveType }: MarksParams): Mark[] => {
+    switch (thumbMoveType) {
+        case 'mark': return filterMarksByAllowedRange(marks as Mark[], min, max);
+        case 'step': return getMarksByStep(min, max, step);
         default: return [];
     }
 }
