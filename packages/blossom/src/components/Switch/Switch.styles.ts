@@ -33,12 +33,15 @@ export const getCS = ({
   trackHeight,
   thumbSize,
   cs,
+  focusOutlineWraps = 'input',
 }: SwitchProps): SwitchProps['cs'] => {
   const sizes = SIZES_MAP[size];
 
   return deepMergeCS(
     {
       container: {
+        alignSelf: 'center',
+
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
@@ -51,7 +54,7 @@ export const getCS = ({
           boxSizing: 'inherit',
         },
       },
-      track: {
+      track: ({ disabled, focusVisible }) => ({
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
@@ -59,8 +62,12 @@ export const getCS = ({
         width: getPxSize(trackWidth ?? sizes.track.width, s),
         height: getPxSize(trackHeight ?? sizes.track.height, s),
         borderRadius: getPxSize(18, s),
-        background: 'gray',
-      },
+        background: disabled ? 'lightgray' : 'gray',
+
+        ...(focusVisible && focusOutlineWraps === 'input'
+          ? { outline: `${getPxSize(2, s)} solid ${Colors.ScienceBlue}`, outlineOffset: getPxSize(2, s) }
+          : undefined),
+      }),
       thumb: ({ checked }) => ({
         position: 'absolute',
         top: '50%',
@@ -84,7 +91,7 @@ export const getCS = ({
         height: '100%',
         borderRadius: getPxSize(18, s),
 
-        ...(focusVisible
+        ...(focusVisible && focusOutlineWraps === 'full'
           ? { outline: `${getPxSize(2, s)} solid ${Colors.ScienceBlue}`, outlineOffset: getPxSize(2, s) }
           : undefined),
       }),

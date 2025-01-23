@@ -7,6 +7,11 @@ export interface SwitchProps extends BaseSwitchProps {
    */
   color?: 'primary' | 'neutral' | 'danger' | 'success' | 'warning';
   /**
+   * The focus outline wraps target
+   * @default input
+   */
+  focusOutlineWraps?: 'input' | 'full';
+  /**
    * The scale of the component
    * @default 1
    */
