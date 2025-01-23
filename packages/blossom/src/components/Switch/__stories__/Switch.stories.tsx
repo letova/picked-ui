@@ -83,7 +83,7 @@ export const Sizes: Story = {
   },
 };
 
-const TrackContent = () => {
+const TrackContentFC = () => {
   return (
     <>
       <span style={{ fontSize: '12px', marginLeft: '4px', color: 'white' }}>On</span>
@@ -92,10 +92,10 @@ const TrackContent = () => {
   );
 };
 
-export const TrackChild: Story = {
+export const TrackContent: Story = {
   args: {
     slots: {
-      trackContent: { component: TrackContent },
+      trackContent: { component: TrackContentFC },
     },
     size: 'm',
     trackWidth: 46,

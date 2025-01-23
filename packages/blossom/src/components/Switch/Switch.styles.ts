@@ -24,7 +24,7 @@ const SIZES_MAP = {
   },
 };
 
-const IC_BORDER_SIZE = 1;
+// const IC_BORDER_SIZE = 1;
 
 export const getCS = ({
   scale: s = 1,
@@ -73,13 +73,21 @@ export const getCS = ({
         borderRadius: '100%',
         ...(checked ? { right: getPxSize(2, s) } : { left: getPxSize(2, s) }),
       }),
-      action: {
+      action: ({ focusVisible }) => ({
         position: 'absolute',
-        top: getPxSize(-IC_BORDER_SIZE, s),
+        // outlined
+        /* top: getPxSize(-IC_BORDER_SIZE, s),
         left: getPxSize(-IC_BORDER_SIZE, s),
         width: `calc(100% + ${getPxSize(IC_BORDER_SIZE, s)})`,
-        height: `calc(100% + ${getPxSize(IC_BORDER_SIZE, s)})`,
-      },
+        height: `calc(100% + ${getPxSize(IC_BORDER_SIZE, s)})`, */
+        width: '100%',
+        height: '100%',
+        borderRadius: getPxSize(18, s),
+
+        ...(focusVisible
+          ? { outline: `${getPxSize(2, s)} solid ${Colors.ScienceBlue}`, outlineOffset: getPxSize(2, s) }
+          : undefined),
+      }),
       input: {
         margin: 0,
         width: '100%',

@@ -1,5 +1,5 @@
 import { cx } from '@emotion/css';
-import { ForwardedRef, forwardRef, useEffect, useId, useRef, useState } from 'react';
+import { ForwardedRef, forwardRef, useId, useRef, useState } from 'react';
 
 import { useFocus, useForkRef } from '../hooks';
 import { ClassNameGenerator, convertCSToClassName, getElementFromSlot, isNil } from '../utils';
@@ -83,12 +83,6 @@ export const Switch = forwardRef(
         })
       : null;
 
-    useEffect(() => {
-      if (autoFocus) {
-        ownerInputRef.current?.focus();
-      }
-    }, [autoFocus]);
-
     const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
       const value = event.target.checked;
 
@@ -133,6 +127,7 @@ export const Switch = forwardRef(
             checked={checked}
             defaultChecked={defaultChecked}
             disabled={disabled}
+            autoFocus={autoFocus}
             onChange={handleChange}
             {...focusCallbacks}
           />
