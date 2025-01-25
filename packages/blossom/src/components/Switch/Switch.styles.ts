@@ -47,7 +47,7 @@ export const getCS = ({
   size = 's',
   trackWidth,
   trackHeight,
-  thumbSize,
+  thumbSize: userThumbSize,
   cs,
   focusOutlineWraps = 'input',
 }: SwitchProps): SwitchProps['cs'] => {
@@ -55,6 +55,7 @@ export const getCS = ({
   const sizes = SIZES_MAP[size];
 
   const thumbMargin = variant === 'outlined' ? 1 : 2;
+  const thumbSize = userThumbSize ?? sizes.thumb;
 
   return deepMergeCS(
     {
@@ -92,14 +93,14 @@ export const getCS = ({
       thumb: ({ checked }) => ({
         position: 'absolute',
         top: '50%',
-        width: getPxSize(thumbSize ?? sizes.thumb, s),
-        height: getPxSize(thumbSize ?? sizes.thumb, s),
+        width: getPxSize(thumbSize, s),
+        height: getPxSize(thumbSize, s),
         background: colors.thumbBg,
         pointerEvents: 'none',
-        transition: `left 0.25s ease`,
+        transition: 'left .15s ease-out',
         transform: 'translateY(-50%)',
         borderRadius: '100%',
-        ...(checked ? { right: getPxSize(thumbMargin, s) } : { left: getPxSize(thumbMargin, s) }),
+        left: checked ? `calc(100% - ${getPxSize(thumbMargin + thumbSize, s)})` : getPxSize(thumbMargin, s),
       }),
       action: ({ focusVisible }) => ({
         position: 'absolute',
