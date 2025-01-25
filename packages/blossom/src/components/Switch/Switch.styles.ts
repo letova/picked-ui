@@ -3,6 +3,21 @@ import { Colors } from '../../constants';
 
 import { SwitchProps } from './Switch.types';
 
+const VARIANT_COLORS_MAP = {
+  solid: {
+    trackBg: 'gray',
+    thumbBg: 'white',
+  },
+  soft: {
+    trackBg: 'lightgray',
+    thumbBg: 'white',
+  },
+  outlined: {
+    trackBg: 'white',
+    thumbBg: 'gray',
+  },
+};
+
 const SIZES_MAP = {
   xs: {
     track: { width: 36, height: 20 },
@@ -24,9 +39,10 @@ const SIZES_MAP = {
   },
 };
 
-// const IC_BORDER_SIZE = 1;
+const IC_BORDER_SIZE = 1;
 
 export const getCS = ({
+  variant = 'solid',
   scale: s = 1,
   size = 's',
   trackWidth,
@@ -35,7 +51,10 @@ export const getCS = ({
   cs,
   focusOutlineWraps = 'input',
 }: SwitchProps): SwitchProps['cs'] => {
+  const colors = VARIANT_COLORS_MAP[variant];
   const sizes = SIZES_MAP[size];
+
+  const thumbMargin = variant === 'outlined' ? 1 : 2;
 
   return deepMergeCS(
     {
@@ -62,37 +81,43 @@ export const getCS = ({
         width: getPxSize(trackWidth ?? sizes.track.width, s),
         height: getPxSize(trackHeight ?? sizes.track.height, s),
         borderRadius: getPxSize(18, s),
-        background: disabled ? 'lightgray' : 'gray',
+        background: disabled ? 'lightgray' : colors.trackBg,
 
         ...(focusVisible && focusOutlineWraps === 'input'
           ? { outline: `${getPxSize(2, s)} solid ${Colors.ScienceBlue}`, outlineOffset: getPxSize(2, s) }
           : undefined),
+
+        ...(variant === 'outlined' ? { border: `${getPxSize(1, s)} solid gray` } : undefined),
       }),
       thumb: ({ checked }) => ({
         position: 'absolute',
         top: '50%',
         width: getPxSize(thumbSize ?? sizes.thumb, s),
         height: getPxSize(thumbSize ?? sizes.thumb, s),
-        background: 'white',
+        background: colors.thumbBg,
         pointerEvents: 'none',
         transition: `left 0.25s ease`,
         transform: 'translateY(-50%)',
         borderRadius: '100%',
-        ...(checked ? { right: getPxSize(2, s) } : { left: getPxSize(2, s) }),
+        ...(checked ? { right: getPxSize(thumbMargin, s) } : { left: getPxSize(thumbMargin, s) }),
       }),
       action: ({ focusVisible }) => ({
         position: 'absolute',
-        // outlined
-        /* top: getPxSize(-IC_BORDER_SIZE, s),
-        left: getPxSize(-IC_BORDER_SIZE, s),
-        width: `calc(100% + ${getPxSize(IC_BORDER_SIZE, s)})`,
-        height: `calc(100% + ${getPxSize(IC_BORDER_SIZE, s)})`, */
         width: '100%',
         height: '100%',
         borderRadius: getPxSize(18, s),
 
         ...(focusVisible && focusOutlineWraps === 'full'
           ? { outline: `${getPxSize(2, s)} solid ${Colors.ScienceBlue}`, outlineOffset: getPxSize(2, s) }
+          : undefined),
+
+        ...(variant === 'outlined'
+          ? {
+              top: getPxSize(-IC_BORDER_SIZE, s),
+              left: getPxSize(-IC_BORDER_SIZE, s),
+              width: `calc(100% + ${getPxSize(IC_BORDER_SIZE, s)})`,
+              height: `calc(100% + ${getPxSize(IC_BORDER_SIZE, s)})`,
+            }
           : undefined),
       }),
       input: {
