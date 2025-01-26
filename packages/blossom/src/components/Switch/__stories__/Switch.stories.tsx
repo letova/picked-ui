@@ -4,7 +4,7 @@ import { css, CSSObject, cx } from '@emotion/css';
 
 import { getPxSize } from '../../../utils';
 
-import { Switch } from '../index';
+import { Switch, SwitchProps } from '../index';
 
 const meta = {
   title: 'Components/Switch',
@@ -106,32 +106,40 @@ export const TrackContent: Story = {
   },
 };
 
+/**
+ * Story template object prop containing JSX hangs the browser
+ * https://github.com/storybookjs/storybook/issues/17720
+ * https://github.com/storybookjs/builder-vite/issues/493
+ */
+const SwitchWithThumbChidren = ({ checked, ...restProps }: SwitchProps) => {
+  return (
+    <Switch
+      {...restProps}
+      cs={{
+        thumb: {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+      }}
+      slots={{
+        thumb: {
+          props: {
+            // The problem is here
+            children: <span>{checked ? 'O' : 'I'}</span>,
+          },
+        },
+      }}
+      checked={checked}
+    />
+  );
+};
+
 export const ThumbChidren: Story = {
   render: (args) => {
     const [checked, setChecked] = useState(false);
 
-    return (
-      <Switch
-        {...args}
-        cs={{
-          thumb: {
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          },
-        }}
-        slots={{
-          thumb: {
-            props: {
-              children: <span>{checked ? 'O' : 'I'}</span>,
-            },
-          },
-        }}
-        checked={checked}
-        // onChange={setChecked}
-        onValueChange={setChecked}
-      />
-    );
+    return <SwitchWithThumbChidren {...args} checked={checked} onValueChange={setChecked} />;
   },
   args: {
     size: 'm',
