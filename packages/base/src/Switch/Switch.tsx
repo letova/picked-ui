@@ -74,13 +74,24 @@ export const Switch = forwardRef(
       ...state,
     });
 
+    const thumbElement = getElementFromSlot(
+      { component: 'span', ...slots?.thumb },
+      {
+        className: cx(getCN('thumb'), convertCSToClassName(cs?.thumb, state)),
+        ...state,
+      },
+    );
+
     const labelElement = label
-      ? getElementFromSlot(slots?.label || { component: 'label' }, {
-          className: cx(getCN('label'), convertCSToClassName(cs?.label, state)),
-          children: label,
-          htmlFor: id,
-          ...state,
-        })
+      ? getElementFromSlot(
+          { component: 'label', ...slots?.label },
+          {
+            className: cx(getCN('label'), convertCSToClassName(cs?.label, state)),
+            children: label,
+            htmlFor: id,
+            ...state,
+          },
+        )
       : null;
 
     const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -112,7 +123,7 @@ export const Switch = forwardRef(
         {startDecoratorElement || startDecorator}
         <span className={cx(getCN('track'), convertCSToClassName(cs?.track, state))}>
           {trackContentElement}
-          <span className={cx(getCN('thumb'), convertCSToClassName(cs?.thumb, state))} />
+          {thumbElement}
         </span>
         <span className={cx(getCN('action'), convertCSToClassName(cs?.action, state))}>
           <input

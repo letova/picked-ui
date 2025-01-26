@@ -1,4 +1,8 @@
+import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { css, CSSObject, cx } from '@emotion/css';
+
+import { getPxSize } from '../../../utils';
 
 import { Switch } from '../index';
 
@@ -99,5 +103,80 @@ export const TrackContent: Story = {
     },
     size: 'm',
     trackWidth: 46,
+  },
+};
+
+export const ThumbChidren: Story = {
+  render: (args) => {
+    const [checked, setChecked] = useState(false);
+
+    return (
+      <Switch
+        {...args}
+        cs={{
+          thumb: {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          },
+        }}
+        slots={{
+          thumb: {
+            props: {
+              children: <span>{checked ? 'O' : 'I'}</span>,
+            },
+          },
+        }}
+        checked={checked}
+        // onChange={setChecked}
+        onValueChange={setChecked}
+      />
+    );
+  },
+  args: {
+    size: 'm',
+  },
+};
+
+const outerThumbStyle: CSSObject = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  background: 'transparent',
+};
+
+const innerThumbStyle: CSSObject = {
+  display: 'inline-block',
+  width: getPxSize(20),
+  height: getPxSize(20),
+  background: '#fff',
+  borderRadius: '50%',
+};
+
+export const RippleEffect: Story = {
+  args: {
+    size: 'm',
+    thumbSize: 38,
+    cs: {
+      container: {
+        '&:hover .Switch-thumb': {
+          background: 'rgb(0, 0, 0, 0.1)',
+        },
+        '&:active .Switch-thumb': {
+          background: 'rgb(0, 0, 0, 0.15)',
+        },
+      },
+    },
+    slots: {
+      thumb: {
+        component: ({ className }: { className: string }) => {
+          return (
+            <span className={cx(className, css(outerThumbStyle))}>
+              <span className={css(innerThumbStyle)}></span>
+            </span>
+          );
+        },
+      },
+    },
   },
 };

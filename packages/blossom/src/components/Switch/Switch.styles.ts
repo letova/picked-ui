@@ -57,6 +57,8 @@ export const getCS = ({
   const thumbMargin = variant === 'outlined' ? 1 : 2;
   const thumbSize = userThumbSize ?? sizes.thumb;
 
+  const thumbShift = userThumbSize ? Math.max((userThumbSize - sizes.thumb) / 2, 0) : 0;
+
   return deepMergeCS(
     {
       container: {
@@ -100,7 +102,9 @@ export const getCS = ({
         transition: 'left .15s ease-out',
         transform: 'translateY(-50%)',
         borderRadius: '100%',
-        left: checked ? `calc(100% - ${getPxSize(thumbMargin + thumbSize, s)})` : getPxSize(thumbMargin, s),
+        left: checked
+          ? `calc(100% - ${getPxSize(thumbMargin + thumbSize, s)} + ${getPxSize(thumbShift, s)})`
+          : `calc(${getPxSize(thumbMargin, s)} - ${getPxSize(thumbShift, s)})`,
       }),
       action: ({ focusVisible }) => ({
         position: 'absolute',

@@ -51,6 +51,7 @@ export interface SwitchProps extends PickedInputHTMLAttributes {
     label?: Partial<Slot>;
     startDecorator?: Slot;
     endDecorator?: Slot;
+    thumb?: Partial<Slot>;
   };
   cs?: SwitchCS;
   /**
