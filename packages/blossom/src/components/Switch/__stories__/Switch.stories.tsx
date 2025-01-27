@@ -87,6 +87,54 @@ export const Sizes: Story = {
   },
 };
 
+const customSizeArgsMap = {
+  first: {
+    label: 'Material UI',
+    thumbSize: 22,
+    trackHeight: 14,
+    skidding: 2,
+    cs: {
+      thumb: { backgroundColor: 'darkgray' },
+    },
+  },
+  second: {
+    label: 'Strapi',
+    skidding: -2,
+    thumbSize: 16,
+    trackHeight: 24,
+    trackWidth: 40,
+  },
+  third: {
+    variant: 'outlined',
+    label: "Microsoft's Fluent UI",
+    skidding: -1,
+    thumbSize: 12,
+    trackHeight: 18,
+    trackWidth: 38,
+  } as const,
+};
+
+export const CustomSize: Story = {
+  render: () => {
+    const [checked, setChecked] = useState(false);
+
+    const containerStyle = { display: 'flex', gap: '16px' };
+
+    return (
+      <div style={containerStyle}>
+        <Switch {...customSizeArgsMap.second} />
+        <Switch {...customSizeArgsMap.first} />
+        <Switch
+          {...customSizeArgsMap.third}
+          variant={checked ? 'solid' : 'outlined'}
+          checked={checked}
+          onValueChange={setChecked}
+        />
+      </div>
+    );
+  },
+};
+
 const TrackContentFC = () => {
   return (
     <>
@@ -126,7 +174,7 @@ const SwitchWithThumbChidren = ({ checked, ...restProps }: SwitchProps) => {
         thumb: {
           props: {
             // The problem is here
-            children: <span>{checked ? 'O' : 'I'}</span>,
+            children: <span style={{ color: 'gray' }}>{checked ? '0' : 'I'}</span>,
           },
         },
       }}
@@ -165,6 +213,7 @@ export const RippleEffect: Story = {
   args: {
     size: 'm',
     thumbSize: 38,
+    skidding: 9,
     cs: {
       container: {
         '&:hover .Switch-thumb': {

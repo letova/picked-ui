@@ -44,6 +44,7 @@ const IC_BORDER_SIZE = 1;
 export const getCS = ({
   variant = 'solid',
   scale: s = 1,
+  skidding = 0,
   size = 's',
   trackWidth,
   trackHeight,
@@ -56,8 +57,6 @@ export const getCS = ({
 
   const thumbMargin = variant === 'outlined' ? 1 : 2;
   const thumbSize = userThumbSize ?? sizes.thumb;
-
-  const thumbShift = userThumbSize ? Math.max((userThumbSize - sizes.thumb) / 2, 0) : 0;
 
   return deepMergeCS(
     {
@@ -103,8 +102,8 @@ export const getCS = ({
         transform: 'translateY(-50%)',
         borderRadius: '100%',
         left: checked
-          ? `calc(100% - ${getPxSize(thumbMargin + thumbSize, s)} + ${getPxSize(thumbShift, s)})`
-          : `calc(${getPxSize(thumbMargin, s)} - ${getPxSize(thumbShift, s)})`,
+          ? `calc(100% - ${getPxSize(thumbMargin + thumbSize, s)} + ${getPxSize(skidding, s)})`
+          : `calc(${getPxSize(thumbMargin, s)} - ${getPxSize(skidding, s)})`,
       }),
       action: ({ focusVisible }) => ({
         position: 'absolute',
