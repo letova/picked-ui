@@ -39,7 +39,15 @@ const SIZES_MAP = {
   },
 };
 
-const IC_BORDER_SIZE = 1;
+const T_BORDER_SIZE = 1;
+
+const calcThumbMargin = (thumbSize: number, trackHeight: number) => {
+  if (thumbSize >= trackHeight) {
+    return 0;
+  }
+
+  return Math.round((trackHeight - thumbSize) / 2);
+};
 
 export const getCS = ({
   variant = 'solid',
@@ -47,7 +55,7 @@ export const getCS = ({
   skidding = 0,
   size = 's',
   trackWidth,
-  trackHeight,
+  trackHeight: userTrackHeight,
   thumbSize: userThumbSize,
   cs,
   focusOutlineWraps = 'input',
@@ -55,8 +63,13 @@ export const getCS = ({
   const colors = VARIANT_COLORS_MAP[variant];
   const sizes = SIZES_MAP[size];
 
-  const thumbMargin = variant === 'outlined' ? 1 : 2;
+  const trackHeight = userTrackHeight ?? sizes.track.height;
+
   const thumbSize = userThumbSize ?? sizes.thumb;
+  const thumbMargin = calcThumbMargin(
+    thumbSize,
+    variant === 'outlined' ? trackHeight - T_BORDER_SIZE * 2 : trackHeight,
+  );
 
   return deepMergeCS(
     {
@@ -81,7 +94,7 @@ export const getCS = ({
         alignItems: 'center',
         justifyContent: 'space-between',
         width: getPxSize(trackWidth ?? sizes.track.width, s),
-        height: getPxSize(trackHeight ?? sizes.track.height, s),
+        height: getPxSize(trackHeight, s),
         borderRadius: getPxSize(18, s),
         background: disabled ? 'lightgray' : colors.trackBg,
 
@@ -89,7 +102,7 @@ export const getCS = ({
           ? { outline: `${getPxSize(2, s)} solid ${Colors.ScienceBlue}`, outlineOffset: getPxSize(2, s) }
           : undefined),
 
-        ...(variant === 'outlined' ? { border: `${getPxSize(1, s)} solid gray` } : undefined),
+        ...(variant === 'outlined' ? { border: `${getPxSize(T_BORDER_SIZE, s)} solid gray` } : undefined),
       }),
       thumb: ({ checked }) => ({
         position: 'absolute',
@@ -117,10 +130,10 @@ export const getCS = ({
 
         ...(variant === 'outlined'
           ? {
-              top: getPxSize(-IC_BORDER_SIZE, s),
-              left: getPxSize(-IC_BORDER_SIZE, s),
-              width: `calc(100% + ${getPxSize(IC_BORDER_SIZE, s)})`,
-              height: `calc(100% + ${getPxSize(IC_BORDER_SIZE, s)})`,
+              top: getPxSize(-T_BORDER_SIZE, s),
+              left: getPxSize(-T_BORDER_SIZE, s),
+              width: `calc(100% + ${getPxSize(T_BORDER_SIZE, s)})`,
+              height: `calc(100% + ${getPxSize(T_BORDER_SIZE, s)})`,
             }
           : undefined),
       }),

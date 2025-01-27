@@ -92,14 +92,12 @@ const customSizeArgsMap = {
     label: 'Material UI',
     thumbSize: 22,
     trackHeight: 14,
-    skidding: 2,
     cs: {
       thumb: { backgroundColor: 'darkgray' },
     },
   },
   second: {
     label: 'Strapi',
-    skidding: -2,
     thumbSize: 16,
     trackHeight: 24,
     trackWidth: 40,
@@ -107,7 +105,6 @@ const customSizeArgsMap = {
   third: {
     variant: 'outlined',
     label: "Microsoft's Fluent UI",
-    skidding: -1,
     thumbSize: 12,
     trackHeight: 18,
     trackWidth: 38,
@@ -213,7 +210,7 @@ export const RippleEffect: Story = {
   args: {
     size: 'm',
     thumbSize: 38,
-    skidding: 9,
+    skidding: 7,
     cs: {
       container: {
         '&:hover .Switch-thumb': {
