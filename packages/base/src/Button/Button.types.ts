@@ -1,6 +1,10 @@
-import { Slot } from '../types';
+import { CustomStyle, Slot } from '../types';
 
 type OmitedButtonHTMLAttributes = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'ref'>;
+
+export interface ButtonCS {
+  container?: CustomStyle;
+}
 
 export interface ButtonProps extends OmitedButtonHTMLAttributes {
   children?: React.ReactNode;
@@ -10,5 +14,6 @@ export interface ButtonProps extends OmitedButtonHTMLAttributes {
     startDecorator?: Slot;
     endDecorator?: Slot;
   };
+  cs?: ButtonCS;
   highlighted?: boolean;
 }

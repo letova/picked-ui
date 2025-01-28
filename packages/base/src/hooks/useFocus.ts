@@ -3,9 +3,9 @@ import { useState } from 'react';
 interface UseFocusOptions {
   detectFocus?: boolean;
   detectFocusVisible?: boolean;
-  onFocus?: React.FocusEventHandler<HTMLInputElement>;
-  onFocusVisible?: React.FocusEventHandler<HTMLInputElement>;
-  onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLButtonElement>;
+  onFocusVisible?: React.FocusEventHandler<HTMLInputElement | HTMLButtonElement>;
+  onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLButtonElement>;
 }
 
 export const isFocusVisible = (element: Element): boolean => {
@@ -28,7 +28,7 @@ export const useFocus = (options?: UseFocusOptions) => {
   const [hasFocus, setHasFocus] = useState<boolean>(false);
   const [hasFocusVisible, setHasFocusVisible] = useState<boolean>(false);
 
-  const handleFocus: React.FocusEventHandler<HTMLInputElement> = (event) => {
+  const handleFocus: React.FocusEventHandler<HTMLInputElement | HTMLButtonElement> = (event) => {
     if (detectFocus) {
       setHasFocus(true);
     }
@@ -41,7 +41,7 @@ export const useFocus = (options?: UseFocusOptions) => {
     onFocus?.(event);
   };
 
-  const handleBlur: React.FocusEventHandler<HTMLInputElement> = (event) => {
+  const handleBlur: React.FocusEventHandler<HTMLInputElement | HTMLButtonElement> = (event) => {
     if (detectFocus) {
       setHasFocus(false);
     }
