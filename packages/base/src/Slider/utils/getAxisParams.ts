@@ -6,7 +6,7 @@ export const getOffsetStyle = (orientation: Orientation, percent: number): CSSPr
     switch (orientation) {
         case 'horizontal': return { left: `${percent}%` };
         case 'vertical': return { bottom: `${percent}%` };
-        default: throw new Error(`Slider getAxisParams: unknown orientation - ${orientation}`)
+        default: throw new Error(`Slider getOffsetStyle: unknown orientation - ${orientation}`)
     }
 }
 
