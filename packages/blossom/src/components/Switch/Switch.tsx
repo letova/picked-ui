@@ -5,10 +5,9 @@ import { SwitchProps } from './Switch.types';
 import { getCS } from './Switch.styles';
 
 const Switch = forwardRef((props: SwitchProps, ref: ForwardedRef<HTMLElement>) => {
-  const { className, ...restProps } = props;
   const cs = getCS(props);
 
-  return <BaseSwitch ref={ref} className={className} {...restProps} cs={cs} />;
+  return <BaseSwitch {...props} ref={ref} cs={cs} />;
 });
 
 export { Switch };

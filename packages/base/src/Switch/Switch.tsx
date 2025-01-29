@@ -1,5 +1,5 @@
 import { cx } from '@emotion/css';
-import { ForwardedRef, forwardRef, useEffect, useId, useRef, useState } from 'react';
+import { ForwardedRef, forwardRef, useId, useRef, useState } from 'react';
 
 import { useFocus, useForkRef } from '../hooks';
 import { ClassNameGenerator, convertCSToClassName, getElementFromSlot, isNil } from '../utils';
@@ -20,6 +20,8 @@ export const Switch = forwardRef(
       value,
       label,
       inputProps,
+      startDecorator,
+      endDecorator,
       slots,
       cs,
       checked: userChecked,
@@ -57,20 +59,40 @@ export const Switch = forwardRef(
       disabled,
     };
 
-    const labelElement = label
-      ? getElementFromSlot(slots?.label || { component: 'label' }, {
-          className: cx(getCN('label'), convertCSToClassName(cs?.label, state)),
-          children: label,
-          htmlFor: id,
-          ...state,
-        })
-      : null;
+    const startDecoratorElement = getElementFromSlot(slots?.startDecorator, {
+      className: getCN('startDecorator'),
+      ...state,
+    });
 
-    useEffect(() => {
-      if (autoFocus) {
-        ownerInputRef.current?.focus();
-      }
-    }, [autoFocus]);
+    const endDecoratorElement = getElementFromSlot(slots?.endDecorator, {
+      className: getCN('endDecorator'),
+      ...state,
+    });
+
+    const trackContentElement = getElementFromSlot(slots?.trackContent, {
+      className: cx(getCN('trackContent')),
+      ...state,
+    });
+
+    const thumbElement = getElementFromSlot(
+      { component: 'span', ...slots?.thumb },
+      {
+        className: cx(getCN('thumb'), convertCSToClassName(cs?.thumb, state)),
+        ...state,
+      },
+    );
+
+    const labelElement = label
+      ? getElementFromSlot(
+          { component: 'label', ...slots?.label },
+          {
+            className: cx(getCN('label'), convertCSToClassName(cs?.label, state)),
+            children: label,
+            htmlFor: id,
+            ...state,
+          },
+        )
+      : null;
 
     const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
       const value = event.target.checked;
@@ -98,8 +120,10 @@ export const Switch = forwardRef(
           className,
         )}
       >
+        {startDecoratorElement || startDecorator}
         <span className={cx(getCN('track'), convertCSToClassName(cs?.track, state))}>
-          <span className={cx(getCN('thumb'), convertCSToClassName(cs?.thumb, state))} />
+          {trackContentElement}
+          {thumbElement}
         </span>
         <span className={cx(getCN('action'), convertCSToClassName(cs?.action, state))}>
           <input
@@ -114,10 +138,12 @@ export const Switch = forwardRef(
             checked={checked}
             defaultChecked={defaultChecked}
             disabled={disabled}
+            autoFocus={autoFocus}
             onChange={handleChange}
             {...focusCallbacks}
           />
         </span>
+        {endDecoratorElement || endDecorator}
         {labelElement}
       </span>
     );

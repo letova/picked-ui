@@ -7,15 +7,33 @@ export interface SwitchProps extends BaseSwitchProps {
    */
   color?: 'primary' | 'neutral' | 'danger' | 'success' | 'warning';
   /**
+   * The focus outline wraps target
+   * @default input
+   */
+  focusOutlineWraps?: 'input' | 'full';
+  /**
    * The scale of the component
    * @default 1
    */
   scale?: number;
+  skidding?: number;
   /**
    * The size of the component
    * @default s
    */
   size?: 'xs' | 's' | 'm';
+  /**
+   * The size of the thumb
+   */
+  thumbSize?: number;
+  /**
+   * The height of the track
+   */
+  trackHeight?: number;
+  /**
+   * The width of the track
+   */
+  trackWidth?: number;
   /**
    * The variant of the component
    * @default solid

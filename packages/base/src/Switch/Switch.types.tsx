@@ -41,12 +41,17 @@ export interface SwitchProps extends PickedInputHTMLAttributes {
     React.InputHTMLAttributes<HTMLInputElement>,
     TopLevelInputHTMLAttributes | 'type'
   >;
+  startDecorator?: React.ReactElement | string | number;
+  endDecorator?: React.ReactElement | string | number;
   /**
    * Slots
    */
   slots?: {
-    track?: Slot;
+    trackContent?: Slot;
     label?: Partial<Slot>;
+    startDecorator?: Slot;
+    endDecorator?: Slot;
+    thumb?: Partial<Slot>;
   };
   cs?: SwitchCS;
   /**
