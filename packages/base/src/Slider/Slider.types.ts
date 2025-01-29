@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 
-import { Slot } from "../types";
+import { CustomStyle, Slot } from "../types";
 
 export interface Mark {
   label?: ReactNode;
@@ -8,6 +8,14 @@ export interface Mark {
 }
 
 export type Orientation = 'horizontal' | 'vertical';
+
+export interface SliderCS {
+  container?: CustomStyle;
+  rail?: CustomStyle;
+  track?: CustomStyle;
+  mark?: CustomStyle;
+  thumb?: CustomStyle;
+}
 
 
 export interface SliderProps {
@@ -51,6 +59,10 @@ export interface SliderProps {
     mark?: Slot;
     thumb?: Slot;
   };
+  /** 
+   * Custom styles 
+   * */
+  cs?: SliderCS;
   /**
    * Disabled slider
    */

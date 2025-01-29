@@ -1,7 +1,7 @@
 import { ForwardedRef, forwardRef, Fragment } from "react";
 import { cx } from '@emotion/css';
 
-import { ClassNameGenerator, getElementFromSlot } from "../utils";
+import { ClassNameGenerator, convertCSToClassName, getElementFromSlot } from "../utils";
 
 import { Mark, SliderProps } from "./Slider.types";
 import { useSlider } from "./hooks/useSlider";
@@ -23,6 +23,7 @@ export const Slider = forwardRef(
       orientation = 'horizontal',
       slots = {},
       disabled = false,
+      cs,
     }: SliderProps,
     ref: ForwardedRef<HTMLSpanElement>
   ) => {
@@ -32,7 +33,7 @@ export const Slider = forwardRef(
         ...slots.rail
       },
       {
-        className: getCN('rail'),
+        className: cx(getCN('rail'), convertCSToClassName(cs?.rail)),
       }
     );
 
@@ -42,7 +43,7 @@ export const Slider = forwardRef(
         ...slots.track
       },
       {
-        className: getCN('track'),
+        className: cx(getCN('track'), convertCSToClassName(cs?.track)),
       }
     );
 
@@ -65,6 +66,7 @@ export const Slider = forwardRef(
           {
             [getMCN('disabled')]: disabled,
           },
+          convertCSToClassName(cs?.container),
           className,
         )}
       >
@@ -80,7 +82,7 @@ export const Slider = forwardRef(
               ...slots.mark
             },
             {
-              className: getCN('mark'),
+              className: cx(getCN('mark'), convertCSToClassName(cs?.mark)),
               style: style
             }
           );
@@ -101,7 +103,7 @@ export const Slider = forwardRef(
               ...slots.thumb,
             },
             {
-              className: getCN('thumb'),
+              className: cx(getCN('thumb'), convertCSToClassName(cs?.thumb)),
               style: style
             }
           );
