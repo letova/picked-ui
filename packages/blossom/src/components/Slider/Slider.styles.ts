@@ -11,7 +11,14 @@ export const getCS = ({ orientation, disabled }: SliderProps): SliderProps['cs']
       cursor: disabled ? 'default' : 'pointer',
     },
     rail: {
-
+      position: 'absolute',
+      display: 'block',
+      width: orientation === 'horizontal' ? '100%' : 'inherit',
+      height: orientation === 'horizontal' ? 'inherit' : '100%',
+      left: orientation === 'horizontal' ? undefined : '50%',
+      top: orientation === 'horizontal' ? '50%' : undefined,
+      transform: orientation === 'horizontal' ? 'translateY(-50%)' : 'translateX(-50%)',
+      opacity: 0.5,
     },
     track: {
 
