@@ -4,6 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Add } from '../../../iconComponents/Add';
 
 import { Button, ButtonProps } from '../index';
+import { Switch } from '../../Switch';
 
 const meta = {
   title: 'Components/Button',
@@ -21,6 +22,17 @@ type Story = StoryObj<typeof meta>;
 export const Base: Story = {
   args: {
     children: 'Button',
+  },
+};
+
+export const States: Story = {
+  render: () => {
+    return (
+      <div style={{ display: 'flex', gap: '16px' }}>
+        <Button>Enabled</Button>
+        <Button disabled>Disabled</Button>
+      </div>
+    );
   },
 };
 
@@ -50,10 +62,10 @@ export const LoadingButton: Story = {
     };
 
     return (
-      <>
-        <button onClick={() => setLoading(!isLoading)}>Toggle loading state</button>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+        <Switch label="Toggle loading state" checked={isLoading} onValueChange={setLoading} />
         <Button slots={isLoading ? slots : undefined} {...args} />
-      </>
+      </div>
     );
   },
   args: {

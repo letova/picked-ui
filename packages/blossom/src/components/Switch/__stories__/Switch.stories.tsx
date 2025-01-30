@@ -38,9 +38,6 @@ export const States: Story = {
       </div>
     );
   },
-  args: {
-    label: 'Label',
-  },
 };
 
 const COLORS = ['primary', 'neutral', 'success', 'warning', 'danger'] as const;

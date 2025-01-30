@@ -30,6 +30,9 @@ export const getCS = ({ scale: s = 1, children, startDecorator, endDecorator }: 
       '&:active': {
         background: 'dimgray',
       },
+      '&:disabled': {
+        background: 'lightgray',
+      },
     }),
   };
 };
