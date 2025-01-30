@@ -65,8 +65,9 @@ export interface SliderProps {
   cs?: SliderCS;
   /**
    * Disabled slider
+   * @default false
    */
-  disabled: boolean;
+  disabled?: boolean;
   /**
    * The default value of the slider for not controlled component.
    */
