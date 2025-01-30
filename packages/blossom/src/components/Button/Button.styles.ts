@@ -1,3 +1,4 @@
+import { Colors } from '../../constants';
 import { getPxSize } from '../../utils';
 
 import { ButtonProps } from './Button.types';
@@ -7,7 +8,7 @@ export const getCS = ({ scale: s = 1, children, startDecorator, endDecorator }: 
   const smallRightPadding = endDecorator || (startDecorator && !children);
 
   return {
-    container: ({ disabled }) => ({
+    container: ({ disabled, focusVisible }) => ({
       display: 'flex',
       columnGap: getPxSize(4, s),
       alignItems: 'center',
@@ -18,6 +19,7 @@ export const getCS = ({ scale: s = 1, children, startDecorator, endDecorator }: 
       )}`,
       border: 'none',
       borderRadius: getPxSize(6, s),
+      boxSizing: 'border-box',
       fontFamily: `'Arial', sans-serif`,
       fontWeight: 600,
       fontSize: getPxSize(14, s),
@@ -33,6 +35,10 @@ export const getCS = ({ scale: s = 1, children, startDecorator, endDecorator }: 
       '&:disabled': {
         background: 'lightgray',
       },
+
+      ...(focusVisible
+        ? { outline: `${getPxSize(2, s)} solid ${Colors.ScienceBlue}`, outlineOffset: getPxSize(2, s) }
+        : undefined),
     }),
   };
 };
