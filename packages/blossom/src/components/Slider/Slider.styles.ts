@@ -21,13 +21,34 @@ export const getCS = ({ orientation, disabled }: SliderProps): SliderProps['cs']
       opacity: 0.5,
     },
     track: {
-
+      position: 'absolute',
+      display: 'block',
+      height: orientation === 'horizontal' ? 'inherit' : undefined,
+      width: orientation === 'horizontal' ? undefined : 'inherit',
+      left: orientation === 'horizontal' ? undefined : '50%',
+      top: orientation === 'horizontal' ? '50%' : undefined,
+      transform: orientation === 'horizontal' ? 'translateY(-50%)' : 'translateX(-50%)',
+      opacity: 0.9,
     },
     mark: {
-
+      position: 'absolute',
+      display: 'block',
+      width: '2px',
+      height: '2px',
+      borderRadius: '2px',
+      left: orientation === 'horizontal' ? undefined : '50%',
+      top: orientation === 'horizontal' ? '50%' : undefined,
+      transform: orientation === 'horizontal' ? 'translateY(-50%)' : 'translateX(-50%)',
     },
     thumb: {
-
+      position: 'absolute',
+      display: 'block',
+      width: '15px',
+      height: '15px',
+      borderRadius: '15px',
+      left: orientation === 'horizontal' ? undefined : '50%',
+      top: orientation === 'horizontal' ? '50%' : undefined,
+      transform: orientation === 'horizontal' ? 'translate(-50%, -50%)' : 'translateX(-50%, 50%)',
     },
   };
 };
