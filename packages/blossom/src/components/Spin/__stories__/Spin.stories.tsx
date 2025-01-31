@@ -19,7 +19,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {};
 
-const SIZES = ['xs', 's', 'm'] as const;
+const SIZES = ['xs', 's', 'm', 'l', 'xl'] as const;
 
 export const Sizes: Story = {
   render: () => {

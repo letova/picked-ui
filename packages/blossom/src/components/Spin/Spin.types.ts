@@ -16,6 +16,6 @@ export interface SpinProps {
    * The size of the component
    * @default s
    */
-  size?: 'xs' | 's' | 'm' | number;
+  size?: 'xs' | 's' | 'm' | 'l' | 'xl' | number;
   type?: 'circle' | 'dots';
 }

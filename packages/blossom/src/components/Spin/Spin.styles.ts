@@ -17,6 +17,8 @@ export const getCS = ({ scale: s = 1, size = 's', color = 'dimgray', cs }: SpinP
     {
       container: {
         display: 'inline-block',
+        width: getPxSize(progressSize, s),
+        height: getPxSize(progressSize, s),
         boxSizing: 'border-box',
       },
       progress: {

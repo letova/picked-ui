@@ -54,14 +54,16 @@ export const LoadingButton: Story = {
   render: (args) => {
     const [isLoading, setLoading] = useState(false);
 
-    const slots: ButtonProps['slots'] = {
-      startDecorator: { component: Spin, props: { size: 'xs', color: '#fff' } },
-    };
+    const startDecorator: ButtonProps['startDecorator'] = isLoading ? (
+      <Spin size={18} color="#fff" />
+    ) : (
+      <Add fill="currentColor" width={18} height={18} />
+    );
 
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
         <Switch label="Toggle loading state" checked={isLoading} onValueChange={setLoading} />
-        <Button slots={isLoading ? slots : undefined} {...args} />
+        <Button startDecorator={startDecorator} {...args} />
       </div>
     );
   },
