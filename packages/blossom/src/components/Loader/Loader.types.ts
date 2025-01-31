@@ -11,5 +11,10 @@ export interface LoaderProps {
    * @default 1
    */
   scale?: number;
+  /**
+   * The size of the component
+   * @default s
+   */
+  size?: 'xs' | 's' | 'm' | number;
   variant?: 'circle' | 'dots';
 }

@@ -2,32 +2,37 @@ import { deepMergeCS, getPxSize } from '../../utils';
 
 import { LoaderProps } from './Loader.types';
 
+const SIZES_MAP = {
+  xs: 24,
+  s: 32,
+  m: 40,
+};
+
 export const getCS = ({
   // variant = 'circle',
   scale: s = 1,
+  size = 's',
   cs,
 }: LoaderProps): LoaderProps['cs'] => {
+  const progressSize = typeof size === 'number' ? size : SIZES_MAP[size];
+
   return deepMergeCS(
     {
       container: {
         display: 'inline-block',
+        boxSizing: 'border-box',
       },
       progress: {
         display: 'inline-block',
-        width: getPxSize(32, s),
-        height: getPxSize(32, s),
+        width: getPxSize(progressSize, s),
+        height: getPxSize(progressSize, s),
 
         border: `${getPxSize(2, s)} solid dimgray`,
-        borderBottom: 'white',
+        borderBottomColor: 'transparent',
         borderRadius: '50%',
         boxSizing: 'border-box',
 
         animation: 'rotation 1s linear infinite',
-
-        '&::before, &::after': {
-          display: 'none',
-          animation: 'none',
-        },
 
         '@keyframes rotation': {
           '0%': {

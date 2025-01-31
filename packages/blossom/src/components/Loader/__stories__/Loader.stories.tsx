@@ -16,3 +16,17 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {};
+
+const SIZES = ['xs', 's', 'm'] as const;
+
+export const Sizes: Story = {
+  render: () => {
+    return (
+      <div style={{ display: 'flex', gap: '32px' }}>
+        {SIZES.map((size) => (
+          <Loader key={size} size={size} />
+        ))}
+      </div>
+    );
+  },
+};
