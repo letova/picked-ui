@@ -1,6 +1,6 @@
 import { deepMergeCS, getPxSize } from '../../utils';
 
-import { LoaderProps } from './Loader.types';
+import { SpinProps } from './Spin.types';
 
 const SIZES_MAP = {
   xs: 24,
@@ -13,7 +13,7 @@ export const getCS = ({
   scale: s = 1,
   size = 's',
   cs,
-}: LoaderProps): LoaderProps['cs'] => {
+}: SpinProps): SpinProps['cs'] => {
   const progressSize = typeof size === 'number' ? size : SIZES_MAP[size];
 
   return deepMergeCS(

@@ -5,6 +5,7 @@ import { Add } from '../../../iconComponents/Add';
 
 import { Button, ButtonProps } from '../index';
 import { Switch } from '../../Switch';
+import { Spin } from '../../Spin';
 
 const meta = {
   title: 'Components/Button',
@@ -49,16 +50,12 @@ export const IconButton: Story = {
   },
 };
 
-const Loader = () => {
-  return <div>...</div>;
-};
-
 export const LoadingButton: Story = {
   render: (args) => {
     const [isLoading, setLoading] = useState(false);
 
     const slots: ButtonProps['slots'] = {
-      startDecorator: { component: Loader },
+      startDecorator: { component: Spin, props: { size: 20 } },
     };
 
     return (

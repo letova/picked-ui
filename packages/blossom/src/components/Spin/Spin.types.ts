@@ -1,6 +1,6 @@
 import { CSSObject } from '@emotion/css';
 
-export interface LoaderProps {
+export interface SpinProps {
   className?: string;
   cs?: {
     container?: CSSObject;
@@ -16,5 +16,5 @@ export interface LoaderProps {
    * @default s
    */
   size?: 'xs' | 's' | 'm' | number;
-  variant?: 'circle' | 'dots';
+  type?: 'circle' | 'dots';
 }

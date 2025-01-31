@@ -1,15 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Loader } from '../index';
+import { getPxSize } from '../../../utils';
+
+import { Spin } from '../index';
 
 const meta = {
-  title: 'Components/Loader',
-  component: Loader,
+  title: 'Components/Spin',
+  component: Spin,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
-} satisfies Meta<typeof Loader>;
+} satisfies Meta<typeof Spin>;
 
 export default meta;
 
@@ -22,9 +24,9 @@ const SIZES = ['xs', 's', 'm'] as const;
 export const Sizes: Story = {
   render: () => {
     return (
-      <div style={{ display: 'flex', gap: '32px' }}>
+      <div style={{ display: 'flex', gap: getPxSize(32) }}>
         {SIZES.map((size) => (
-          <Loader key={size} size={size} />
+          <Spin key={size} size={size} />
         ))}
       </div>
     );
