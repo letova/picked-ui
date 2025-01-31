@@ -10,7 +10,7 @@ export const getCS = ({ scale: s = 1, children, startDecorator, endDecorator }: 
   return {
     container: ({ disabled, focusVisible }) => ({
       display: 'flex',
-      columnGap: getPxSize(4, s),
+      columnGap: getPxSize(6, s),
       alignItems: 'center',
       minHeight: getPxSize(32, s),
       padding: `${getPxSize(4, s)} ${getPxSize(smallRightPadding ? 8 : 16, s)} ${getPxSize(4, s)} ${getPxSize(

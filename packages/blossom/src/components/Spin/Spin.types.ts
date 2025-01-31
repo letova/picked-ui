@@ -2,6 +2,7 @@ import { CSSObject } from '@emotion/css';
 
 export interface SpinProps {
   className?: string;
+  color?: string;
   cs?: {
     container?: CSSObject;
     progress?: CSSObject;

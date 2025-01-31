@@ -55,7 +55,7 @@ export const LoadingButton: Story = {
     const [isLoading, setLoading] = useState(false);
 
     const slots: ButtonProps['slots'] = {
-      startDecorator: { component: Spin, props: { size: 20 } },
+      startDecorator: { component: Spin, props: { size: 'xs', color: '#fff' } },
     };
 
     return (
@@ -66,6 +66,6 @@ export const LoadingButton: Story = {
     );
   },
   args: {
-    children: 'button',
+    children: 'Button',
   },
 };

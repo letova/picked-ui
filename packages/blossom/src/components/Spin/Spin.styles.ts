@@ -3,17 +3,14 @@ import { deepMergeCS, getPxSize } from '../../utils';
 import { SpinProps } from './Spin.types';
 
 const SIZES_MAP = {
-  xs: 24,
-  s: 32,
-  m: 40,
+  xs: 16,
+  s: 24,
+  m: 32,
+  l: 40,
+  xl: 48,
 };
 
-export const getCS = ({
-  // variant = 'circle',
-  scale: s = 1,
-  size = 's',
-  cs,
-}: SpinProps): SpinProps['cs'] => {
+export const getCS = ({ scale: s = 1, size = 's', color = 'dimgray', cs }: SpinProps): SpinProps['cs'] => {
   const progressSize = typeof size === 'number' ? size : SIZES_MAP[size];
 
   return deepMergeCS(
@@ -27,7 +24,7 @@ export const getCS = ({
         width: getPxSize(progressSize, s),
         height: getPxSize(progressSize, s),
 
-        border: `${getPxSize(2, s)} solid dimgray`,
+        border: `${getPxSize(2, s)} solid ${color}`,
         borderBottomColor: 'transparent',
         borderRadius: '50%',
         boxSizing: 'border-box',
