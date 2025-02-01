@@ -52,6 +52,40 @@ export const States: Story = {
   },
 };
 
+const COLORS = ['primary', 'neutral', 'success', 'warning', 'danger'] as const;
+
+export const Variants: Story = {
+  render: () => {
+    const containerStyle = { display: 'flex', gap: '16px', paddingBottom: '16px' };
+
+    return (
+      <>
+        <div style={containerStyle}>
+          {COLORS.map((color) => (
+            <Button key={color} variant="soft" color={color}>
+              {color}
+            </Button>
+          ))}
+        </div>
+        <div style={containerStyle}>
+          {COLORS.map((color) => (
+            <Button key={color} color={color}>
+              {color}
+            </Button>
+          ))}
+        </div>
+        <div style={containerStyle}>
+          {COLORS.map((color) => (
+            <Button key={color} variant="outlined" color={color}>
+              {color}
+            </Button>
+          ))}
+        </div>
+      </>
+    );
+  },
+};
+
 export const WithIcon: Story = {
   args: {
     startDecorator: <Add fill="currentColor" width={18} height={18} />,

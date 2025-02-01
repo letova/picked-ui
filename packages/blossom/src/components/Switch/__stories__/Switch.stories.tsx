@@ -42,7 +42,7 @@ export const States: Story = {
 
 const COLORS = ['primary', 'neutral', 'success', 'warning', 'danger'] as const;
 
-export const Colors: Story = {
+export const Variants: Story = {
   render: () => {
     const containerStyle = { display: 'flex', gap: '16px', paddingBottom: '16px' };
 

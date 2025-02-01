@@ -3,6 +3,39 @@ import { getPxSize } from '../../utils';
 
 import { ButtonProps } from './Button.types';
 
+const VARIANT_COLORS_MAP = {
+  soft: {
+    bg: {
+      normal: 'lightgray',
+      hover: 'darkgray',
+      active: 'dimgray',
+      pressed: 'dimgray',
+      disabled: 'lightgray',
+    },
+    text: 'white',
+  },
+  solid: {
+    bg: {
+      normal: 'gray',
+      hover: 'darkgray',
+      active: 'dimgray',
+      pressed: 'dimgray',
+      disabled: 'lightgray',
+    },
+    text: 'white',
+  },
+  outlined: {
+    bg: {
+      normal: 'transparent',
+      hover: 'darkgray',
+      active: 'dimgray',
+      pressed: 'dimgray',
+      disabled: 'lightgray',
+    },
+    text: 'black',
+  },
+};
+
 const getBorderRadius = (shape: ButtonProps['shape'], height: number) => {
   switch (shape) {
     case 'brick': {
@@ -23,6 +56,7 @@ const getBorderRadius = (shape: ButtonProps['shape'], height: number) => {
 };
 
 export const getCS = ({
+  variant = 'solid',
   scale: s = 1,
   shape = 'round',
   children,
@@ -34,6 +68,8 @@ export const getCS = ({
 
   const borderRadius = getBorderRadius(shape, 32);
 
+  const colors = VARIANT_COLORS_MAP[variant];
+
   return {
     container: ({ pressed, disabled, focusVisible }) => ({
       display: 'flex',
@@ -44,24 +80,24 @@ export const getCS = ({
         smallLeftPadding ? 8 : 16,
         s,
       )}`,
-      border: 'none',
+      border: variant === 'outlined' ? `${getPxSize(1, s)} solid black` : 'none',
       borderRadius: getPxSize(borderRadius, s),
       boxSizing: 'border-box',
       fontFamily: `'Arial', sans-serif`,
       fontWeight: 600,
       fontSize: getPxSize(14, s),
-      background: pressed ? 'dimgray' : 'gray',
-      color: 'white',
+      background: pressed ? colors.bg.pressed : colors.bg.normal,
+      color: colors.text,
       cursor: disabled ? 'default' : 'pointer',
 
       '&:hover': {
-        background: 'darkgray',
+        background: colors.bg.hover,
       },
       '&:active': {
-        background: 'dimgray',
+        background: colors.bg.active,
       },
       '&:disabled': {
-        background: 'lightgray',
+        background: colors.bg.disabled,
       },
 
       ...(focusVisible
