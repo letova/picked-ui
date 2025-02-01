@@ -150,6 +150,7 @@ export const TrackContent: Story = {
 
 /**
  * Story template object prop containing JSX hangs the browser
+ * https://github.com/storybookjs/storybook/issues/19575
  * https://github.com/storybookjs/storybook/issues/17720
  * https://github.com/storybookjs/builder-vite/issues/493
  */

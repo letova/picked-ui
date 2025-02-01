@@ -45,6 +45,7 @@ export const States: Story = {
     return (
       <div style={{ display: 'flex', gap: '16px' }}>
         <Button>Enabled</Button>
+        <Button pressed>Pressed</Button>
         <Button disabled>Disabled</Button>
       </div>
     );

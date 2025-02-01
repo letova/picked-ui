@@ -20,7 +20,7 @@ export const Button = forwardRef(
       startDecorator,
       endDecorator,
       cs,
-      highlighted = false,
+      pressed = false,
       disabled = false,
       onFocus,
       onBlur,
@@ -36,7 +36,7 @@ export const Button = forwardRef(
     const state = {
       focus: hasFocus,
       focusVisible: hasFocusVisible,
-      highlighted,
+      pressed,
       disabled,
     };
 
@@ -57,7 +57,7 @@ export const Button = forwardRef(
         className={cx(
           getCN(),
           {
-            [getMCN('highlighted')]: highlighted,
+            [getMCN('pressed')]: pressed,
             [getMCN('disabled')]: disabled,
             [getMCN('focus')]: hasFocus,
             [getMCN('focusVisible')]: hasFocusVisible,

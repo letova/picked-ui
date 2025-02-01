@@ -15,5 +15,5 @@ export interface ButtonProps extends OmitedButtonHTMLAttributes {
     endDecorator?: Slot;
   };
   cs?: ButtonCS;
-  highlighted?: boolean;
+  pressed?: boolean;
 }

@@ -35,7 +35,7 @@ export const getCS = ({
   const borderRadius = getBorderRadius(shape, 32);
 
   return {
-    container: ({ disabled, focusVisible }) => ({
+    container: ({ pressed, disabled, focusVisible }) => ({
       display: 'flex',
       columnGap: getPxSize(6, s),
       alignItems: 'center',
@@ -50,7 +50,7 @@ export const getCS = ({
       fontFamily: `'Arial', sans-serif`,
       fontWeight: 600,
       fontSize: getPxSize(14, s),
-      background: 'gray',
+      background: pressed ? 'dimgray' : 'gray',
       color: 'white',
       cursor: disabled ? 'default' : 'pointer',
 
