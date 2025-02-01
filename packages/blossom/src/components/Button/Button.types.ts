@@ -23,4 +23,7 @@ export interface ButtonProps extends BaseButtonProps {
    * @default auto
    */
   width?: 'auto' | 'max';
+
+  pressed?: boolean;
+  //aria-pressed
 }

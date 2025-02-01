@@ -26,6 +26,20 @@ export const Base: Story = {
   },
 };
 
+const SHAPES = ['brick', 'round', 'fully-round'] as const;
+
+export const Shapes: Story = {
+  render: () => {
+    return (
+      <div style={{ display: 'flex', gap: '16px' }}>
+        {SHAPES.map((shape) => {
+          return <Button shape={shape}>{shape}</Button>;
+        })}
+      </div>
+    );
+  },
+};
+
 export const States: Story = {
   render: () => {
     return (

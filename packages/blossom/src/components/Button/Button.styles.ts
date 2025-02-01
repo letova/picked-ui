@@ -3,9 +3,36 @@ import { getPxSize } from '../../utils';
 
 import { ButtonProps } from './Button.types';
 
-export const getCS = ({ scale: s = 1, children, startDecorator, endDecorator }: ButtonProps): ButtonProps['cs'] => {
+const getBorderRadius = (shape: ButtonProps['shape'], height: number) => {
+  switch (shape) {
+    case 'brick': {
+      return 0;
+    }
+
+    case 'round': {
+      return 6;
+    }
+
+    case 'fully-round': {
+      return height;
+    }
+
+    default:
+      return 0;
+  }
+};
+
+export const getCS = ({
+  scale: s = 1,
+  shape = 'round',
+  children,
+  startDecorator,
+  endDecorator,
+}: ButtonProps): ButtonProps['cs'] => {
   const smallLeftPadding = startDecorator || (endDecorator && !children);
   const smallRightPadding = endDecorator || (startDecorator && !children);
+
+  const borderRadius = getBorderRadius(shape, 32);
 
   return {
     container: ({ disabled, focusVisible }) => ({
@@ -18,7 +45,7 @@ export const getCS = ({ scale: s = 1, children, startDecorator, endDecorator }: 
         s,
       )}`,
       border: 'none',
-      borderRadius: getPxSize(6, s),
+      borderRadius: getPxSize(borderRadius, s),
       boxSizing: 'border-box',
       fontFamily: `'Arial', sans-serif`,
       fontWeight: 600,
@@ -26,6 +53,7 @@ export const getCS = ({ scale: s = 1, children, startDecorator, endDecorator }: 
       background: 'gray',
       color: 'white',
       cursor: disabled ? 'default' : 'pointer',
+
       '&:hover': {
         background: 'darkgray',
       },
