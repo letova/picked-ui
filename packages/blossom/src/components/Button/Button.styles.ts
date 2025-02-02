@@ -36,6 +36,27 @@ const VARIANT_COLORS_MAP = {
   },
 };
 
+const SIZES_MAP = {
+  xs: {
+    minHeight: 28,
+    paddingX: { small: 6, normal: 12 },
+    paddingY: 2,
+    fontSize: 12,
+  },
+  s: {
+    minHeight: 32,
+    paddingX: { small: 8, normal: 16 },
+    paddingY: 4,
+    fontSize: 14,
+  },
+  m: {
+    minHeight: 36,
+    paddingX: { small: 10, normal: 20 },
+    paddingY: 6,
+    fontSize: 16,
+  },
+};
+
 const getBorderRadius = (shape: ButtonProps['shape'], height: number) => {
   switch (shape) {
     case 'brick': {
@@ -58,6 +79,7 @@ const getBorderRadius = (shape: ButtonProps['shape'], height: number) => {
 export const getCS = ({
   variant = 'solid',
   scale: s = 1,
+  size = 's',
   shape = 'round',
   children,
   startDecorator,
@@ -69,15 +91,19 @@ export const getCS = ({
   const borderRadius = getBorderRadius(shape, 32);
 
   const colors = VARIANT_COLORS_MAP[variant];
+  const sizes = SIZES_MAP[size];
 
   return {
     container: ({ pressed, disabled, focusVisible }) => ({
       display: 'flex',
       columnGap: getPxSize(6, s),
       alignItems: 'center',
-      minHeight: getPxSize(32, s),
-      padding: `${getPxSize(4, s)} ${getPxSize(smallRightPadding ? 8 : 16, s)} ${getPxSize(4, s)} ${getPxSize(
-        smallLeftPadding ? 8 : 16,
+      minHeight: getPxSize(sizes.minHeight, s),
+      padding: `${getPxSize(sizes.paddingY, s)} ${getPxSize(
+        smallRightPadding ? sizes.paddingX.small : sizes.paddingX.normal,
+        s,
+      )} ${getPxSize(sizes.paddingY, s)} ${getPxSize(
+        smallLeftPadding ? sizes.paddingX.small : sizes.paddingX.normal,
         s,
       )}`,
       border: variant === 'outlined' ? `${getPxSize(1, s)} solid black` : 'none',
@@ -85,7 +111,7 @@ export const getCS = ({
       boxSizing: 'border-box',
       fontFamily: `'Arial', sans-serif`,
       fontWeight: 600,
-      fontSize: getPxSize(14, s),
+      fontSize: getPxSize(sizes.fontSize, s),
       background: pressed ? colors.bg.pressed : colors.bg.normal,
       color: colors.text,
       cursor: disabled ? 'default' : 'pointer',

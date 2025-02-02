@@ -52,6 +52,24 @@ export const States: Story = {
   },
 };
 
+const SIZES = ['xs', 's', 'm'] as const;
+
+export const Sizes: Story = {
+  render: () => {
+    const containerStyle = { display: 'flex', gap: '32px', alignItems: 'center' };
+
+    return (
+      <div style={containerStyle}>
+        {SIZES.map((size) => (
+          <Button key={size} size={size}>
+            {size + ' button'}
+          </Button>
+        ))}
+      </div>
+    );
+  },
+};
+
 const COLORS = ['primary', 'neutral', 'success', 'warning', 'danger'] as const;
 
 export const Variants: Story = {
