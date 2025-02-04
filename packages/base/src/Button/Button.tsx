@@ -1,7 +1,8 @@
 import { cx } from '@emotion/css';
-import { ForwardedRef, forwardRef, useState } from 'react';
+import { ForwardedRef, forwardRef } from 'react';
 
-import { ClassNameGenerator, getElementFromSlot } from '../utils';
+import { useFocus } from '../hooks';
+import { ClassNameGenerator, convertCSToClassName, getElementFromSlot } from '../utils';
 
 import { ButtonProps } from './Button.types';
 
@@ -18,26 +19,35 @@ export const Button = forwardRef(
       slots = {},
       startDecorator,
       endDecorator,
-      highlighted = false,
+      cs,
+      pressed = false,
       disabled = false,
+      onFocus,
+      onBlur,
       ...restProps
     }: ButtonProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ) => {
-    const [hasFocus, setFocus] = useState(false);
+    const { hasFocus, hasFocusVisible, ...focusCallbacks } = useFocus({
+      onFocus,
+      onBlur,
+    });
+
+    const state = {
+      focus: hasFocus,
+      focusVisible: hasFocusVisible,
+      pressed,
+      disabled,
+    };
 
     const startDecoratorElement = getElementFromSlot(slots.startDecorator, {
       className: getCN('startDecorator'),
-      focus: hasFocus,
-      highlighted,
-      disabled,
+      ...state,
     });
 
     const endDecoratorElement = getElementFromSlot(slots.endDecorator, {
       className: getCN('endDecorator'),
-      focus: hasFocus,
-      highlighted,
-      disabled,
+      ...state,
     });
 
     return (
@@ -46,12 +56,17 @@ export const Button = forwardRef(
         ref={ref}
         className={cx(
           getCN(),
-          { [getMCN('focus')]: hasFocus, [getMCN('highlighted')]: highlighted, [getMCN('disabled')]: disabled },
+          {
+            [getMCN('pressed')]: pressed,
+            [getMCN('disabled')]: disabled,
+            [getMCN('focus')]: hasFocus,
+            [getMCN('focusVisible')]: hasFocusVisible,
+          },
+          convertCSToClassName(cs?.container, state),
           className,
         )}
         disabled={disabled}
-        onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
+        {...focusCallbacks}
       >
         {startDecoratorElement || startDecorator}
         {children}

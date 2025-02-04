@@ -16,6 +16,7 @@ export interface SwitchProps extends BaseSwitchProps {
    * @default 1
    */
   scale?: number;
+  skidding?: number;
   /**
    * The size of the component
    * @default s

@@ -38,14 +38,11 @@ export const States: Story = {
       </div>
     );
   },
-  args: {
-    label: 'Label',
-  },
 };
 
 const COLORS = ['primary', 'neutral', 'success', 'warning', 'danger'] as const;
 
-export const Colors: Story = {
+export const Variants: Story = {
   render: () => {
     const containerStyle = { display: 'flex', gap: '16px', paddingBottom: '16px' };
 
@@ -87,6 +84,51 @@ export const Sizes: Story = {
   },
 };
 
+const customSizeArgsMap = {
+  first: {
+    label: 'Material UI',
+    thumbSize: 22,
+    trackHeight: 14,
+    cs: {
+      thumb: { backgroundColor: 'darkgray' },
+    },
+  },
+  second: {
+    label: 'Strapi',
+    thumbSize: 16,
+    trackHeight: 24,
+    trackWidth: 40,
+  },
+  third: {
+    variant: 'outlined',
+    label: "Microsoft's Fluent UI",
+    thumbSize: 12,
+    trackHeight: 18,
+    trackWidth: 38,
+  } as const,
+};
+
+export const CustomSize: Story = {
+  render: () => {
+    const [checked, setChecked] = useState(false);
+
+    const containerStyle = { display: 'flex', gap: '16px' };
+
+    return (
+      <div style={containerStyle}>
+        <Switch {...customSizeArgsMap.second} />
+        <Switch {...customSizeArgsMap.first} />
+        <Switch
+          {...customSizeArgsMap.third}
+          variant={checked ? 'solid' : 'outlined'}
+          checked={checked}
+          onValueChange={setChecked}
+        />
+      </div>
+    );
+  },
+};
+
 const TrackContentFC = () => {
   return (
     <>
@@ -108,6 +150,7 @@ export const TrackContent: Story = {
 
 /**
  * Story template object prop containing JSX hangs the browser
+ * https://github.com/storybookjs/storybook/issues/19575
  * https://github.com/storybookjs/storybook/issues/17720
  * https://github.com/storybookjs/builder-vite/issues/493
  */
@@ -126,7 +169,7 @@ const SwitchWithThumbChidren = ({ checked, ...restProps }: SwitchProps) => {
         thumb: {
           props: {
             // The problem is here
-            children: <span>{checked ? 'O' : 'I'}</span>,
+            children: <span style={{ color: 'gray' }}>{checked ? '0' : 'I'}</span>,
           },
         },
       }}
@@ -165,6 +208,7 @@ export const RippleEffect: Story = {
   args: {
     size: 'm',
     thumbSize: 38,
+    skidding: 7,
     cs: {
       container: {
         '&:hover .Switch-thumb': {
