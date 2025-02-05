@@ -38,14 +38,11 @@ export const States: Story = {
       </div>
     );
   },
-  args: {
-    label: 'Label',
-  },
 };
 
 const COLORS = ['primary', 'neutral', 'success', 'warning', 'danger'] as const;
 
-export const Colors: Story = {
+export const Variants: Story = {
   render: () => {
     const containerStyle = { display: 'flex', gap: '16px', paddingBottom: '16px' };
 
@@ -153,6 +150,7 @@ export const TrackContent: Story = {
 
 /**
  * Story template object prop containing JSX hangs the browser
+ * https://github.com/storybookjs/storybook/issues/19575
  * https://github.com/storybookjs/storybook/issues/17720
  * https://github.com/storybookjs/builder-vite/issues/493
  */
