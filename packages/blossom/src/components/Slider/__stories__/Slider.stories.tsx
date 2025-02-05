@@ -17,6 +17,13 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+const CONTAINER_STYLE_COLUMN_FLEX: CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '16px',
+  width: '400px',
+}
+
 const VALUE = 20;
 
 export const Horizontal: Story = {
@@ -45,15 +52,8 @@ export const Vertical: Story = {
 
 export const States: Story = {
   render: () => {
-    const containerStyle: CSSProperties = {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '16px',
-      width: '400px',
-    };
-
     return (
-      <div style={containerStyle}>
+      <div style={CONTAINER_STYLE_COLUMN_FLEX}>
         <Slider value={VALUE} />
         <Slider disabled value={VALUE} />
       </div>
@@ -63,15 +63,8 @@ export const States: Story = {
 
 export const Colors: Story = {
   render: () => {
-    const containerStyle: CSSProperties = {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '16px',
-      width: '400px',
-    };
-
     return (
-      <div style={containerStyle}>
+      <div style={CONTAINER_STYLE_COLUMN_FLEX}>
         <Slider color="primary" value={VALUE} />
         <Slider color="neutral" value={VALUE} />
         <Slider color="success" value={VALUE} />
@@ -84,15 +77,8 @@ export const Colors: Story = {
 
 export const Sizes: Story = {
   render: () => {
-    const containerStyle: CSSProperties = {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '16px',
-      width: '400px',
-    };
-
     return (
-      <div style={containerStyle}>
+      <div style={CONTAINER_STYLE_COLUMN_FLEX}>
         <Slider value={VALUE} size="xs" />
         <Slider value={VALUE} size="s" />
         <Slider value={VALUE} size="m" />
@@ -100,3 +86,31 @@ export const Sizes: Story = {
     );
   },
 };
+
+export const Multiple: Story = {
+  render: () => {
+    const containerStyle = { width: '400px' };
+
+    return (
+      <div style={containerStyle}>
+        <Slider value={[20, 50]} />
+      </div>
+    );
+  },
+};
+
+export const WithMarks = {
+  render: () => {
+    const containerStyle = { width: '400px' };
+
+    return (
+      <div style={containerStyle}>
+        <Slider
+          marks={true}
+          step={20}
+          value={VALUE}
+        />
+      </div>
+    );
+  },
+}

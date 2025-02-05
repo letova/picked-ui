@@ -38,7 +38,7 @@ const getNewValue = (params: ThumbNewValueParams, percent: number): number => {
     }
 }
 
-export const getThumbNewValue = (params: ThumbNewValueParams) => {
+export const getThumbNewValue = (params: ThumbNewValueParams): number => {
     const { min, max, orientation, sliderDOMRect, thumbCoords } = params;
 
     const percent = getPercent(orientation, sliderDOMRect, thumbCoords);

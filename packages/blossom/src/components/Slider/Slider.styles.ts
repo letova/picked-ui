@@ -65,7 +65,7 @@ export const getCS = ({
       borderRadius: '2px',
       left: orientation === 'horizontal' ? undefined : '50%',
       top: orientation === 'horizontal' ? '50%' : undefined,
-      transform: orientation === 'horizontal' ? 'translateY(-50%)' : 'translateX(-50%)',
+      transform: orientation === 'horizontal' ? 'translate(-50%, -50%)' : 'translate(-50%, 50%)',
       backgroundColor: disabled ? disabledPalette.bg : palette.bg.normal,
     },
     thumb: {
