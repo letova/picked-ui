@@ -17,13 +17,15 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+const VALUE = 20;
+
 export const Horizontal: Story = {
   render: () => {
     const containerStyle = { width: '400px' };
 
     return (
       <div style={containerStyle}>
-        <Slider orientation="horizontal" value={20} />
+        <Slider orientation="horizontal" value={VALUE} />
       </div>
     );
   },
@@ -35,7 +37,7 @@ export const Vertical: Story = {
 
     return (
       <div style={containerStyle}>
-        <Slider orientation="vertical" value={20} />
+        <Slider orientation="vertical" value={VALUE} />
       </div>
     );
   },
@@ -52,8 +54,8 @@ export const States: Story = {
 
     return (
       <div style={containerStyle}>
-        <Slider orientation="horizontal" value={20} />
-        <Slider orientation="horizontal" disabled value={20} />
+        <Slider value={VALUE} />
+        <Slider disabled value={VALUE} />
       </div>
     );
   },
@@ -70,11 +72,30 @@ export const Colors: Story = {
 
     return (
       <div style={containerStyle}>
-        <Slider orientation="horizontal" color="primary" value={20} />
-        <Slider orientation="horizontal" color="neutral" value={20} />
-        <Slider orientation="horizontal" color="success" value={20} />
-        <Slider orientation="horizontal" color="warning" value={20} />
-        <Slider orientation="horizontal" color="danger" value={20} />
+        <Slider color="primary" value={VALUE} />
+        <Slider color="neutral" value={VALUE} />
+        <Slider color="success" value={VALUE} />
+        <Slider color="warning" value={VALUE} />
+        <Slider color="danger" value={VALUE} />
+      </div>
+    );
+  },
+};
+
+export const Sizes: Story = {
+  render: () => {
+    const containerStyle: CSSProperties = {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px',
+      width: '400px',
+    };
+
+    return (
+      <div style={containerStyle}>
+        <Slider value={VALUE} size="xs" />
+        <Slider value={VALUE} size="s" />
+        <Slider value={VALUE} size="m" />
       </div>
     );
   },

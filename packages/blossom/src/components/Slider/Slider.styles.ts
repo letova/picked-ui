@@ -1,11 +1,28 @@
+import { getPxSize } from '../../utils';
+
 import { PALETTE_FOR_DISABLED_MAP, PALETTE_MAP } from './Slider.palettes';
 import { SliderProps } from './Slider.types';
 
+const SIZES_MAP = {
+  xs: {
+    thumbSize: 14,
+  },
+  s: {
+    thumbSize: 16,
+  },
+  m: {
+    thumbSize: 18,
+  },
+};
+
 export const getCS = ({
-  orientation,
   disabled,
-  color = 'primary'
+  orientation = 'horizontal',
+  color = 'primary',
+  scale = 1,
+  size = 's',
 }: SliderProps): SliderProps['cs'] => {
+  const sizes = SIZES_MAP[size];
   const palette = PALETTE_MAP[color];
   const disabledPalette = PALETTE_FOR_DISABLED_MAP;
 
@@ -54,9 +71,9 @@ export const getCS = ({
     thumb: {
       position: 'absolute',
       display: 'block',
-      width: '15px',
-      height: '15px',
-      borderRadius: '15px',
+      width: getPxSize(sizes.thumbSize, scale),
+      height: getPxSize(sizes.thumbSize, scale),
+      borderRadius: getPxSize(sizes.thumbSize, scale),
       left: orientation === 'horizontal' ? undefined : '50%',
       top: orientation === 'horizontal' ? '50%' : undefined,
       transform: orientation === 'horizontal' ? 'translate(-50%, -50%)' : 'translate(-50%, 50%)',
