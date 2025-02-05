@@ -4,7 +4,7 @@ import { SliderProps } from './Slider.types';
 export const getCS = ({
   orientation,
   disabled,
-  color = 'neutral'
+  color = 'primary'
 }: SliderProps): SliderProps['cs'] => {
   const palette = PALETTE_MAP[color];
   const disabledPalette = PALETTE_FOR_DISABLED_MAP;
@@ -59,7 +59,7 @@ export const getCS = ({
       borderRadius: '15px',
       left: orientation === 'horizontal' ? undefined : '50%',
       top: orientation === 'horizontal' ? '50%' : undefined,
-      transform: orientation === 'horizontal' ? 'translate(-50%, -50%)' : 'translateX(-50%, 50%)',
+      transform: orientation === 'horizontal' ? 'translate(-50%, -50%)' : 'translate(-50%, 50%)',
       backgroundColor: disabled ? disabledPalette.bg : palette.bg.normal,
 
       '&:hover': {

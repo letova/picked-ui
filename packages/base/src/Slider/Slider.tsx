@@ -23,6 +23,7 @@ export const Slider = forwardRef(
       orientation = 'horizontal',
       slots = {},
       disabled = false,
+      value,
       cs,
     }: SliderProps,
     ref: ForwardedRef<HTMLSpanElement>
@@ -55,6 +56,7 @@ export const Slider = forwardRef(
       max,
       step,
       marks: userMarks,
+      value,
     });
 
     return (
