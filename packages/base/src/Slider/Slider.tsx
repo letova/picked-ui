@@ -38,6 +38,7 @@ export const Slider = forwardRef(
       step,
       marks: userMarks,
       value,
+      ref,
     });
 
     const railElement = getElementFromSlot(
