@@ -1,61 +1,8 @@
-import { Colors } from '../../constants';
 import { getPxSize } from '../../utils';
+import { Colors } from '../../constants';
 
 import { ButtonProps } from './Button.types';
-
-const VARIANT_COLORS_MAP = {
-  soft: {
-    bg: {
-      normal: Colors.Neutral100,
-      hover: Colors.Neutral200,
-      active: Colors.Neutral300,
-      pressed: Colors.Neutral300,
-      disabled: Colors.Neutral100,
-    },
-    border: {
-      normal: 'transparent',
-      hover: 'transparent',
-      active: 'transparent',
-      pressed: 'transparent',
-      disabled: 'transparent',
-    },
-    text: { normal: Colors.Neutral700, disabled: Colors.Neutral700 },
-  },
-  solid: {
-    bg: {
-      normal: Colors.Neutral500,
-      hover: Colors.Neutral600,
-      active: Colors.Neutral700,
-      pressed: Colors.Neutral800,
-      disabled: Colors.Neutral200,
-    },
-    border: {
-      normal: 'transparent',
-      hover: 'transparent',
-      active: 'transparent',
-      pressed: 'transparent',
-      disabled: 'transparent',
-    },
-    text: { normal: Colors.White, disabled: Colors.Neutral500 },
-  },
-  outlined: {
-    bg: {
-      normal: 'transparent',
-      hover: Colors.Neutral200,
-      active: Colors.Neutral300,
-      pressed: Colors.Neutral400,
-      disabled: Colors.Neutral200,
-    },
-    border: {
-      normal: Colors.Neutral800,
-      hover: Colors.Neutral200,
-      active: Colors.Neutral300,
-      pressed: Colors.Neutral400,
-      disabled: Colors.Neutral200,
-    },
-    text: { normal: Colors.Neutral800, disabled: Colors.Neutral500 },
-  },
-};
+import { COLORS_MAP } from './Button.palette';
 
 const SIZES_MAP = {
   xs: {
@@ -102,6 +49,7 @@ export const getCS = ({
   scale: s = 1,
   size = 's',
   shape = 'round',
+  color = 'primary',
   children,
   startDecorator,
   endDecorator,
@@ -111,7 +59,7 @@ export const getCS = ({
 
   const borderRadius = getBorderRadius(shape, 32);
 
-  const colors = VARIANT_COLORS_MAP[variant];
+  const colors = COLORS_MAP[variant][color];
   const sizes = SIZES_MAP[size];
 
   return {
