@@ -6,33 +6,54 @@ import { ButtonProps } from './Button.types';
 const VARIANT_COLORS_MAP = {
   soft: {
     bg: {
-      normal: 'lightgray',
-      hover: 'darkgray',
-      active: 'dimgray',
-      pressed: 'dimgray',
-      disabled: 'lightgray',
+      normal: Colors.Neutral100,
+      hover: Colors.Neutral200,
+      active: Colors.Neutral300,
+      pressed: Colors.Neutral300,
+      disabled: Colors.Neutral100,
     },
-    text: 'white',
+    border: {
+      normal: 'transparent',
+      hover: 'transparent',
+      active: 'transparent',
+      pressed: 'transparent',
+      disabled: 'transparent',
+    },
+    text: { normal: Colors.Neutral700, disabled: Colors.Neutral700 },
   },
   solid: {
     bg: {
-      normal: 'gray',
-      hover: 'darkgray',
-      active: 'dimgray',
-      pressed: 'dimgray',
-      disabled: 'lightgray',
+      normal: Colors.Neutral500,
+      hover: Colors.Neutral600,
+      active: Colors.Neutral700,
+      pressed: Colors.Neutral800,
+      disabled: Colors.Neutral200,
     },
-    text: 'white',
+    border: {
+      normal: 'transparent',
+      hover: 'transparent',
+      active: 'transparent',
+      pressed: 'transparent',
+      disabled: 'transparent',
+    },
+    text: { normal: Colors.White, disabled: Colors.Neutral500 },
   },
   outlined: {
     bg: {
       normal: 'transparent',
-      hover: 'darkgray',
-      active: 'dimgray',
-      pressed: 'dimgray',
-      disabled: 'lightgray',
+      hover: Colors.Neutral200,
+      active: Colors.Neutral300,
+      pressed: Colors.Neutral400,
+      disabled: Colors.Neutral200,
     },
-    text: 'black',
+    border: {
+      normal: Colors.Neutral800,
+      hover: Colors.Neutral200,
+      active: Colors.Neutral300,
+      pressed: Colors.Neutral400,
+      disabled: Colors.Neutral200,
+    },
+    text: { normal: Colors.Neutral800, disabled: Colors.Neutral500 },
   },
 };
 
@@ -106,28 +127,35 @@ export const getCS = ({
         smallLeftPadding ? sizes.paddingX.small : sizes.paddingX.normal,
         s,
       )}`,
-      border: variant === 'outlined' ? `${getPxSize(1, s)} solid black` : 'none',
+      border:
+        variant === 'outlined'
+          ? `${getPxSize(1, s)} solid ${pressed ? colors.border.pressed : colors.border.normal}`
+          : 'none',
       borderRadius: getPxSize(borderRadius, s),
       boxSizing: 'border-box',
       fontFamily: `'Arial', sans-serif`,
       fontWeight: 600,
       fontSize: getPxSize(sizes.fontSize, s),
       background: pressed ? colors.bg.pressed : colors.bg.normal,
-      color: colors.text,
+      color: disabled ? colors.text.disabled : colors.text.normal,
       cursor: disabled ? 'default' : 'pointer',
 
       '&:hover': {
         background: colors.bg.hover,
+        // @todo hover omly for outlined
+        borderColor: colors.border.hover,
       },
       '&:active': {
         background: colors.bg.active,
+        borderColor: colors.border.active,
       },
       '&:disabled': {
         background: colors.bg.disabled,
+        borderColor: colors.border.disabled,
       },
 
       ...(focusVisible
-        ? { outline: `${getPxSize(2, s)} solid ${Colors.ScienceBlue}`, outlineOffset: getPxSize(2, s) }
+        ? { outline: `${getPxSize(2, s)} solid ${Colors.Primary600}`, outlineOffset: getPxSize(2, s) }
         : undefined),
     }),
   };

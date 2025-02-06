@@ -99,7 +99,7 @@ export const getCS = ({
         background: disabled ? 'lightgray' : colors.trackBg,
 
         ...(focusVisible && focusOutlineWraps === 'input'
-          ? { outline: `${getPxSize(2, s)} solid ${Colors.ScienceBlue}`, outlineOffset: getPxSize(2, s) }
+          ? { outline: `${getPxSize(2, s)} solid ${Colors.Primary600}`, outlineOffset: getPxSize(2, s) }
           : undefined),
 
         ...(variant === 'outlined' ? { border: `${getPxSize(T_BORDER_SIZE, s)} solid gray` } : undefined),
@@ -125,7 +125,7 @@ export const getCS = ({
         borderRadius: getPxSize(18, s),
 
         ...(focusVisible && focusOutlineWraps === 'full'
-          ? { outline: `${getPxSize(2, s)} solid ${Colors.ScienceBlue}`, outlineOffset: getPxSize(2, s) }
+          ? { outline: `${getPxSize(2, s)} solid ${Colors.Primary600}`, outlineOffset: getPxSize(2, s) }
           : undefined),
 
         ...(variant === 'outlined'
@@ -148,7 +148,7 @@ export const getCS = ({
       label: ({ disabled }) => ({
         fontSize: getPxSize(sizes.label, s),
         fontWeight: 400,
-        color: disabled ? Colors.Nobel : Colors.Black,
+        color: disabled ? Colors.Neutral400 : Colors.Black,
       }),
     },
     cs,

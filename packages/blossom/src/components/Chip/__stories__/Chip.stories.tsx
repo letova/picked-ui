@@ -15,11 +15,11 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Plain: Story = {
+export const Solid: Story = {
   render: () => {
     return (
       <div style={{ display: 'flex', gap: '4px' }}>
-        {['primary', 'secondary', 'success', 'warning', 'danger'].map((color) => (
+        {['primary', 'neutral', 'success', 'warning', 'danger'].map((color) => (
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           <Chip key={color} color={color as any} onClick={() => console.log('Click ', color)}>
             {color}
@@ -34,7 +34,7 @@ export const Outlined: Story = {
   render: () => {
     return (
       <div style={{ display: 'flex', gap: '4px' }}>
-        {['primary', 'secondary', 'success', 'warning', 'danger'].map((color) => (
+        {['primary', 'neutral', 'success', 'warning', 'danger'].map((color) => (
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           <Chip key={color} variant="outlined" color={color as any} onClick={() => console.log('Click ', color)}>
             {color}

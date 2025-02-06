@@ -83,7 +83,7 @@ export const getCS = ({
         },
 
         ...(focusVisible
-          ? { outline: `${getPxSize(2, s)} solid ${Colors.ScienceBlue}`, outlineOffset: getPxSize(2, s) }
+          ? { outline: `${getPxSize(2, s)} solid ${Colors.Primary600}`, outlineOffset: getPxSize(2, s) }
           : undefined),
       }),
       action: {
@@ -109,7 +109,7 @@ export const getCS = ({
       label: ({ disabled }) => ({
         fontSize: getPxSize(sizes.fontSize, s),
         fontWeight: 400,
-        color: disabled ? Colors.Nobel : Colors.Black,
+        color: disabled ? Colors.Neutral400 : Colors.Black,
       }),
     },
     cs,
