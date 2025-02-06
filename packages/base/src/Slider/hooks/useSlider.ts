@@ -1,9 +1,6 @@
 import { Mark } from "../Slider.types";
 
-import { getMarksFromParams } from "../utils";
-import { getThumbMoveType } from "../utils/getThumbMoveType";
-import { getTrack, Track } from "../utils/getTrackParams";
-import { getValuesArr } from "../utils/getValues";
+import { getMarksFromParams, getThumbMoveType, getTrack, Track, getValuesArr } from "../utils";
 
 interface UseSliderParams {
     min: number;
