@@ -5,7 +5,7 @@ import { ClassNameGenerator, convertCSToClassName, getElementFromSlot } from "..
 
 import { Mark, SliderProps } from "./Slider.types";
 import { useSlider } from "./hooks/useSlider";
-import { getOffsetStyle, valueConverter } from "./utils";
+import { getLeapStyle, getOffsetStyle, valueConverter } from "./utils";
 
 const getCN = (element?: string, modificator?: string) =>
   ClassNameGenerator.generate({ block: 'Slider', element, modificator });
@@ -28,6 +28,18 @@ export const Slider = forwardRef(
     }: SliderProps,
     ref: ForwardedRef<HTMLSpanElement>
   ) => {
+    const {
+      marks,
+      values,
+      track,
+    } = useSlider({
+      min,
+      max,
+      step,
+      marks: userMarks,
+      value,
+    });
+
     const railElement = getElementFromSlot(
       {
         component: 'span',
@@ -45,19 +57,12 @@ export const Slider = forwardRef(
       },
       {
         className: cx(getCN('track'), convertCSToClassName(cs?.track)),
+        style: {
+          ...getOffsetStyle(orientation, track.offset),
+          ...getLeapStyle(orientation, track.leap)
+        }
       }
     );
-
-    const {
-      marks,
-      values,
-    } = useSlider({
-      min,
-      max,
-      step,
-      marks: userMarks,
-      value,
-    });
 
     return (
       <span
