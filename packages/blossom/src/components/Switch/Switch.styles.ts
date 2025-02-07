@@ -81,6 +81,7 @@ export const getCS = ({
         fontFamily: `'Arial', sans-serif`,
         fontWeight: 400,
         fontSize: getPxSize(14, s),
+        pointerEvents: disabled ? 'none' : 'auto',
 
         '& *': {
           boxSizing: 'inherit',

@@ -196,11 +196,11 @@ const OUTLINED_PRIMARY_COLORS = {
     disabled: Colors.Neutral400,
   },
   border: {
-    normal: Colors.Neutral800,
-    checkedNormal: Colors.Primary800,
-    disabled: Colors.Neutral200,
+    normal: Colors.Neutral500,
+    checkedNormal: Colors.Primary500,
+    disabled: Colors.Neutral400,
   },
-  text: { normal: Colors.Primary800, disabled: Colors.Neutral500 },
+  text: { normal: Colors.Neutral800, disabled: Colors.Neutral500 },
 };
 
 const OUTLINED_NEUTRAL_COLORS = {
@@ -217,9 +217,9 @@ const OUTLINED_NEUTRAL_COLORS = {
     disabled: Colors.Neutral400,
   },
   border: {
-    normal: Colors.Neutral800,
-    checkedNormal: Colors.Neutral800,
-    disabled: Colors.Neutral200,
+    normal: Colors.Neutral500,
+    checkedNormal: Colors.Neutral500,
+    disabled: Colors.Neutral400,
   },
   text: { normal: Colors.Neutral800, disabled: Colors.Neutral500 },
 };
@@ -238,11 +238,11 @@ const OUTLINED_SUCCESS_COLORS = {
     disabled: Colors.Neutral400,
   },
   border: {
-    normal: Colors.Neutral800,
-    checkedNormal: Colors.Success800,
-    disabled: Colors.Neutral200,
+    normal: Colors.Neutral500,
+    checkedNormal: Colors.Success500,
+    disabled: Colors.Neutral400,
   },
-  text: { normal: Colors.Success800, disabled: Colors.Neutral500 },
+  text: { normal: Colors.Neutral800, disabled: Colors.Neutral500 },
 };
 
 const OUTLINED_WARNING_COLORS = {
@@ -259,11 +259,11 @@ const OUTLINED_WARNING_COLORS = {
     disabled: Colors.Neutral400,
   },
   border: {
-    normal: Colors.Neutral800,
-    checkedNormal: Colors.Warning800,
-    disabled: Colors.Neutral200,
+    normal: Colors.Neutral500,
+    checkedNormal: Colors.Warning500,
+    disabled: Colors.Neutral400,
   },
-  text: { normal: Colors.Warning800, disabled: Colors.Neutral500 },
+  text: { normal: Colors.Neutral800, disabled: Colors.Neutral500 },
 };
 
 const OUTLINED_DANGER_COLORS = {
@@ -280,11 +280,11 @@ const OUTLINED_DANGER_COLORS = {
     disabled: Colors.Neutral400,
   },
   border: {
-    normal: Colors.Neutral800,
-    checkedNormal: Colors.Danger800,
-    disabled: Colors.Neutral200,
+    normal: Colors.Neutral500,
+    checkedNormal: Colors.Danger500,
+    disabled: Colors.Neutral400,
   },
-  text: { normal: Colors.Danger800, disabled: Colors.Neutral500 },
+  text: { normal: Colors.Neutral800, disabled: Colors.Neutral500 },
 };
 
 export const COLOR_MAP = {
