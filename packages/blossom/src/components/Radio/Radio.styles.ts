@@ -32,7 +32,7 @@ export const getCheckedRadioIconStyle = ({ variant = 'solid', scale: s = 1, size
     width: getPxSize(sizes.boxSize - 8, s),
     height: getPxSize(sizes.boxSize - 8, s),
     borderRadius: '50%',
-    backgroundColor: `var(--Switch-icon-bg, ${defaultBg})`,
+    backgroundColor: `var(--Radio-icon-bg, ${defaultBg})`,
   };
 };
 
@@ -49,7 +49,7 @@ export const getCS = ({
   return deepMergeCS(
     {
       container: ({ disabled }) => ({
-        '--Switch-icon-bg': disabled ? colors.text.disabled : colors.text.normal,
+        '--Radio-icon-bg': disabled ? colors.text.disabled : colors.text.normal,
 
         position: 'relative',
         display: 'flex',
