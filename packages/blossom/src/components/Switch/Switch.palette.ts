@@ -287,7 +287,7 @@ const OUTLINED_DANGER_COLORS = {
   text: { normal: Colors.Danger800, disabled: Colors.Neutral500 },
 };
 
-export const COLORS_MAP = {
+export const COLOR_MAP = {
   soft: {
     primary: SOFT_PRIMARY_COLORS,
     neutral: SOFT_NEUTRAL_COLORS,

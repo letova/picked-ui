@@ -2,7 +2,7 @@ import { deepMergeCS, getPxSize } from '../../utils';
 import { Colors } from '../../constants';
 
 import { SwitchProps } from './Switch.types';
-import { COLORS_MAP } from './Switch.palette';
+import { COLOR_MAP } from './Switch.palette';
 
 const SIZES_MAP = {
   xs: {
@@ -47,7 +47,7 @@ export const getCS = ({
   cs,
   focusOutlineWraps = 'input',
 }: SwitchProps): SwitchProps['cs'] => {
-  const colors = COLORS_MAP[variant][color];
+  const colors = COLOR_MAP[variant][color];
   const sizes = SIZES_MAP[size];
 
   const trackHeight = userTrackHeight ?? sizes.track.height;

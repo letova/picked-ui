@@ -3,8 +3,8 @@ import { CSSObject } from '@emotion/css';
 import { deepMergeCS, getPxSize } from '../../utils';
 import { Colors } from '../../constants';
 
-import { VARIANT_PALETTE_FOR_DISABLED_MAP, VARIANT_PALETTE_MAP } from './Radio.palettes';
 import { RadioProps } from './Radio.types';
+import { COLOR_MAP } from './Radio.palette';
 
 const SIZES_MAP = {
   xs: {
@@ -43,10 +43,7 @@ export const getCS = ({
   cs,
 }: RadioProps): RadioProps['cs'] => {
   const sizes = SIZES_MAP[size];
-
-  const paletteMap = VARIANT_PALETTE_MAP[variant];
-  const palette = paletteMap[color];
-  const disabledPalette = VARIANT_PALETTE_FOR_DISABLED_MAP[variant];
+  const colors = COLOR_MAP[variant][color];
 
   return deepMergeCS(
     {
@@ -70,16 +67,16 @@ export const getCS = ({
         justifyContent: 'center',
         width: getPxSize(sizes.boxSize, s),
         height: getPxSize(sizes.boxSize, s),
-        border: `${getPxSize(IC_BORDER_SIZE, s)} solid ${disabled ? disabledPalette.border : palette.border.normal}`,
+        border: `${getPxSize(IC_BORDER_SIZE, s)} solid ${disabled ? colors.border.disabled : colors.border.normal}`,
         borderRadius: '50%',
-        backgroundColor: disabled ? disabledPalette.bg : palette.bg.normal,
+        backgroundColor: disabled ? colors.bg.disabled : colors.bg.normal,
 
         '&:hover': {
-          backgroundColor: disabled ? disabledPalette.bg : palette.bg.hover,
+          backgroundColor: disabled ? colors.bg.disabled : colors.bg.hover,
         },
 
         '&:active': {
-          backgroundColor: disabled ? disabledPalette.bg : palette.bg.active,
+          backgroundColor: disabled ? colors.bg.disabled : colors.bg.active,
         },
 
         ...(focusVisible
@@ -104,7 +101,7 @@ export const getCS = ({
       icon: ({ disabled }) => ({
         width: getPxSize(sizes.boxSize, s),
         height: getPxSize(sizes.boxSize, s),
-        fill: disabled ? disabledPalette.text : palette.text.normal,
+        fill: disabled ? colors.text.disabled : colors.text.normal,
       }),
       label: ({ disabled }) => ({
         fontSize: getPxSize(sizes.fontSize, s),

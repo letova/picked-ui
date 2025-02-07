@@ -2,7 +2,7 @@ import { getPxSize } from '../../utils';
 import { Colors } from '../../constants';
 
 import { ButtonProps } from './Button.types';
-import { COLORS_MAP } from './Button.palette';
+import { COLOR_MAP } from './Button.palette';
 
 const SIZES_MAP = {
   xs: {
@@ -59,7 +59,7 @@ export const getCS = ({
 
   const borderRadius = getBorderRadius(shape, 32);
 
-  const colors = COLORS_MAP[variant][color];
+  const colors = COLOR_MAP[variant][color];
   const sizes = SIZES_MAP[size];
 
   return {
