@@ -2,21 +2,7 @@ import { deepMergeCS, getPxSize } from '../../utils';
 import { Colors } from '../../constants';
 
 import { SwitchProps } from './Switch.types';
-
-const VARIANT_COLORS_MAP = {
-  solid: {
-    trackBg: 'gray',
-    thumbBg: 'white',
-  },
-  soft: {
-    trackBg: 'lightgray',
-    thumbBg: 'white',
-  },
-  outlined: {
-    trackBg: 'white',
-    thumbBg: 'gray',
-  },
-};
+import { COLORS_MAP } from './Switch.palette';
 
 const SIZES_MAP = {
   xs: {
@@ -57,10 +43,11 @@ export const getCS = ({
   trackWidth,
   trackHeight: userTrackHeight,
   thumbSize: userThumbSize,
+  color = 'primary',
   cs,
   focusOutlineWraps = 'input',
 }: SwitchProps): SwitchProps['cs'] => {
-  const colors = VARIANT_COLORS_MAP[variant];
+  const colors = COLORS_MAP[variant][color];
   const sizes = SIZES_MAP[size];
 
   const trackHeight = userTrackHeight ?? sizes.track.height;
@@ -73,7 +60,17 @@ export const getCS = ({
 
   return deepMergeCS(
     {
-      container: {
+      container: ({ checked, disabled }) => ({
+        '--Switch-track-bg': disabled
+          ? colors.trackBg.disabled
+          : checked
+          ? colors.trackBg.checkedNormal
+          : colors.trackBg.normal,
+
+        '&:hover': {
+          '--Switch-track-bg': checked ? colors.trackBg.checkedHover : colors.trackBg.hover,
+        },
+
         alignSelf: 'center',
 
         position: 'relative',
@@ -84,11 +81,12 @@ export const getCS = ({
         fontFamily: `'Arial', sans-serif`,
         fontWeight: 400,
         fontSize: getPxSize(14, s),
+
         '& *': {
           boxSizing: 'inherit',
         },
-      },
-      track: ({ disabled, focusVisible }) => ({
+      }),
+      track: ({ checked, disabled, focusVisible }) => ({
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
@@ -96,20 +94,26 @@ export const getCS = ({
         width: getPxSize(trackWidth ?? sizes.track.width, s),
         height: getPxSize(trackHeight, s),
         borderRadius: getPxSize(18, s),
-        background: disabled ? 'lightgray' : colors.trackBg,
+        background: 'var(--Switch-track-bg)',
 
         ...(focusVisible && focusOutlineWraps === 'input'
           ? { outline: `${getPxSize(2, s)} solid ${Colors.Primary600}`, outlineOffset: getPxSize(2, s) }
           : undefined),
 
-        ...(variant === 'outlined' ? { border: `${getPxSize(T_BORDER_SIZE, s)} solid gray` } : undefined),
+        ...(variant === 'outlined'
+          ? {
+              border: `${getPxSize(T_BORDER_SIZE, s)} solid ${
+                disabled ? colors.border.disabled : checked ? colors.border.checkedNormal : colors.border.normal
+              }`,
+            }
+          : undefined),
       }),
       thumb: ({ checked }) => ({
         position: 'absolute',
         top: '50%',
         width: getPxSize(thumbSize, s),
         height: getPxSize(thumbSize, s),
-        background: colors.thumbBg,
+        background: checked ? colors.thumbBg.checkedNormal : colors.thumbBg.normal,
         pointerEvents: 'none',
         transition: 'left .15s ease-out',
         transform: 'translateY(-50%)',
@@ -148,7 +152,7 @@ export const getCS = ({
       label: ({ disabled }) => ({
         fontSize: getPxSize(sizes.label, s),
         fontWeight: 400,
-        color: disabled ? Colors.Neutral400 : Colors.Black,
+        color: disabled ? colors.text.disabled : colors.text.normal,
       }),
     },
     cs,
