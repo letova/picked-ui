@@ -1,7 +1,7 @@
 import { CSSObject } from '@emotion/css';
 
-import { deepMergeCS, getPxSize } from '../../utils';
 import { Colors } from '../../constants';
+import { deepMergeCS, getPxSize } from '../../utils';
 
 import { RadioProps } from './Radio.types';
 import { COLOR_MAP } from './Radio.palette';
@@ -23,15 +23,16 @@ const SIZES_MAP = {
 
 const IC_BORDER_SIZE = 1;
 
-export const getCheckedRadioIconStyle = ({ scale: s = 1, size = 's' }: RadioProps): CSSObject => {
+export const getCheckedRadioIconStyle = ({ variant = 'solid', scale: s = 1, size = 's' }: RadioProps): CSSObject => {
   const sizes = SIZES_MAP[size];
+  const defaultBg = variant === 'solid' ? Colors.White : Colors.Neutral400;
 
   return {
     display: 'inline-block',
     width: getPxSize(sizes.boxSize - 8, s),
     height: getPxSize(sizes.boxSize - 8, s),
     borderRadius: '50%',
-    background: 'black',
+    backgroundColor: `var(--Switch-icon-bg, ${defaultBg})`,
   };
 };
 
@@ -47,7 +48,9 @@ export const getCS = ({
 
   return deepMergeCS(
     {
-      container: {
+      container: ({ disabled }) => ({
+        '--Switch-icon-bg': disabled ? colors.text.disabled : colors.text.normal,
+
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
@@ -56,10 +59,12 @@ export const getCS = ({
         fontFamily: `'Arial', sans-serif`,
         fontWeight: 400,
         fontSize: getPxSize(14, s),
+        pointerEvents: disabled ? 'none' : 'auto',
+
         '& *': {
           boxSizing: 'inherit',
         },
-      },
+      }),
       inputContainer: ({ disabled, focusVisible }) => ({
         flexShrink: 0,
         display: 'flex',
@@ -72,11 +77,11 @@ export const getCS = ({
         backgroundColor: disabled ? colors.bg.disabled : colors.bg.normal,
 
         '&:hover': {
-          backgroundColor: disabled ? colors.bg.disabled : colors.bg.hover,
+          backgroundColor: colors.bg.hover,
         },
 
         '&:active': {
-          backgroundColor: disabled ? colors.bg.disabled : colors.bg.active,
+          backgroundColor: colors.bg.active,
         },
 
         ...(focusVisible
