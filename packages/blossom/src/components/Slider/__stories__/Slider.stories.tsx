@@ -28,12 +28,12 @@ const VALUE = 20;
 
 export const Horizontal: Story = {
   render: () => {
-    const [value, setValue] = useState(VALUE);
+    const [value, setValue] = useState<number | number[]>(VALUE);
     const containerStyle = { width: '400px' };
 
     return (
       <div style={containerStyle}>
-        <Slider orientation="horizontal" value={value} onValueChange={setValue as any} />
+        <Slider orientation="horizontal" value={value} onValueChange={setValue} />
       </div>
     );
   },

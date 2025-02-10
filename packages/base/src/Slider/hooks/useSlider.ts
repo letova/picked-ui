@@ -29,7 +29,10 @@ interface UseSliderReturnValue {
 
 interface SliderModel {
     touchId: number | null;
+    dragCount: number;
 }
+
+const DRAG_COUNT_THRESHOLD = 2;
 
 export const useSlider = ({
     min,
@@ -48,6 +51,7 @@ export const useSlider = ({
 
     const modelRef = useRef<SliderModel>({
         touchId: null,
+        dragCount: 0,
     });
 
     const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -125,8 +129,6 @@ export const useSlider = ({
         const newValue = getThumbNewValueByThumbCoords(thumbCoords);
 
         onValueChangeCommitted?.(newValue);
-
-        modelRef.current.touchId = null;
     }
 
     // 1. Handle touch events
@@ -140,14 +142,10 @@ export const useSlider = ({
         const thumbCoords: ThumbCoords | null = extractThumbCoordsFromTouchEvent(event, modelRef.current.touchId);
 
         if (thumbCoords != null) {
-            const newValue = getThumbNewValueByThumbCoords(thumbCoords);
-
-            setValue(newValue);
-
-            if (!areEqualValues(newValue, valueDerived)) {
-                handleChange(event, newValue)
-            }
+            moveThumb(event, thumbCoords);
         }
+
+        modelRef.current.dragCount = 0;
 
         addTouchListeners();
     }
@@ -159,7 +157,9 @@ export const useSlider = ({
             return;
         }
 
-        if (!isDragging) {
+        modelRef.current.dragCount += 1;
+
+        if (!isDragging && modelRef.current.dragCount > DRAG_COUNT_THRESHOLD) {
             setIsDragging(true);
         }
 
@@ -167,8 +167,9 @@ export const useSlider = ({
     }
 
     const handleTouchEnd = (event: TouchEvent) => {
-        const thumbCoords: ThumbCoords | null = extractThumbCoordsFromTouchEvent(event, modelRef.current.touchId);
         setIsDragging(false);
+
+        const thumbCoords: ThumbCoords | null = extractThumbCoordsFromTouchEvent(event, modelRef.current.touchId);
 
         if (thumbCoords == null) {
             return;
@@ -186,15 +187,23 @@ export const useSlider = ({
             return;
         }
 
+        modelRef.current.dragCount += 1;
+
         if (event.buttons === 0) {
-            setIsDragging(false);
-            removeTouchListeners();
+            handleMouseUp(event);
+            return;
+        }
+
+        if (!isDragging && modelRef.current.dragCount > DRAG_COUNT_THRESHOLD) {
+            setIsDragging(true);
         }
 
         moveThumb(event, thumbCoords);
     }
 
     const handleMouseUp = (event: MouseEvent) => {
+        setIsDragging(false);
+
         const thumbCoords: ThumbCoords | null = extractThumbCoordsFromMouseEvent(event);
 
         if (thumbCoords == null) {

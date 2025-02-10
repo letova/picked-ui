@@ -19,7 +19,7 @@ const getMarksByStep = (min: number, max: number, step: number): Mark[] => {
 
     for (let value = min; value <= max; value += step) {
         marks.push({ value })
-    };
+    }
 
     return marks;
 }

@@ -21,7 +21,7 @@ export const extractThumbCoordsFromTouchEvent = (event: TouchEvent, touchId: num
 
             return coords;
         }
-    };
+    }
 
     return null;
 }
