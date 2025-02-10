@@ -1,3 +1,4 @@
+export { areEqualValues } from "./areEqualValues";
 export { clamp } from "./clamp";
 export { extractThumbCoordsFromMouseEvent, extractThumbCoordsFromTouchEvent } from "./extractThumbCoords";
 export { getOffsetStyle, getLeapStyle } from "./getAxisParams";

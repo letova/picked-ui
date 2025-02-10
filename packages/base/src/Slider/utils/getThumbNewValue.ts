@@ -20,8 +20,8 @@ const getPercent = (orientation: Orientation, sliderDomRect: DOMRect, thumbCoord
     const { x, y } = thumbCoords;
 
     switch (orientation) {
-        case 'horizontal': return (bottom - y) / height;
-        case 'vertical': return (x - left) / width;
+        case 'horizontal': return (x - left) / width;
+        case 'vertical': return (bottom - y) / height;
         default: throw new Error(`Slider getPercent: unknown orientation - ${orientation}`)
     }
 }

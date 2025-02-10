@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import { CSSProperties, useState } from "react";
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -28,11 +28,12 @@ const VALUE = 20;
 
 export const Horizontal: Story = {
   render: () => {
+    const [value, setValue] = useState(VALUE);
     const containerStyle = { width: '400px' };
 
     return (
       <div style={containerStyle}>
-        <Slider orientation="horizontal" value={VALUE} />
+        <Slider orientation="horizontal" value={value} onValueChange={setValue as any} />
       </div>
     );
   },

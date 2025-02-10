@@ -25,6 +25,8 @@ export const Slider = forwardRef(
       disabled = false,
       value,
       cs,
+      onValueChange,
+      onValueChangeCommitted,
     }: SliderProps,
     ref: ForwardedRef<HTMLSpanElement>
   ) => {
@@ -32,13 +34,17 @@ export const Slider = forwardRef(
       marks,
       values,
       track,
+      rootRef,
     } = useSlider({
       min,
       max,
       step,
       marks: userMarks,
       value,
+      orientation,
       ref,
+      onValueChange,
+      onValueChangeCommitted
     });
 
     const railElement = getElementFromSlot(
@@ -67,7 +73,7 @@ export const Slider = forwardRef(
 
     return (
       <span
-        ref={ref}
+        ref={rootRef}
         className={cx(
           getCN(),
           getMCN(orientation),
