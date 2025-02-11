@@ -102,14 +102,17 @@ export const Multiple: Story = {
 
 export const WithMarks = {
   render: () => {
+    const [value, setValue] = useState<number | number[]>(VALUE);
+
     const containerStyle = { width: '400px' };
 
     return (
       <div style={containerStyle}>
         <Slider
           marks={true}
-          step={20}
-          value={VALUE}
+          step={10}
+          value={value}
+          onValueChange={setValue}
         />
       </div>
     );
