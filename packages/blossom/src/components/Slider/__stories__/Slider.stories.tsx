@@ -45,7 +45,7 @@ export const Vertical: Story = {
 
     return (
       <div style={containerStyle}>
-        <Slider orientation="vertical" value={VALUE} />
+        <Slider orientation="vertical" defaultValue={VALUE} />
       </div>
     );
   },
@@ -55,8 +55,8 @@ export const States: Story = {
   render: () => {
     return (
       <div style={CONTAINER_STYLE_COLUMN_FLEX}>
-        <Slider value={VALUE} />
-        <Slider disabled value={VALUE} />
+        <Slider defaultValue={VALUE} />
+        <Slider disabled defaultValue={VALUE} />
       </div>
     );
   },
@@ -66,11 +66,11 @@ export const Colors: Story = {
   render: () => {
     return (
       <div style={CONTAINER_STYLE_COLUMN_FLEX}>
-        <Slider color="primary" value={VALUE} />
-        <Slider color="neutral" value={VALUE} />
-        <Slider color="success" value={VALUE} />
-        <Slider color="warning" value={VALUE} />
-        <Slider color="danger" value={VALUE} />
+        <Slider color="primary" defaultValue={VALUE} />
+        <Slider color="neutral" defaultValue={VALUE} />
+        <Slider color="success" defaultValue={VALUE} />
+        <Slider color="warning" defaultValue={VALUE} />
+        <Slider color="danger" defaultValue={VALUE} />
       </div>
     );
   },
@@ -80,9 +80,9 @@ export const Sizes: Story = {
   render: () => {
     return (
       <div style={CONTAINER_STYLE_COLUMN_FLEX}>
-        <Slider value={VALUE} size="xs" />
-        <Slider value={VALUE} size="s" />
-        <Slider value={VALUE} size="m" />
+        <Slider defaultValue={VALUE} size="xs" />
+        <Slider defaultValue={VALUE} size="s" />
+        <Slider defaultValue={VALUE} size="m" />
       </div>
     );
   },
@@ -102,8 +102,6 @@ export const Multiple: Story = {
 
 export const WithMarks = {
   render: () => {
-    const [value, setValue] = useState<number | number[]>(VALUE);
-
     const containerStyle = { width: '400px' };
 
     return (
@@ -111,8 +109,7 @@ export const WithMarks = {
         <Slider
           marks={true}
           step={10}
-          value={value}
-          onValueChange={setValue}
+          defaultValue={VALUE}
         />
       </div>
     );

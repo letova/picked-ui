@@ -5,13 +5,14 @@ import { useForkRef } from "../../hooks";
 import { Mark, Orientation, ThumbCoords } from "../Slider.types";
 import { getMarksFromParams, getThumbMoveType, getTrack, Track, getValuesArr, getThumbNewValue, getMarksValues, areEqualValues, extractThumbCoordsFromTouchEvent, extractThumbCoordsFromMouseEvent } from "../utils";
 
-import { useControlled } from "./useControlled";
+import { useControlledValue } from "./useControlledValue";
 
 interface UseSliderParams {
     min: number;
     max: number;
     step: number;
     marks: boolean | Mark[];
+    disabled: boolean;
     value?: number | number[];
     defaultValue?: number | number[];
     ref: ForwardedRef<HTMLSpanElement>;
@@ -39,6 +40,7 @@ export const useSlider = ({
     max,
     step,
     marks: marksParam,
+    disabled,
     value,
     defaultValue,
     ref,
@@ -55,7 +57,7 @@ export const useSlider = ({
     });
 
     const [isDragging, setIsDragging] = useState<boolean>(false);
-    const [valueDerived, setValue] = useControlled({
+    const [valueDerived, setValue] = useControlledValue({
         controlledValue: value,
         defaultValue: defaultValue ?? min,
     });
@@ -214,15 +216,17 @@ export const useSlider = ({
     }
 
     useEffect(() => {
-        addTouchStartListener();
-        addMouseListeners();
+        if (!disabled) {
+            addTouchStartListener();
+            addMouseListeners();
+        }
 
         return () => {
             removeTouchStartListener();
             removeTouchListeners();
             removeMouseListeners();
         }
-    }, []);
+    }, [disabled]);
 
     return {
         rootRef: handleSliderRef,
