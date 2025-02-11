@@ -20,33 +20,33 @@ const BLACK_UNIT = {
 };
 
 const BLUE_UNIT = {
-  normal: Colors.MaximumBlue,
-  hover: Colors.Shakespeare,
-  active: Colors.Allports,
+  normal: Colors.Primary500,
+  hover: Colors.Primary600,
+  active: Colors.Primary700,
 };
 
 const GRAY_UNIT = {
-  normal: Colors.MineShaft,
-  hover: Colors.GraniteGray,
-  active: Colors.Black,
+  normal: Colors.Neutral500,
+  hover: Colors.Neutral600,
+  active: Colors.Neutral700,
 };
 
 const GREEN_UNIT = {
-  normal: Colors.UFOGreen,
-  hover: Colors.VeryLightMalachiteGreen,
-  active: Colors.PantoneGreen,
+  normal: Colors.Success500,
+  hover: Colors.Success600,
+  active: Colors.Success700,
 };
 
 const YELLOW_UNIT = {
-  normal: Colors.BrightSun,
-  hover: Colors.Kournikova,
-  active: Colors.UCLAGold,
+  normal: Colors.Warning500,
+  hover: Colors.Warning600,
+  active: Colors.Warning700,
 };
 
 const RED_UNIT = {
-  normal: Colors.Tomato,
-  hover: Colors.Salmon,
-  active: Colors.FerrariRed,
+  normal: Colors.Danger500,
+  hover: Colors.Danger600,
+  active: Colors.Danger700,
 };
 
 export const PALETTE_MAP = {
@@ -79,6 +79,6 @@ export const PALETTE_MAP = {
 
 export const PALETTE_FOR_DISABLED_MAP = {
   text: Colors.White,
-  bg: Colors.Nobel,
-  border: Colors.Nobel,
+  bg: Colors.Neutral400,
+  border: Colors.Neutral400,
 };
