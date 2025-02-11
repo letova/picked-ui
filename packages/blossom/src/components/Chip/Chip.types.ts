@@ -4,10 +4,10 @@ import { ChipProps as BaseChipProps } from '@picked-ui/base';
 
 export interface ChipProps extends BaseChipProps {
   scale?: number;
-  variant?: 'plain' | 'outlined';
+  variant?: 'soft' | 'solid' | 'outlined';
   size?: 'xs' | 's' | 'm';
   maxWidth?: number;
   // TODO sep23: add HexColor
-  color?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
+  color?: 'primary' | 'neutral' | 'success' | 'warning' | 'danger';
   highlighted?: boolean;
 }

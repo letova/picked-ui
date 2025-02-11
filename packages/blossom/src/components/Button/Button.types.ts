@@ -1,6 +1,11 @@
 import { ButtonProps as BaseButtonProps } from '@picked-ui/base';
 
 export interface ButtonProps extends BaseButtonProps {
+  /**
+   * The color of the component
+   * @default primary
+   */
+  color?: 'primary' | 'neutral' | 'danger' | 'success' | 'warning';
   scale?: number;
   /**
    * The edge style the component

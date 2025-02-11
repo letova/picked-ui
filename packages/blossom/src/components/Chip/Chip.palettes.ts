@@ -1,5 +1,12 @@
 import { Colors } from '../../constants';
 
+const TRANSPARENT_UNIT = {
+  normal: 'transparent',
+  hover: 'transparent',
+  active: 'transparent',
+  disabled: 'transparent',
+};
+
 const WHITE_UNIT = {
   normal: Colors.White,
   hover: Colors.White,
@@ -12,124 +19,118 @@ const BLACK_UNIT = {
   active: Colors.Black,
 };
 
-const TRANSPARENT_UNIT = {
-  normal: 'transparent',
-  hover: 'transparent',
-  active: 'transparent',
-};
-
 const BLUE_UNIT = {
-  normal: Colors.MaximumBlue,
-  hover: Colors.Shakespeare,
-  active: Colors.Allports,
+  normal: Colors.Primary500,
+  hover: Colors.Primary600,
+  active: Colors.Primary700,
 };
 
-const BLUE_HIGHLIGHTED_UNIT = {
-  normal: Colors.Shakespeare,
-  hover: Colors.Seagull,
-  active: Colors.MaximumBlue,
+const SOFT_BLUE_UNIT = {
+  normal: Colors.Primary100,
+  hover: Colors.Primary200,
+  active: Colors.Primary300,
 };
 
 const GRAY_UNIT = {
-  normal: Colors.MineShaft,
-  hover: Colors.GraniteGray,
-  active: Colors.Black,
+  normal: Colors.Neutral500,
+  hover: Colors.Neutral600,
+  active: Colors.Neutral700,
 };
 
-const GRAY_HIGHLIGHTED_UNIT = {
-  normal: Colors.GraniteGray,
-  hover: Colors.Nobel,
-  active: Colors.MineShaft,
+const SOFT_GRAY_UNIT = {
+  normal: Colors.Neutral100,
+  hover: Colors.Neutral200,
+  active: Colors.Neutral300,
 };
 
 const GREEN_UNIT = {
-  normal: Colors.UFOGreen,
-  hover: Colors.VeryLightMalachiteGreen,
-  active: Colors.PantoneGreen,
+  normal: Colors.Success500,
+  hover: Colors.Success600,
+  active: Colors.Success700,
 };
 
-const GREEN_HIGHLIGHTED_UNIT = {
-  normal: Colors.VeryLightMalachiteGreen,
-  hover: Colors.MediumAquamarine,
-  active: Colors.UFOGreen,
+const SOFT_GREEN_UNIT = {
+  normal: Colors.Success100,
+  hover: Colors.Success200,
+  active: Colors.Success300,
 };
 
 const YELLOW_UNIT = {
-  normal: Colors.BrightSun,
-  hover: Colors.Kournikova,
-  active: Colors.UCLAGold,
+  normal: Colors.Warning500,
+  hover: Colors.Warning600,
+  active: Colors.Warning700,
 };
 
-const YELLOW_HIGHLIGHTED_UNIT = {
-  normal: Colors.Kournikova,
-  hover: Colors.Jasmine,
-  active: Colors.BrightSun,
+const SOFT_YELLOW_UNIT = {
+  normal: Colors.Warning100,
+  hover: Colors.Warning200,
+  active: Colors.Warning300,
 };
 
 const RED_UNIT = {
-  normal: Colors.Tomato,
-  hover: Colors.Salmon,
-  active: Colors.FerrariRed,
+  normal: Colors.Danger500,
+  hover: Colors.Danger600,
+  active: Colors.Danger700,
 };
 
-const RED_HIGHLIGHTED_UNIT = {
-  normal: Colors.Salmon,
-  hover: Colors.LightSalmon,
-  active: Colors.Tomato,
+const SOFT_RED_UNIT = {
+  normal: Colors.Danger100,
+  hover: Colors.Danger200,
+  active: Colors.Danger300,
 };
 
-export const PLAIN_PALETTE_MAP = {
+export const SOFT_PALETTE_MAP = {
+  primary: {
+    text: BLACK_UNIT,
+    bg: SOFT_BLUE_UNIT,
+    border: TRANSPARENT_UNIT,
+  },
+  neutral: {
+    text: BLACK_UNIT,
+    bg: SOFT_GRAY_UNIT,
+    border: TRANSPARENT_UNIT,
+  },
+  success: {
+    text: BLACK_UNIT,
+    bg: SOFT_GREEN_UNIT,
+    border: TRANSPARENT_UNIT,
+  },
+  warning: {
+    text: BLACK_UNIT,
+    bg: SOFT_YELLOW_UNIT,
+    border: TRANSPARENT_UNIT,
+  },
+  danger: {
+    text: BLACK_UNIT,
+    bg: SOFT_RED_UNIT,
+    border: TRANSPARENT_UNIT,
+  },
+};
+
+export const SOLID_PALETTE_MAP = {
   primary: {
     text: WHITE_UNIT,
     bg: BLUE_UNIT,
     border: TRANSPARENT_UNIT,
   },
-  secondary: {
+  neutral: {
     text: WHITE_UNIT,
     bg: GRAY_UNIT,
     border: TRANSPARENT_UNIT,
   },
   success: {
-    text: BLACK_UNIT,
+    text: WHITE_UNIT,
     bg: GREEN_UNIT,
     border: TRANSPARENT_UNIT,
   },
   warning: {
-    text: BLACK_UNIT,
+    text: WHITE_UNIT,
     bg: YELLOW_UNIT,
     border: TRANSPARENT_UNIT,
   },
   danger: {
-    text: BLACK_UNIT,
+    text: WHITE_UNIT,
     bg: RED_UNIT,
-    border: TRANSPARENT_UNIT,
-  },
-};
-
-export const PLAIN_HIGHLIGHTED_PALETTE_MAP = {
-  primary: {
-    text: WHITE_UNIT,
-    bg: BLUE_HIGHLIGHTED_UNIT,
-    border: TRANSPARENT_UNIT,
-  },
-  secondary: {
-    text: WHITE_UNIT,
-    bg: GRAY_HIGHLIGHTED_UNIT,
-    border: TRANSPARENT_UNIT,
-  },
-  success: {
-    text: BLACK_UNIT,
-    bg: GREEN_HIGHLIGHTED_UNIT,
-    border: TRANSPARENT_UNIT,
-  },
-  warning: {
-    text: BLACK_UNIT,
-    bg: YELLOW_HIGHLIGHTED_UNIT,
-    border: TRANSPARENT_UNIT,
-  },
-  danger: {
-    text: BLACK_UNIT,
-    bg: RED_HIGHLIGHTED_UNIT,
     border: TRANSPARENT_UNIT,
   },
 };
@@ -140,7 +141,7 @@ export const OUTLINED_PALETTE_MAP = {
     bg: TRANSPARENT_UNIT,
     border: BLUE_UNIT,
   },
-  secondary: {
+  neutral: {
     text: GRAY_UNIT,
     bg: TRANSPARENT_UNIT,
     border: GRAY_UNIT,
@@ -162,30 +163,26 @@ export const OUTLINED_PALETTE_MAP = {
   },
 };
 
-export const OUTLINED_HIGHLIGHTED_PALETTE_MAP = {
-  primary: {
-    text: BLUE_HIGHLIGHTED_UNIT,
-    bg: TRANSPARENT_UNIT,
-    border: BLUE_HIGHLIGHTED_UNIT,
+export const VARIANT_PALETTE_MAP = {
+  soft: SOFT_PALETTE_MAP,
+  solid: SOLID_PALETTE_MAP,
+  outlined: OUTLINED_PALETTE_MAP,
+};
+
+export const VARIANT_PALETTE_FOR_DISABLED_MAP = {
+  soft: {
+    text: Colors.White,
+    bg: Colors.Neutral400,
+    border: Colors.Neutral400,
   },
-  secondary: {
-    text: GRAY_HIGHLIGHTED_UNIT,
-    bg: TRANSPARENT_UNIT,
-    border: GRAY_HIGHLIGHTED_UNIT,
+  solid: {
+    text: Colors.White,
+    bg: Colors.Neutral400,
+    border: Colors.Neutral400,
   },
-  success: {
-    text: GREEN_HIGHLIGHTED_UNIT,
-    bg: TRANSPARENT_UNIT,
-    border: GREEN_HIGHLIGHTED_UNIT,
-  },
-  warning: {
-    text: YELLOW_HIGHLIGHTED_UNIT,
-    bg: TRANSPARENT_UNIT,
-    border: YELLOW_HIGHLIGHTED_UNIT,
-  },
-  danger: {
-    text: RED_HIGHLIGHTED_UNIT,
-    bg: TRANSPARENT_UNIT,
-    border: RED_HIGHLIGHTED_UNIT,
+  outlined: {
+    text: Colors.Neutral400,
+    bg: Colors.White,
+    border: Colors.Neutral400,
   },
 };

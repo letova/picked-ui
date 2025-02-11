@@ -1,40 +1,8 @@
-import { Colors } from '../../constants';
 import { getPxSize } from '../../utils';
+import { Colors } from '../../constants';
 
 import { ButtonProps } from './Button.types';
-
-const VARIANT_COLORS_MAP = {
-  soft: {
-    bg: {
-      normal: 'lightgray',
-      hover: 'darkgray',
-      active: 'dimgray',
-      pressed: 'dimgray',
-      disabled: 'lightgray',
-    },
-    text: 'white',
-  },
-  solid: {
-    bg: {
-      normal: 'gray',
-      hover: 'darkgray',
-      active: 'dimgray',
-      pressed: 'dimgray',
-      disabled: 'lightgray',
-    },
-    text: 'white',
-  },
-  outlined: {
-    bg: {
-      normal: 'transparent',
-      hover: 'darkgray',
-      active: 'dimgray',
-      pressed: 'dimgray',
-      disabled: 'lightgray',
-    },
-    text: 'black',
-  },
-};
+import { COLOR_MAP } from './Button.palette';
 
 const SIZES_MAP = {
   xs: {
@@ -81,6 +49,7 @@ export const getCS = ({
   scale: s = 1,
   size = 's',
   shape = 'round',
+  color = 'primary',
   children,
   startDecorator,
   endDecorator,
@@ -90,7 +59,7 @@ export const getCS = ({
 
   const borderRadius = getBorderRadius(shape, 32);
 
-  const colors = VARIANT_COLORS_MAP[variant];
+  const colors = COLOR_MAP[variant][color];
   const sizes = SIZES_MAP[size];
 
   return {
@@ -106,28 +75,35 @@ export const getCS = ({
         smallLeftPadding ? sizes.paddingX.small : sizes.paddingX.normal,
         s,
       )}`,
-      border: variant === 'outlined' ? `${getPxSize(1, s)} solid black` : 'none',
+      border:
+        variant === 'outlined'
+          ? `${getPxSize(1, s)} solid ${pressed ? colors.border.pressed : colors.border.normal}`
+          : 'none',
       borderRadius: getPxSize(borderRadius, s),
       boxSizing: 'border-box',
       fontFamily: `'Arial', sans-serif`,
       fontWeight: 600,
       fontSize: getPxSize(sizes.fontSize, s),
       background: pressed ? colors.bg.pressed : colors.bg.normal,
-      color: colors.text,
+      color: disabled ? colors.text.disabled : colors.text.normal,
       cursor: disabled ? 'default' : 'pointer',
 
       '&:hover': {
         background: colors.bg.hover,
+        // @todo hover omly for outlined
+        borderColor: colors.border.hover,
       },
       '&:active': {
         background: colors.bg.active,
+        borderColor: colors.border.active,
       },
       '&:disabled': {
         background: colors.bg.disabled,
+        borderColor: colors.border.disabled,
       },
 
       ...(focusVisible
-        ? { outline: `${getPxSize(2, s)} solid ${Colors.ScienceBlue}`, outlineOffset: getPxSize(2, s) }
+        ? { outline: `${getPxSize(2, s)} solid ${Colors.Primary600}`, outlineOffset: getPxSize(2, s) }
         : undefined),
     }),
   };
