@@ -3,7 +3,7 @@ import { ForwardedRef, useEffect, useRef, useState } from "react";
 import { useForkRef } from "../../hooks";
 
 import { Mark, Orientation, ThumbCoords } from "../Slider.types";
-import { getMarksFromParams, getThumbMoveType, getTrack, Track, getValuesArr, getThumbNewValue, getMarksValues, areEqualValues, extractThumbCoordsFromTouchEvent, extractThumbCoordsFromMouseEvent } from "../utils";
+import { getMarksFromParams, getThumbMoveType, getTrack, Track, getValuesArr, getThumbNewValue, getMarksValues, areEqualValues, extractThumbCoordsFromTouchEvent, extractThumbCoordsFromMouseEvent, getOwnerDocument } from "../utils";
 
 import { useControlledValue } from "./useControlledValue";
 
@@ -89,32 +89,42 @@ export const useSlider = ({
     }
 
     // Event model
+    const ownerDocument = getOwnerDocument(ownerSliderRef.current);
+
     const addTouchStartListener = () => {
-        ownerSliderRef.current?.addEventListener('touchstart', handleTouchStart);
+        ownerDocument.addEventListener('touchstart', handleTouchStart);
     }
 
     const removeTouchStartListener = () => {
-        ownerSliderRef.current?.removeEventListener('touchstart', handleTouchStart);
+        ownerDocument.removeEventListener('touchstart', handleTouchStart);
     }
 
     const addTouchListeners = () => {
-        ownerSliderRef.current?.addEventListener('touchmove', handleTouchMove);
-        ownerSliderRef.current?.addEventListener('touchend', handleTouchEnd);
+        ownerDocument.addEventListener('touchmove', handleTouchMove);
+        ownerDocument.addEventListener('touchend', handleTouchEnd);
     }
 
     const removeTouchListeners = () => {
-        ownerSliderRef.current?.removeEventListener('touchmove', handleTouchMove);
-        ownerSliderRef.current?.removeEventListener('touchend', handleTouchEnd);
+        ownerDocument.removeEventListener('touchmove', handleTouchMove);
+        ownerDocument.removeEventListener('touchend', handleTouchEnd);
     }
 
     const addMouseListeners = () => {
-        ownerSliderRef.current?.addEventListener('mousemove', handleMouseMove);
-        ownerSliderRef.current?.addEventListener('mouseup', handleMouseUp);
+        ownerDocument.addEventListener('mousemove', handleMouseMove);
+        ownerDocument.addEventListener('mouseup', handleMouseUp);
     }
 
     const removeMouseListeners = () => {
-        ownerSliderRef.current?.removeEventListener('mousemove', handleMouseMove);
-        ownerSliderRef.current?.removeEventListener('mouseup', handleMouseUp);
+        ownerDocument.removeEventListener('mousemove', handleMouseMove);
+        ownerDocument.removeEventListener('mouseup', handleMouseUp);
+    }
+
+    const addMouseDownListener = () => {
+        ownerSliderRef.current?.addEventListener('mousedown', handleMouseDown);
+    }
+
+    const removeMouseDownListener = () => {
+        ownerSliderRef.current?.removeEventListener('mousedown', handleMouseDown);
     }
 
     const moveThumb = (event: Event, thumbCoords: ThumbCoords) => {
@@ -182,6 +192,16 @@ export const useSlider = ({
     }
 
     // 2. Handle mouse events
+    const handleMouseDown = (event: MouseEvent) => {
+        addMouseListeners();
+
+        const thumbCoords: ThumbCoords | null = extractThumbCoordsFromMouseEvent(event);
+
+        if (thumbCoords != null) {
+            moveThumb(event, thumbCoords);
+        }
+    }
+
     const handleMouseMove = (event: MouseEvent) => {
         const thumbCoords: ThumbCoords | null = extractThumbCoordsFromMouseEvent(event);
 
@@ -213,17 +233,19 @@ export const useSlider = ({
         }
 
         endMoveThumb(thumbCoords);
-    }
+        removeMouseListeners();
+    };
 
     useEffect(() => {
         if (!disabled) {
             addTouchStartListener();
-            addMouseListeners();
+            addMouseDownListener();
         }
 
         return () => {
             removeTouchStartListener();
             removeTouchListeners();
+            removeMouseDownListener();
             removeMouseListeners();
         }
     }, [disabled]);

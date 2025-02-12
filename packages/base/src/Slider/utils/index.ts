@@ -3,6 +3,7 @@ export { clamp } from "./clamp";
 export { extractThumbCoordsFromMouseEvent, extractThumbCoordsFromTouchEvent } from "./extractThumbCoords";
 export { getOffsetStyle, getLeapStyle } from "./getAxisParams";
 export { getNearestValueFromArray, getNearestValueFromStep } from "./getNearestValue";
+export { getOwnerDocument } from "./getOwnerDocument";
 export { getThumbMoveType } from "./getThumbMoveType";
 export { getThumbNewValue } from "./getThumbNewValue";
 export { getTrack, type Track } from "./getTrackData";
