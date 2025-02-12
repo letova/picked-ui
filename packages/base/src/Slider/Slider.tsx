@@ -5,7 +5,7 @@ import { ClassNameGenerator, convertCSToClassName, getElementFromSlot } from "..
 
 import { Mark, SliderProps } from "./Slider.types";
 import { useSlider } from "./hooks/useSlider";
-import { getLeapStyle, getOffsetStyle, valueConverter } from "./utils";
+import { getIsDraggingStyle, getLeapStyle, getOffsetStyle, valueConverter } from "./utils";
 
 const getCN = (element?: string, modificator?: string) =>
   ClassNameGenerator.generate({ block: 'Slider', element, modificator });
@@ -32,6 +32,7 @@ export const Slider = forwardRef(
     ref: ForwardedRef<HTMLSpanElement>
   ) => {
     const {
+      isDragging,
       marks,
       values,
       track,
@@ -69,7 +70,8 @@ export const Slider = forwardRef(
         className: cx(getCN('track'), convertCSToClassName(cs?.track)),
         style: {
           ...getOffsetStyle(orientation, track.offset),
-          ...getLeapStyle(orientation, track.leap)
+          ...getLeapStyle(orientation, track.leap),
+          ...getIsDraggingStyle(isDragging)
         }
       }
     );
@@ -112,7 +114,6 @@ export const Slider = forwardRef(
         })}
         {values.map((val: number, index: number) => {
           const percent = valueConverter.valueToPercent(val, min, max);
-          const style = getOffsetStyle(orientation, percent);
 
           const thumbElement = getElementFromSlot(
             {
@@ -121,7 +122,10 @@ export const Slider = forwardRef(
             },
             {
               className: cx(getCN('thumb'), convertCSToClassName(cs?.thumb)),
-              style: style
+              style: {
+                ...getOffsetStyle(orientation, percent),
+                ...getIsDraggingStyle(isDragging)
+              }
             }
           );
 

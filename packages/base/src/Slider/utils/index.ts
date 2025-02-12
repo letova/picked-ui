@@ -4,6 +4,7 @@ export { extractThumbCoordsFromMouseEvent, extractThumbCoordsFromTouchEvent } fr
 export { getOffsetStyle, getLeapStyle } from "./getAxisParams";
 export { getNearestValueFromArray, getNearestValueFromStep } from "./getNearestValue";
 export { getOwnerDocument } from "./getOwnerDocument";
+export { getIsDraggingStyle } from "./getStyles";
 export { getThumbMoveType } from "./getThumbMoveType";
 export { getThumbNewValue } from "./getThumbNewValue";
 export { getTrack, type Track } from "./getTrackData";

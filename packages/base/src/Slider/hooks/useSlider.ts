@@ -22,6 +22,7 @@ interface UseSliderParams {
 }
 
 interface UseSliderReturnValue {
+    isDragging: boolean;
     marks: Mark[];
     values: number[];
     track: Track;
@@ -252,6 +253,7 @@ export const useSlider = ({
 
     return {
         rootRef: handleSliderRef,
+        isDragging,
         marks,
         values,
         track,
