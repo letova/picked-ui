@@ -5,13 +5,8 @@ import { Button, ButtonProps } from '../Button';
 
 import { ButtonGroupProps } from './ButtonGroup.types';
 
-type ExtraProps = {
-  default?: ButtonProps;
-  overrides: ButtonProps;
-};
-
 type ButtonGroupComponent = ((p: ButtonGroupProps & { ref?: React.Ref<HTMLDivElement> }) => React.ReactElement) & {
-  Button: React.FC<ButtonProps & { extraProps?: ExtraProps }>;
+  Button: React.FC<ButtonProps>;
 };
 
 const ButtonGroup = forwardRef((props: ButtonGroupProps, ref: ForwardedRef<HTMLDivElement>) => {
@@ -21,12 +16,19 @@ const ButtonGroup = forwardRef((props: ButtonGroupProps, ref: ForwardedRef<HTMLD
 export { ButtonGroup };
 
 ButtonGroup.Button = (props) => {
-  const { extraProps, ...restProps } = props;
+  const { custom, ...restProps } = props;
+
+  const { defaultProps, overridesProps, ...userCustom } = custom as {
+    defaultProps: ButtonProps;
+    overridesProps: ButtonProps;
+    [x: string]: unknown;
+  };
 
   const mergedProps = {
-    ...extraProps?.default,
+    ...defaultProps,
     ...restProps,
-    ...extraProps?.overrides,
+    ...overridesProps,
+    custom: userCustom,
   };
 
   return <Button {...mergedProps} />;

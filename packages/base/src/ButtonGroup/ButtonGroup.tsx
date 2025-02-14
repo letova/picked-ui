@@ -6,16 +6,7 @@ import { Button, ButtonProps } from '../Button';
 
 import { ClassNameGenerator } from '../utils';
 
-import { ButtonGroupProps } from './ButtonGroup.types';
-
-interface ExtraProps {
-  default?: ButtonProps;
-  overrides: ButtonProps;
-}
-
-type ButtonGroupComponent = ((p: ButtonGroupProps & { ref?: React.Ref<HTMLDivElement> }) => React.ReactElement) & {
-  Button: React.FC<ButtonProps & { extraProps: ExtraProps }>;
-};
+import { ButtonGroupComponent, ButtonGroupCustom, ButtonGroupProps } from './ButtonGroup.types';
 
 const getCN = (element?: string, modificator?: string) =>
   ClassNameGenerator.generate({ block: 'ButtonGroup', element, modificator });
@@ -28,24 +19,25 @@ export const ButtonGroup = forwardRef(({ className, children, defaultProps, over
           return child;
         }
 
-        const extraProps: ExtraProps = {
-          default: defaultProps,
-          overrides: overridesProps ?? {},
+        const custom: ButtonGroupCustom = {
+          ...(child.props as ButtonProps).custom,
+          defaultProps: defaultProps,
+          overridesProps: overridesProps ?? {},
         };
 
         if (React.Children.count(children) > 1) {
           if (index === 0) {
             // @ts-ignore fix this
-            extraProps.overrides['data-first-child'] = '';
+            custom.overridesProps['data-first-child'] = '';
           }
 
           if (index === React.Children.count(children) - 1) {
             // @ts-ignore fix this
-            extraProps.overrides['data-last-child'] = '';
+            custom.overridesProps['data-last-child'] = '';
           }
         }
 
-        const props = { extraProps };
+        const props = { custom };
 
         return React.cloneElement(child, props);
       })}
@@ -54,12 +46,19 @@ export const ButtonGroup = forwardRef(({ className, children, defaultProps, over
 }) as unknown as ButtonGroupComponent;
 
 ButtonGroup.Button = (props) => {
-  const { extraProps, ...restProps } = props;
+  const { custom, ...restProps } = props;
+
+  const { defaultProps, overridesProps, ...userCustom } = custom as {
+    defaultProps: ButtonProps;
+    overridesProps: ButtonProps;
+    [x: string]: unknown;
+  };
 
   const mergedProps = {
-    ...extraProps.default,
+    ...defaultProps,
     ...restProps,
-    ...extraProps.overrides,
+    ...overridesProps,
+    custom: userCustom,
   };
 
   return <Button {...mergedProps} />;

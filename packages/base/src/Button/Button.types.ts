@@ -14,6 +14,7 @@ export interface ButtonProps extends OmitedButtonHTMLAttributes {
     startDecorator?: Slot;
     endDecorator?: Slot;
   };
+  custom?: Record<string, unknown>;
   cs?: ButtonCS;
   pressed?: boolean;
 }
