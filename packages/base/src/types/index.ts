@@ -5,3 +5,5 @@ export type Slot = { component: React.ElementType<any>; props?: Record<string, u
 export type GetCSSObjectFn = (state: Record<string, any>) => CSSObject;
 
 export type CustomStyle = CSSObject | GetCSSObjectFn;
+
+export type DataAttributes = Record<`data-${string}`, string>;

@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { cx } from '@emotion/css';
 import React, { forwardRef } from 'react';
 
 import { Button, ButtonProps } from '../Button';
 
+import { DataAttributes } from '../types';
 import { ClassNameGenerator } from '../utils';
 
 import { ButtonGroupComponent, ButtonGroupCustom, ButtonGroupProps } from './ButtonGroup.types';
@@ -11,7 +11,7 @@ import { ButtonGroupComponent, ButtonGroupCustom, ButtonGroupProps } from './But
 const getCN = (element?: string, modificator?: string) =>
   ClassNameGenerator.generate({ block: 'ButtonGroup', element, modificator });
 
-export const ButtonGroup = forwardRef(({ className, children, defaultProps, overridesProps }: ButtonGroupProps) => {
+export const ButtonGroup = forwardRef(({ className, children, defaultProps }: ButtonGroupProps) => {
   return (
     <div className={cx(getCN(), className)}>
       {React.Children.map(children, (child, index) => {
@@ -22,22 +22,21 @@ export const ButtonGroup = forwardRef(({ className, children, defaultProps, over
         const custom: ButtonGroupCustom = {
           ...(child.props as ButtonProps).custom,
           defaultProps: defaultProps,
-          overridesProps: overridesProps ?? {},
         };
+
+        const overridesProps: ButtonProps & DataAttributes = {};
 
         if (React.Children.count(children) > 1) {
           if (index === 0) {
-            // @ts-ignore fix this
-            custom.overridesProps['data-first-child'] = '';
+            overridesProps['data-first-child'] = '';
           }
 
           if (index === React.Children.count(children) - 1) {
-            // @ts-ignore fix this
-            custom.overridesProps['data-last-child'] = '';
+            overridesProps['data-last-child'] = '';
           }
         }
 
-        const props = { custom };
+        const props = { ...overridesProps, custom };
 
         return React.cloneElement(child, props);
       })}
@@ -48,16 +47,14 @@ export const ButtonGroup = forwardRef(({ className, children, defaultProps, over
 ButtonGroup.Button = (props) => {
   const { custom, ...restProps } = props;
 
-  const { defaultProps, overridesProps, ...userCustom } = custom as {
+  const { defaultProps, ...userCustom } = custom as {
     defaultProps: ButtonProps;
-    overridesProps: ButtonProps;
     [x: string]: unknown;
   };
 
   const mergedProps = {
     ...defaultProps,
     ...restProps,
-    ...overridesProps,
     custom: userCustom,
   };
 

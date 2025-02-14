@@ -2,7 +2,6 @@ import { ButtonProps } from '../Button';
 
 export interface ButtonGroupCustom {
   defaultProps?: ButtonProps;
-  overridesProps?: ButtonProps;
 }
 
 export type ButtonGroupComponent = ((
@@ -18,5 +17,4 @@ export interface ButtonGroupProps {
    */
   className?: string;
   defaultProps?: ButtonProps;
-  overridesProps?: ButtonProps;
 }

@@ -18,16 +18,14 @@ export { ButtonGroup };
 ButtonGroup.Button = (props) => {
   const { custom, ...restProps } = props;
 
-  const { defaultProps, overridesProps, ...userCustom } = custom as {
+  const { defaultProps, ...userCustom } = custom as {
     defaultProps: ButtonProps;
-    overridesProps: ButtonProps;
     [x: string]: unknown;
   };
 
   const mergedProps = {
     ...defaultProps,
     ...restProps,
-    ...overridesProps,
     custom: userCustom,
   };
 
