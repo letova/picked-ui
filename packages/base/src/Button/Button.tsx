@@ -16,6 +16,7 @@ export const Button = forwardRef(
     {
       className,
       children,
+      custom,
       slots = {},
       startDecorator,
       endDecorator,
@@ -38,6 +39,7 @@ export const Button = forwardRef(
       focusVisible: hasFocusVisible,
       pressed,
       disabled,
+      custom,
     };
 
     const startDecoratorElement = getElementFromSlot(slots.startDecorator, {

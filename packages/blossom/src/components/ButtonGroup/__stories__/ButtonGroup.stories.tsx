@@ -19,8 +19,33 @@ export const Base: Story = {
   render: () => {
     return (
       <ButtonGroup>
-        <ButtonGroup.Button>1</ButtonGroup.Button>
-        <ButtonGroup.Button>2</ButtonGroup.Button>
+        <ButtonGroup.Button>One</ButtonGroup.Button>
+        <ButtonGroup.Button>Two</ButtonGroup.Button>
+        <ButtonGroup.Button>Free</ButtonGroup.Button>
+      </ButtonGroup>
+    );
+  },
+};
+
+export const Outlined: Story = {
+  render: () => {
+    return (
+      <ButtonGroup defaultProps={{ variant: 'outlined' }}>
+        <ButtonGroup.Button>One</ButtonGroup.Button>
+        <ButtonGroup.Button>Two</ButtonGroup.Button>
+        <ButtonGroup.Button>Free</ButtonGroup.Button>
+      </ButtonGroup>
+    );
+  },
+};
+
+export const OutlinedConnected: Story = {
+  render: () => {
+    return (
+      <ButtonGroup defaultProps={{ variant: 'outlined' }} spacing={0}>
+        <ButtonGroup.Button>One</ButtonGroup.Button>
+        <ButtonGroup.Button>Two</ButtonGroup.Button>
+        <ButtonGroup.Button>Free</ButtonGroup.Button>
       </ButtonGroup>
     );
   },

@@ -10,10 +10,22 @@ const MIDDLE_CHILD_STYLE = {
 };
 
 export const getCS = ({
+  defaultProps,
   orientation = 'horizontal',
   scale: s = 1,
   spacing = 1,
 }: ButtonGroupProps): ButtonGroupProps['cs'] => {
+  const { variant } = defaultProps || {};
+
+  const connectedStyle =
+    variant && variant === 'outlined' && spacing === 0
+      ? {
+          [`& > :not(:first-child)`]: {
+            marginLeft: getPxSize(-1, s),
+          },
+        }
+      : undefined;
+
   if (orientation === 'horizontal') {
     return {
       container: {
@@ -29,6 +41,8 @@ export const getCS = ({
           '--Button-top-left-radius': 0,
           '--Button-bottom-left-radius': 0,
         },
+
+        ...connectedStyle,
       },
     };
   }
@@ -48,6 +62,8 @@ export const getCS = ({
         '--Button-top-left-radius': 0,
         '--Button-top-right-radius': 0,
       },
+
+      ...connectedStyle,
     },
   };
 };
