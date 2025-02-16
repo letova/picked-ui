@@ -4,16 +4,16 @@ import React, { forwardRef } from 'react';
 import { Button, ButtonProps } from '../Button';
 
 import { DataAttributes } from '../types';
-import { ClassNameGenerator } from '../utils';
+import { ClassNameGenerator, convertCSToClassName } from '../utils';
 
 import { ButtonGroupComponent, ButtonGroupCustom, ButtonGroupProps } from './ButtonGroup.types';
 
 const getCN = (element?: string, modificator?: string) =>
   ClassNameGenerator.generate({ block: 'ButtonGroup', element, modificator });
 
-export const ButtonGroup = forwardRef(({ className, children, defaultProps }: ButtonGroupProps) => {
+export const ButtonGroup = forwardRef(({ className, children, defaultProps, cs }: ButtonGroupProps) => {
   return (
-    <div className={cx(getCN(), className)}>
+    <div className={cx(getCN(), convertCSToClassName(cs?.container), className)}>
       {React.Children.map(children, (child, index) => {
         if (!React.isValidElement(child)) {
           return child;

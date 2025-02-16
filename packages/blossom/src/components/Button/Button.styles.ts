@@ -57,7 +57,7 @@ export const getCS = ({
   const smallLeftPadding = startDecorator || (endDecorator && !children);
   const smallRightPadding = endDecorator || (startDecorator && !children);
 
-  const borderRadius = getBorderRadius(shape, 32);
+  const defaultBorderRadius = getPxSize(getBorderRadius(shape, 32), s);
 
   const colors = COLOR_MAP[variant][color];
   const sizes = SIZES_MAP[size];
@@ -79,7 +79,7 @@ export const getCS = ({
         variant === 'outlined'
           ? `${getPxSize(1, s)} solid ${pressed ? colors.border.pressed : colors.border.normal}`
           : 'none',
-      borderRadius: getPxSize(borderRadius, s),
+      borderRadius: `var(--Button-top-left-radius, ${defaultBorderRadius}) var(--Button-top-right-radius, ${defaultBorderRadius}) var(--Button-bottom-right-radius, ${defaultBorderRadius}) var(--Button-bottom-left-radius, ${defaultBorderRadius})`,
       boxSizing: 'border-box',
       fontFamily: `'Arial', sans-serif`,
       fontWeight: 600,

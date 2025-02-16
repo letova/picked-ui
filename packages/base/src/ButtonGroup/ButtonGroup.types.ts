@@ -1,7 +1,13 @@
 import { ButtonProps } from '../Button';
 
+import { CustomStyle } from '../types';
+
 export interface ButtonGroupCustom {
   defaultProps?: ButtonProps;
+}
+
+export interface ButtonGroupCS {
+  container?: CustomStyle;
 }
 
 export type ButtonGroupComponent = ((
@@ -17,4 +23,5 @@ export interface ButtonGroupProps {
    */
   className?: string;
   defaultProps?: ButtonProps;
+  cs?: ButtonGroupCS;
 }

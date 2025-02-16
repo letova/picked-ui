@@ -4,5 +4,7 @@ import { ButtonProps } from '../Button';
 
 export interface ButtonGroupProps extends BaseButtonGroupProps {
   defaultProps?: ButtonProps;
-  overridesProps?: ButtonProps;
+  orientation?: 'horizontal' | 'vertical';
+  scale?: number;
+  spacing?: number;
 }
