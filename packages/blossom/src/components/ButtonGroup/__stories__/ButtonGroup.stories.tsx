@@ -29,6 +29,18 @@ export const Base: Story = {
   },
 };
 
+export const VerticalGroup: Story = {
+  render: () => {
+    return (
+      <ButtonGroup orientation="vertical">
+        <ButtonGroup.Button>One</ButtonGroup.Button>
+        <ButtonGroup.Button>Two</ButtonGroup.Button>
+        <ButtonGroup.Button>Free</ButtonGroup.Button>
+      </ButtonGroup>
+    );
+  },
+};
+
 export const Outlined: Story = {
   render: () => {
     return (
