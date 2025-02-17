@@ -2,9 +2,6 @@ import { Colors } from '../../constants';
 
 const NO_BORDER_STUB = {
   normal: 'transparent',
-  hover: 'transparent',
-  active: 'transparent',
-  pressed: 'transparent',
   disabled: 'transparent',
 };
 
@@ -144,9 +141,6 @@ const OUTLINED_PRIMARY_COLORS = {
   },
   border: {
     normal: Colors.Primary800,
-    hover: Colors.Primary200,
-    active: Colors.Primary300,
-    pressed: Colors.Primary400,
     disabled: Colors.Neutral200,
   },
   text: { normal: Colors.Primary800, disabled: Colors.Neutral500 },
@@ -162,9 +156,6 @@ const OUTLINED_NEUTRAL_COLORS = {
   },
   border: {
     normal: Colors.Neutral800,
-    hover: Colors.Neutral200,
-    active: Colors.Neutral300,
-    pressed: Colors.Neutral400,
     disabled: Colors.Neutral200,
   },
   text: { normal: Colors.Neutral800, disabled: Colors.Neutral500 },
@@ -180,9 +171,6 @@ const OUTLINED_SUCCESS_COLORS = {
   },
   border: {
     normal: Colors.Success800,
-    hover: Colors.Success200,
-    active: Colors.Success300,
-    pressed: Colors.Success400,
     disabled: Colors.Neutral200,
   },
   text: { normal: Colors.Success800, disabled: Colors.Neutral500 },
@@ -198,9 +186,6 @@ const OUTLINED_WARNING_COLORS = {
   },
   border: {
     normal: Colors.Warning800,
-    hover: Colors.Warning200,
-    active: Colors.Warning300,
-    pressed: Colors.Warning400,
     disabled: Colors.Neutral200,
   },
   text: { normal: Colors.Warning800, disabled: Colors.Neutral500 },
@@ -216,9 +201,6 @@ const OUTLINED_DANGER_COLORS = {
   },
   border: {
     normal: Colors.Danger800,
-    hover: Colors.Danger200,
-    active: Colors.Danger300,
-    pressed: Colors.Danger400,
     disabled: Colors.Neutral200,
   },
   text: { normal: Colors.Danger800, disabled: Colors.Neutral500 },

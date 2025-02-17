@@ -75,10 +75,7 @@ export const getCS = ({
         smallLeftPadding ? sizes.paddingX.small : sizes.paddingX.normal,
         s,
       )}`,
-      border:
-        variant === 'outlined'
-          ? `${getPxSize(1, s)} solid ${pressed ? colors.border.pressed : colors.border.normal}`
-          : 'none',
+      border: variant === 'outlined' ? `${getPxSize(1, s)} solid ${colors.border.normal}` : 'none',
       borderRadius: `var(--Button-top-left-radius, ${defaultBorderRadius}) var(--Button-top-right-radius, ${defaultBorderRadius}) var(--Button-bottom-right-radius, ${defaultBorderRadius}) var(--Button-bottom-left-radius, ${defaultBorderRadius})`,
       boxSizing: 'border-box',
       fontFamily: `'Arial', sans-serif`,
@@ -90,12 +87,9 @@ export const getCS = ({
 
       '&:hover': {
         background: colors.bg.hover,
-        // @todo hover omly for outlined
-        borderColor: colors.border.hover,
       },
       '&:active': {
         background: colors.bg.active,
-        borderColor: colors.border.active,
       },
       '&:disabled': {
         background: colors.bg.disabled,
