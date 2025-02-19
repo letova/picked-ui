@@ -25,7 +25,6 @@ export interface ButtonProps extends OmitedButtonHTMLAttributes {
   endDecorator?: React.ReactElement | string | number;
   /**
    * Toggles the pressed state
-   * Aria-pressed
    */
   pressed?: boolean;
   /**
