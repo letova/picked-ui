@@ -58,11 +58,10 @@ export const getCS = ({ scale: s = 1, cs }: TreeViewProps): TreeViewProps['cs'] 
             : 'transparent',
         };
       },
-      label: ({ disabled, isCurrentLeaf }: { disabled: boolean; isCurrentLeaf: boolean }) => {
+      label: ({ disabled }: { disabled: boolean }) => {
         return {
           display: 'inline-flex',
           alignItems: 'center',
-          marginLeft: isCurrentLeaf ? getPxSize(20, s) : 0,
           padding: getPxSize(4, s),
           borderRadius: getPxSize(3, s),
           color: disabled ? 'gray' : ' black',
