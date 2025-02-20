@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { CSSProperties, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+import { Checkbox } from '../../Checkbox';
 
 import { TreeView, TreeViewProps } from '../index';
 
@@ -141,17 +143,10 @@ export const MultiDisabled: Story = {
   },
 };
 
-const CHECKBOX_STYLE: CSSProperties = {
-  display: 'inline-flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  height: '12px',
-  width: '12px',
-  marginRight: '4px',
-  border: '1px solid black',
-  borderRadius: '3px',
-  background: 'white',
-  color: 'royalblue',
+const CHECKBOX_CS = {
+  container: {
+    marginRight: '4px',
+  },
 };
 
 export const MultiWithCheckbox: Story = {
@@ -161,8 +156,8 @@ export const MultiWithCheckbox: Story = {
     disabled: ['1-3-2'],
     slots: {
       labelStartDecorator: {
-        component: ({ selected, indeterminate }) => {
-          return <span style={CHECKBOX_STYLE}>{selected ? '\u{02713}' : indeterminate ? '\u{25FC}' : ''}</span>;
+        component: ({ selected, indeterminate }: { selected: boolean; indeterminate: boolean }) => {
+          return <Checkbox variant="soft" checked={selected} indeterminate={indeterminate} cs={CHECKBOX_CS} />;
         },
       },
     },
