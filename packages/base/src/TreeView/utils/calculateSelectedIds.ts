@@ -2,19 +2,16 @@ import { forEachTree } from '../../utils';
 
 import { NodeMetadata, TreeViewNode } from '../TreeView.types';
 
+interface CalculateSelectedIdsOptions {
+  triggerNodeId: string;
+  selectedIds: string[];
+  disabledIds: string[];
+  getMetadataById: (id: string) => NodeMetadata;
+}
+
 export const calculateSelectedIds = (
   data: TreeViewNode[],
-  {
-    triggerNodeId,
-    selectedIds,
-    disabledIds,
-    getMetadataById,
-  }: {
-    triggerNodeId: string;
-    selectedIds: string[];
-    disabledIds: string[];
-    getMetadataById: (id: string) => NodeMetadata;
-  },
+  { triggerNodeId, selectedIds, disabledIds, getMetadataById }: CalculateSelectedIdsOptions,
 ) => {
   const initialSelectedIdsSet = new Set(selectedIds);
   const disabledIdsSet = new Set(disabledIds);
@@ -26,7 +23,7 @@ export const calculateSelectedIds = (
       nextSelectedIds.push(node.id);
     }
 
-    if (node.children) {
+    if (node.children?.length) {
       forEachTree(node.children, (childNode) => {
         if (initialSelectedIdsSet.has(childNode.id)) {
           nextSelectedIds.push(childNode.id);
@@ -51,7 +48,7 @@ export const calculateSelectedIds = (
         /**
          * TRIGER NODE that has NO CHILDREN
          */
-        if (!node.children) {
+        if (!node.children?.length) {
           if (desireIsSelected) {
             nextSelectedIds.push(node.id);
           }
@@ -130,7 +127,7 @@ export const calculateSelectedIds = (
        */
       const isDisabled = disabledIdsSet.has(node.id);
 
-      if (!node.children) {
+      if (!node.children?.length) {
         if (isSelected && !isDisabled) {
           nextSelectedIds.push(node.id);
         }
