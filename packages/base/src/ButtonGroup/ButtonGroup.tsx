@@ -1,5 +1,5 @@
 import { cx } from '@emotion/css';
-import React, { forwardRef } from 'react';
+import React, { ForwardedRef, forwardRef } from 'react';
 
 import { Button, ButtonProps } from '../Button';
 
@@ -11,38 +11,40 @@ import { ButtonGroupComponent, ButtonGroupCustom, ButtonGroupProps } from './But
 const getCN = (element?: string, modificator?: string) =>
   ClassNameGenerator.generate({ block: 'ButtonGroup', element, modificator });
 
-export const ButtonGroup = forwardRef(({ className, children, defaultProps, cs }: ButtonGroupProps) => {
-  return (
-    <div className={cx(getCN(), convertCSToClassName(cs?.container), className)}>
-      {React.Children.map(children, (child, index) => {
-        if (!React.isValidElement(child)) {
-          return child;
-        }
-
-        const custom: ButtonGroupCustom = {
-          ...(child.props as ButtonProps).custom,
-          defaultProps: defaultProps,
-        };
-
-        const overridesProps: ButtonProps & DataAttributes = {};
-
-        if (React.Children.count(children) > 1) {
-          if (index === 0) {
-            overridesProps['data-first-child'] = '';
+export const ButtonGroup = forwardRef(
+  ({ className, children, defaultProps, cs }: ButtonGroupProps, ref: ForwardedRef<HTMLDivElement>) => {
+    return (
+      <div ref={ref} className={cx(getCN(), convertCSToClassName(cs?.container), className)}>
+        {React.Children.map(children, (child, index) => {
+          if (!React.isValidElement(child)) {
+            return child;
           }
 
-          if (index === React.Children.count(children) - 1) {
-            overridesProps['data-last-child'] = '';
+          const custom: ButtonGroupCustom = {
+            ...(child.props as ButtonProps).custom,
+            defaultProps: defaultProps,
+          };
+
+          const overridesProps: ButtonProps & DataAttributes = {};
+
+          if (React.Children.count(children) > 1) {
+            if (index === 0) {
+              overridesProps['data-first-child'] = '';
+            }
+
+            if (index === React.Children.count(children) - 1) {
+              overridesProps['data-last-child'] = '';
+            }
           }
-        }
 
-        const props = { ...overridesProps, custom };
+          const props = { ...overridesProps, custom };
 
-        return React.cloneElement(child, props);
-      })}
-    </div>
-  );
-}) as unknown as ButtonGroupComponent;
+          return React.cloneElement(child, props);
+        })}
+      </div>
+    );
+  },
+) as unknown as ButtonGroupComponent;
 
 ButtonGroup.Button = (props) => {
   const { custom, ...restProps } = props;

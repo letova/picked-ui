@@ -7,5 +7,6 @@ export * from './Heading';
 export * from './Listbox';
 export * from './Paper';
 export * from './Radio';
+export * from './Splitter';
 export * from './Switch';
 export * from './TreeView';
