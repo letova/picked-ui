@@ -206,6 +206,68 @@ const OUTLINED_DANGER_COLORS = {
   text: { normal: Colors.Danger800, disabled: Colors.Neutral400 },
 };
 
+// PLAIN
+
+const PLAIN_PRIMARY_COLORS = {
+  bg: {
+    normal: 'transparent',
+    hover: Colors.Primary100,
+    active: Colors.Primary200,
+    pressed: Colors.Primary300,
+    disabled: 'transparent',
+  },
+  border: NO_BORDER_STUB,
+  text: { normal: Colors.Primary700, disabled: Colors.Neutral400 },
+};
+
+const PLAIN_NEUTRAL_COLORS = {
+  bg: {
+    normal: 'transparent',
+    hover: Colors.Neutral100,
+    active: Colors.Neutral200,
+    pressed: Colors.Neutral300,
+    disabled: 'transparent',
+  },
+  border: NO_BORDER_STUB,
+  text: { normal: Colors.Neutral700, disabled: Colors.Neutral400 },
+};
+
+const PLAIN_SUCCESS_COLORS = {
+  bg: {
+    normal: 'transparent',
+    hover: Colors.Success100,
+    active: Colors.Success200,
+    pressed: Colors.Success300,
+    disabled: 'transparent',
+  },
+  border: NO_BORDER_STUB,
+  text: { normal: Colors.Success700, disabled: Colors.Neutral400 },
+};
+
+const PLAIN_WARNING_COLORS = {
+  bg: {
+    normal: 'transparent',
+    hover: Colors.Warning100,
+    active: Colors.Warning200,
+    pressed: Colors.Warning300,
+    disabled: 'transparent',
+  },
+  border: NO_BORDER_STUB,
+  text: { normal: Colors.Warning700, disabled: Colors.Neutral400 },
+};
+
+const PLAIN_DANGER_COLORS = {
+  bg: {
+    normal: 'transparent',
+    hover: Colors.Danger100,
+    active: Colors.Danger200,
+    pressed: Colors.Danger300,
+    disabled: 'transparent',
+  },
+  border: NO_BORDER_STUB,
+  text: { normal: Colors.Danger700, disabled: Colors.Neutral400 },
+};
+
 export const COLOR_MAP = {
   soft: {
     primary: SOFT_PRIMARY_COLORS,
@@ -227,5 +289,12 @@ export const COLOR_MAP = {
     success: OUTLINED_SUCCESS_COLORS,
     warning: OUTLINED_WARNING_COLORS,
     danger: OUTLINED_DANGER_COLORS,
+  },
+  plain: {
+    primary: PLAIN_PRIMARY_COLORS,
+    neutral: PLAIN_NEUTRAL_COLORS,
+    success: PLAIN_SUCCESS_COLORS,
+    warning: PLAIN_WARNING_COLORS,
+    danger: PLAIN_DANGER_COLORS,
   },
 };

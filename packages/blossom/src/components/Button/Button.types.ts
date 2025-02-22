@@ -25,7 +25,7 @@ export interface ButtonProps extends BaseButtonProps {
    * The variant of the component
    * @default solid
    */
-  variant?: 'soft' | 'solid' | 'outlined';
+  variant?: 'soft' | 'solid' | 'outlined' | 'plain';
   /**
    * If "max", the component will take up the full width of its container
    * @default auto

@@ -47,9 +47,13 @@ export const States: Story = {
   render: () => {
     return (
       <div style={CONTAINER_STYLE}>
-        <Button>Enabled</Button>
-        <Button pressed>Pressed</Button>
-        <Button disabled>Disabled</Button>
+        <Button variant="solid">Enabled</Button>
+        <Button variant="solid" pressed>
+          Pressed
+        </Button>
+        <Button variant="solid" disabled>
+          Disabled
+        </Button>
       </div>
     );
   },
@@ -106,6 +110,16 @@ export const Variants: Story = {
             </Button>
           ))}
           <Button variant="outlined" disabled>
+            disabled
+          </Button>
+        </div>
+        <div style={containerStyle}>
+          {COLORS.map((color) => (
+            <Button key={color} variant="plain" color={color}>
+              {color}
+            </Button>
+          ))}
+          <Button variant="plain" disabled>
             disabled
           </Button>
         </div>
