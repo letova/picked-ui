@@ -33,11 +33,23 @@ export const Splitter = forwardRef(({ className, children, cs }: SplitterProps, 
 
   return (
     <div ref={handleRef} className={cx(getCN(), convertCSToClassName(cs?.container), className)}>
-      {items.map((item, idx) => {
+      {items.map((item, idx, items) => {
+        const lastItem = idx === items.length - 1;
+
         return (
           <Fragment key={`split-section-${idx}`}>
-            <div>{item.children}</div>
-            <div>|</div>
+            <div className={cx(getCN('section'), convertCSToClassName(cs?.section))}>{item.children}</div>
+            {lastItem ? null : (
+              <div
+                className={cx(getCN('separator'), convertCSToClassName(cs?.separator))}
+                role="separator"
+                aria-valuenow={50}
+                aria-valuemin={0}
+                aria-valuemax={100}
+              >
+                |
+              </div>
+            )}
           </Fragment>
         );
       })}

@@ -7,9 +7,6 @@ import { Splitter } from '../index';
 const meta = {
   title: 'Components/Splitter',
   component: Splitter,
-  parameters: {
-    layout: 'centered',
-  },
   tags: ['autodocs'],
 } satisfies Meta<typeof Splitter>;
 
@@ -17,15 +14,29 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+const paperCS = {
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 200,
+    background: 'white',
+  },
+};
+
 export const Base: Story = {
   render: () => {
     return (
       <Splitter>
         <div>
-          <Paper>First</Paper>
+          <Paper elevation={2} cs={paperCS}>
+            First
+          </Paper>
         </div>
         <div>
-          <Paper>Second</Paper>
+          <Paper elevation={2} cs={paperCS}>
+            Second
+          </Paper>
         </div>
       </Splitter>
     );

@@ -1,7 +1,9 @@
 import { CSSObject } from '@emotion/css';
 
 export interface SplitterCS {
-  container: CSSObject;
+  container?: CSSObject;
+  section?: CSSObject;
+  separator?: CSSObject;
 }
 
 export interface SplitterSectionProps {
