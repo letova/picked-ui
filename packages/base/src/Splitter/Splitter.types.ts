@@ -15,4 +15,9 @@ export interface SplitterProps {
   className?: string;
   children?: React.ReactNode;
   cs?: SplitterCS;
+  /**
+   * The component direction
+   * @default horizontal
+   */
+  direction?: 'horizontal' | 'vertical';
 }
