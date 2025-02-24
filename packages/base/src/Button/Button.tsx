@@ -16,11 +16,12 @@ export const Button = forwardRef(
     {
       className,
       children,
+      custom,
       slots = {},
       startDecorator,
       endDecorator,
       cs,
-      pressed = false,
+      pressed,
       disabled = false,
       onFocus,
       onBlur,
@@ -36,8 +37,9 @@ export const Button = forwardRef(
     const state = {
       focus: hasFocus,
       focusVisible: hasFocusVisible,
-      pressed,
+      pressed: !!pressed,
       disabled,
+      custom,
     };
 
     const startDecoratorElement = getElementFromSlot(slots.startDecorator, {
@@ -54,10 +56,12 @@ export const Button = forwardRef(
       <button
         {...restProps}
         ref={ref}
+        // Identifies the button as a toggle button
+        aria-pressed={pressed}
         className={cx(
           getCN(),
           {
-            [getMCN('pressed')]: pressed,
+            [getMCN('pressed')]: !!pressed,
             [getMCN('disabled')]: disabled,
             [getMCN('focus')]: hasFocus,
             [getMCN('focusVisible')]: hasFocusVisible,

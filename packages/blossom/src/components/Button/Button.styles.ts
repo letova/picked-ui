@@ -25,6 +25,8 @@ const SIZES_MAP = {
   },
 };
 
+const BORDER_SIZE = 1;
+
 const getBorderRadius = (shape: ButtonProps['shape'], height: number) => {
   switch (shape) {
     case 'brick': {
@@ -54,13 +56,24 @@ export const getCS = ({
   startDecorator,
   endDecorator,
 }: ButtonProps): ButtonProps['cs'] => {
-  const smallLeftPadding = startDecorator || (endDecorator && !children);
-  const smallRightPadding = endDecorator || (startDecorator && !children);
-
-  const borderRadius = getBorderRadius(shape, 32);
+  const defaultBorderRadius = getPxSize(getBorderRadius(shape, 32), s);
 
   const colors = COLOR_MAP[variant][color];
   const sizes = SIZES_MAP[size];
+
+  const smallLeftPadding = startDecorator || (endDecorator && !children);
+  const smallRightPadding = endDecorator || (startDecorator && !children);
+  const paddingSubtract = variant === 'outlined' ? BORDER_SIZE : 0;
+
+  const rightPadding = smallRightPadding ? sizes.paddingX.small : sizes.paddingX.normal;
+  const leftPadding = smallLeftPadding ? sizes.paddingX.small : sizes.paddingX.normal;
+
+  const padding = {
+    top: sizes.paddingY - paddingSubtract,
+    bottom: sizes.paddingY - paddingSubtract,
+    left: leftPadding - paddingSubtract,
+    right: rightPadding - paddingSubtract,
+  };
 
   return {
     container: ({ pressed, disabled, focusVisible }) => ({
@@ -68,18 +81,12 @@ export const getCS = ({
       columnGap: getPxSize(6, s),
       alignItems: 'center',
       minHeight: getPxSize(sizes.minHeight, s),
-      padding: `${getPxSize(sizes.paddingY, s)} ${getPxSize(
-        smallRightPadding ? sizes.paddingX.small : sizes.paddingX.normal,
-        s,
-      )} ${getPxSize(sizes.paddingY, s)} ${getPxSize(
-        smallLeftPadding ? sizes.paddingX.small : sizes.paddingX.normal,
+      padding: `${getPxSize(padding.top, s)} ${getPxSize(padding.right, s)} ${getPxSize(padding.bottom, s)} ${getPxSize(
+        padding.left,
         s,
       )}`,
-      border:
-        variant === 'outlined'
-          ? `${getPxSize(1, s)} solid ${pressed ? colors.border.pressed : colors.border.normal}`
-          : 'none',
-      borderRadius: getPxSize(borderRadius, s),
+      border: variant === 'outlined' ? `${getPxSize(1, s)} solid ${colors.border.normal}` : 'none',
+      borderRadius: `var(--Button-top-left-radius, ${defaultBorderRadius}) var(--Button-top-right-radius, ${defaultBorderRadius}) var(--Button-bottom-right-radius, ${defaultBorderRadius}) var(--Button-bottom-left-radius, ${defaultBorderRadius})`,
       boxSizing: 'border-box',
       fontFamily: `'Arial', sans-serif`,
       fontWeight: 600,
@@ -90,12 +97,9 @@ export const getCS = ({
 
       '&:hover': {
         background: colors.bg.hover,
-        // @todo hover omly for outlined
-        borderColor: colors.border.hover,
       },
       '&:active': {
         background: colors.bg.active,
-        borderColor: colors.border.active,
       },
       '&:disabled': {
         background: colors.bg.disabled,

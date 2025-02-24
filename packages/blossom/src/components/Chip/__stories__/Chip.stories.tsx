@@ -1,5 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { getPxSize } from '../../../utils';
+
+import { Button, ButtonProps } from '../../Button';
+
 import { Chip } from '../index';
 
 const meta = {
@@ -52,9 +56,22 @@ export const MaxWidth: Story = {
   },
 };
 
+const buttonProps = {
+  variant: 'solid',
+  children: 'x',
+  cs: {
+    container: {
+      minHeight: 'auto',
+      padding: `0 ${getPxSize(4)}`,
+    },
+  },
+} satisfies ButtonProps;
+
 export const EndDecorator: Story = {
   args: {
     children: 'Chip',
-    slots: { endDecorator: { component: 'button', props: { children: 'x' } } },
+    slots: {
+      endDecorator: { component: Button, props: buttonProps },
+    },
   },
 };

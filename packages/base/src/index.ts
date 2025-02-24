@@ -1,4 +1,5 @@
 export * from './Button';
+export * from './ButtonGroup';
 export * from './Checkbox';
 export * from './Chip';
 export * from './ChipList';
@@ -7,5 +8,6 @@ export * from './Listbox';
 export * from './Paper';
 export * from './Radio';
 export * from './Slider';
+export * from './Splitter';
 export * from './Switch';
 export * from './TreeView';

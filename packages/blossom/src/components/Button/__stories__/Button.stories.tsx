@@ -4,6 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Add } from '../../../iconComponents/Add';
 
 import { Button, ButtonProps } from '../index';
+
 import { Switch } from '../../Switch';
 import { Spin } from '../../Spin';
 
@@ -20,6 +21,8 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+const CONTAINER_STYLE = { display: 'flex', gap: '16px' };
+
 export const Base: Story = {
   args: {
     children: 'Button',
@@ -31,7 +34,7 @@ const SHAPES = ['brick', 'round', 'fully-round'] as const;
 export const Shapes: Story = {
   render: () => {
     return (
-      <div style={{ display: 'flex', gap: '16px' }}>
+      <div style={CONTAINER_STYLE}>
         {SHAPES.map((shape) => {
           return <Button shape={shape}>{shape}</Button>;
         })}
@@ -43,10 +46,14 @@ export const Shapes: Story = {
 export const States: Story = {
   render: () => {
     return (
-      <div style={{ display: 'flex', gap: '16px' }}>
-        <Button>Enabled</Button>
-        <Button pressed>Pressed</Button>
-        <Button disabled>Disabled</Button>
+      <div style={CONTAINER_STYLE}>
+        <Button variant="solid">Enabled</Button>
+        <Button variant="solid" pressed>
+          Pressed
+        </Button>
+        <Button variant="solid" disabled>
+          Disabled
+        </Button>
       </div>
     );
   },
@@ -74,7 +81,7 @@ const COLORS = ['primary', 'neutral', 'success', 'warning', 'danger'] as const;
 
 export const Variants: Story = {
   render: () => {
-    const containerStyle = { display: 'flex', gap: '16px', paddingBottom: '16px' };
+    const containerStyle = { ...CONTAINER_STYLE, paddingBottom: '16px' };
 
     return (
       <>
@@ -84,6 +91,9 @@ export const Variants: Story = {
               {color}
             </Button>
           ))}
+          <Button variant="soft" disabled>
+            disabled
+          </Button>
         </div>
         <div style={containerStyle}>
           {COLORS.map((color) => (
@@ -91,6 +101,7 @@ export const Variants: Story = {
               {color}
             </Button>
           ))}
+          <Button disabled>disabled</Button>
         </div>
         <div style={containerStyle}>
           {COLORS.map((color) => (
@@ -98,6 +109,19 @@ export const Variants: Story = {
               {color}
             </Button>
           ))}
+          <Button variant="outlined" disabled>
+            disabled
+          </Button>
+        </div>
+        <div style={containerStyle}>
+          {COLORS.map((color) => (
+            <Button key={color} variant="plain" color={color}>
+              {color}
+            </Button>
+          ))}
+          <Button variant="plain" disabled>
+            disabled
+          </Button>
         </div>
       </>
     );
@@ -128,7 +152,7 @@ export const LoadingButton: Story = {
     );
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+      <div style={{ ...CONTAINER_STYLE, flexDirection: 'column', alignItems: 'center' }}>
         <Switch label="Toggle loading state" checked={isLoading} onValueChange={setLoading} />
         <Button startDecorator={startDecorator} {...args} />
       </div>

@@ -1,5 +1,10 @@
 # STYLE GUIDE
 
+## Public interface
+
+Properties in the public interface must be in alphabetical order. Why? The search for properties whose names are not
+exactly known to the user is simplified
+
 ## Typescript
 
 ### React props

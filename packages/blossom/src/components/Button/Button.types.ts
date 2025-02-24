@@ -6,6 +6,10 @@ export interface ButtonProps extends BaseButtonProps {
    * @default primary
    */
   color?: 'primary' | 'neutral' | 'danger' | 'success' | 'warning';
+  /**
+   * The scale of the component
+   * @default 1
+   */
   scale?: number;
   /**
    * The edge style the component
@@ -21,14 +25,10 @@ export interface ButtonProps extends BaseButtonProps {
    * The variant of the component
    * @default solid
    */
-  variant?: 'solid' | 'soft' | 'outlined';
+  variant?: 'soft' | 'solid' | 'outlined' | 'plain';
   /**
-   * auto - automatic width detection
-   * max - the component will take up the full width of its container
+   * If "max", the component will take up the full width of its container
    * @default auto
    */
   width?: 'auto' | 'max';
-
-  pressed?: boolean;
-  //aria-pressed
 }
