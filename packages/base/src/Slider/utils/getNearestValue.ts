@@ -14,3 +14,10 @@ export const getNearestValueFromArray = (arr: number[], value: number): number =
 
     return nearestValue;
 }
+
+export const getNearestValueIndex = (arr: number[], value: number): number => {
+    const nearestValue = getNearestValueFromArray(arr, value);
+    const nearestValueIndex = arr.indexOf(nearestValue);
+
+    return nearestValueIndex;
+}

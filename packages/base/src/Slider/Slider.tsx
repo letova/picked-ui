@@ -125,7 +125,8 @@ export const Slider = forwardRef(
               style: {
                 ...getOffsetStyle(orientation, percent),
                 ...getIsDraggingStyle(isDragging)
-              }
+              },
+              'data-index': index,
             }
           );
 
