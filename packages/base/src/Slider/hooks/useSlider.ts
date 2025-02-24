@@ -67,7 +67,7 @@ export const useSlider = ({
         onValueChange?.(value);
     }
 
-    const isRange = Array.isArray(value);
+    const isRange = Array.isArray(valueDerived);
     const thumbMoveType = getThumbMoveType(marksParam);
     const marks = getMarksFromParams({ min, max, step, marks: marksParam, thumbMoveType });
 
