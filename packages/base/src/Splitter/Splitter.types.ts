@@ -11,6 +11,7 @@ export interface SplitterSectionProps {
   min?: number;
   max?: number;
   children?: React.ReactNode;
+  defaultSize?: number | string;
 }
 
 export interface SplitterProps {
