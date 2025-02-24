@@ -3,7 +3,7 @@ import { ForwardedRef, useEffect, useRef, useState } from "react";
 import { useForkRef } from "../../hooks";
 
 import { Mark, Orientation, ThumbCoords } from "../Slider.types";
-import { getMarksFromParams, getThumbMoveType, getTrack, Track, getValuesArr, getThumbNewValue, getMarksValues, areEqualValues, extractThumbCoordsFromTouchEvent, extractThumbCoordsFromMouseEvent, getOwnerDocument } from "../utils";
+import { getMarksFromParams, getThumbMoveType, getTrack, Track, getValuesArr, getThumbNewValue, getMarksValues, areEqualValues, extractThumbCoordsFromTouchEvent, extractThumbCoordsFromMouseEvent, getOwnerDocument, getNearestValueIndex, setNewValue } from "../utils";
 
 import { useControlledValue } from "./useControlledValue";
 
@@ -129,7 +129,9 @@ export const useSlider = ({
     }
 
     const moveThumb = (event: Event, thumbCoords: ThumbCoords) => {
-        const newValue = getThumbNewValueByThumbCoords(thumbCoords);
+        const thumbNewValue = getThumbNewValueByThumbCoords(thumbCoords);
+        const index = getNearestValueIndex(values, thumbNewValue);
+        const newValue = setNewValue(values, thumbNewValue, index);
 
         setValue(newValue);
 
@@ -139,7 +141,9 @@ export const useSlider = ({
     }
 
     const endMoveThumb = (thumbCoords: ThumbCoords) => {
-        const newValue = getThumbNewValueByThumbCoords(thumbCoords);
+        const thumbNewValue = getThumbNewValueByThumbCoords(thumbCoords);
+        const index = getNearestValueIndex(values, thumbNewValue);
+        const newValue = setNewValue(values, thumbNewValue, index);
 
         onValueChangeCommitted?.(newValue);
     }
@@ -194,6 +198,8 @@ export const useSlider = ({
 
     // 2. Handle mouse events
     const handleMouseDown = (event: MouseEvent) => {
+        event.preventDefault();
+
         addMouseListeners();
 
         const thumbCoords: ThumbCoords | null = extractThumbCoordsFromMouseEvent(event);

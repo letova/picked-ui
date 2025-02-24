@@ -1,6 +1,6 @@
-export const setNewValue = (values: number[], value: number, index: number): number[] => {
+export const setNewValue = (values: number[], value: number, index: number): number | number[] => {
     if (values.length === 1) {
-        return [value];
+        return value;
     }
 
     const valuesNew = values.slice();
