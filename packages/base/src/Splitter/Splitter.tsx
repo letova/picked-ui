@@ -32,7 +32,7 @@ export const Splitter = forwardRef(({ className, children, cs }: SplitterProps, 
 
   const sizes = useSizes({
     containerSize: containerSize ?? 0,
-    defaultChildSizes: items.map(({ defaultSize }) => defaultSize || 0),
+    defaultChildSizes: items.map(({ defaultSize }) => defaultSize),
   });
 
   console.log('sizes', sizes);

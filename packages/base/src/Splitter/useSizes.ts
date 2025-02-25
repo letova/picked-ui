@@ -10,48 +10,51 @@ export const useSizes = ({ containerSize, defaultChildSizes }: UseSizesOptions) 
     });
   }
 
-  const [sizes, totalSize, positiveValueCount] = defaultChildSizes.reduce<[number[], number, number]>(
-    (result, size) => {
-      let [nextS, nextTS, nextPVC] = result;
+  const numberSizes: (number | undefined)[] = [];
 
-      if (typeof size === 'number') {
-        nextTS += size;
-        nextS.push(size);
-      }
+  let totalSize = 0;
+  let changableSizeCount = 0;
+  let positiveSizeCount = 0;
 
-      if (typeof size === 'string') {
-        const value = (containerSize * parseFloat(size)) / 100;
-        nextTS += value;
-        nextS.push(value);
-      }
+  defaultChildSizes.forEach((size) => {
+    let value = size;
 
-      if (size === 'undefined') {
-        nextS = [...nextS, 0];
-      }
+    if (typeof size === 'number') {
+      totalSize += size;
+    }
 
-      if (size) {
-        nextPVC += 1;
-      }
+    if (typeof size === 'string') {
+      const numValue = (containerSize * parseFloat(size)) / 100;
+      totalSize += numValue;
+      value = numValue;
+    }
 
-      return [nextS, nextTS, nextPVC];
-    },
-    [[], 0, 0],
-  );
+    if (size || size === 'undefined') {
+      changableSizeCount += 1;
+    }
+
+    if (value) {
+      positiveSizeCount += 1;
+    }
+
+    numberSizes.push(value as number | undefined);
+  });
+
+  let resultSizes = [...numberSizes];
 
   const overflow = Math.max(0, totalSize - containerSize);
   const shortage = Math.max(0, containerSize - totalSize);
 
-  let subtract = 0;
-
   if (overflow) {
-    subtract = overflow / positiveValueCount;
+    const divider = positiveSizeCount;
+    resultSizes = resultSizes.map((size) => (size ? size - overflow / divider : size));
   } else if (shortage) {
-    subtract = -(overflow / positiveValueCount);
+    const divider = changableSizeCount || resultSizes.length;
+    const addition = shortage / divider;
+    resultSizes = resultSizes.map((size) => (size === 0 ? size : (size || 0) + addition));
+  } else {
+    resultSizes = resultSizes.map((size) => size ?? 0);
   }
 
-  return sizes.map((size) => {
-    const preparedWidth = size - subtract;
-
-    return { width: preparedWidth, percentWidth: (preparedWidth / containerSize) * 100 };
-  });
+  return resultSizes;
 };
