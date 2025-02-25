@@ -94,7 +94,7 @@ export const Multiple: Story = {
 
     return (
       <div style={containerStyle}>
-        <Slider value={[20, 50]} />
+        <Slider defaultValue={[20, 50]} />
       </div>
     );
   },

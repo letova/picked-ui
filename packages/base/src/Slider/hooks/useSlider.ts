@@ -6,6 +6,7 @@ import { Mark, Orientation, ThumbCoords } from "../Slider.types";
 import { getMarksFromParams, getThumbMoveType, getTrack, Track, getValuesArr, getThumbNewValue, getMarksValues, areEqualValues, extractThumbCoordsFromTouchEvent, extractThumbCoordsFromMouseEvent, getOwnerDocument, getNearestValueIndex, setNewValue } from "../utils";
 
 import { useControlledValue } from "./useControlledValue";
+import { useEventCallback } from "./useEventCallback";
 
 interface UseSliderParams {
     min: number;
@@ -128,7 +129,7 @@ export const useSlider = ({
         ownerSliderRef.current?.removeEventListener('mousedown', handleMouseDown);
     }
 
-    const moveThumb = (event: Event, thumbCoords: ThumbCoords) => {
+    const moveThumb = useEventCallback((event: Event, thumbCoords: ThumbCoords) => {
         const thumbNewValue = getThumbNewValueByThumbCoords(thumbCoords);
         const index = getNearestValueIndex(values, thumbNewValue);
         const newValue = setNewValue(values, thumbNewValue, index);
@@ -138,15 +139,15 @@ export const useSlider = ({
         if (!areEqualValues(newValue, valueDerived)) {
             handleChange(event, newValue)
         }
-    }
+    });
 
-    const endMoveThumb = (thumbCoords: ThumbCoords) => {
+    const endMoveThumb = useEventCallback((thumbCoords: ThumbCoords) => {
         const thumbNewValue = getThumbNewValueByThumbCoords(thumbCoords);
         const index = getNearestValueIndex(values, thumbNewValue);
         const newValue = setNewValue(values, thumbNewValue, index);
 
         onValueChangeCommitted?.(newValue);
-    }
+    });
 
     // 1. Handle touch events
     const handleTouchStart = (event: TouchEvent) => {
