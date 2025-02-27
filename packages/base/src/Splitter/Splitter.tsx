@@ -5,7 +5,7 @@ import { useForkRef, useResizeObserver } from '../hooks';
 import { ClassNameGenerator, convertCSToClassName } from '../utils';
 
 import { SplitterProps, SplitterSectionProps } from './Splitter.types';
-import { useSizes } from './useSizes';
+import { getSizes } from './utils';
 
 const getCN = (element?: string, modificator?: string) =>
   ClassNameGenerator.generate({ block: 'Splitter', element, modificator });
@@ -30,9 +30,11 @@ export const Splitter = forwardRef(({ className, children, cs }: SplitterProps, 
       });
   }, [children]);
 
-  const sizes = useSizes({
-    containerSize: containerSize ?? 0,
-    defaultChildSizes: items.map(({ defaultSize }) => defaultSize),
+  const separatorCount = items.length - 1;
+
+  const sizes = getSizes({
+    containerSize: containerSize ? containerSize - 8 * separatorCount : 0,
+    defaultChildSizes: items.map(({ defaultSize }) => ({ size: defaultSize })),
   });
 
   console.log('sizes', sizes);

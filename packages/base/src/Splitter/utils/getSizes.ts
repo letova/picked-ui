@@ -1,22 +1,22 @@
 interface UseSizesOptions {
   containerSize?: number;
-  defaultChildSizes: (number | string | undefined)[];
+  defaultChildSizes: { size: number | string | undefined }[];
 }
 
-export const useSizes = ({ containerSize, defaultChildSizes }: UseSizesOptions) => {
+export const getSizes = ({ containerSize, defaultChildSizes }: UseSizesOptions) => {
   if (!containerSize || containerSize === 0) {
     return defaultChildSizes.map(() => {
-      return { width: 0, percentWidth: 0 };
+      return { size: 0, percentSize: 0 };
     });
   }
 
   const numberSizes: (number | undefined)[] = [];
 
   let totalSize = 0;
-  let changableSizeCount = 0;
+  let undefinedSizeCount = 0;
   let positiveSizeCount = 0;
 
-  defaultChildSizes.forEach((size) => {
+  defaultChildSizes.forEach(({ size }) => {
     let value = size;
 
     if (typeof size === 'number') {
@@ -29,8 +29,8 @@ export const useSizes = ({ containerSize, defaultChildSizes }: UseSizesOptions) 
       value = numValue;
     }
 
-    if (size || size === 'undefined') {
-      changableSizeCount += 1;
+    if (size === undefined) {
+      undefinedSizeCount += 1;
     }
 
     if (value) {
@@ -48,13 +48,19 @@ export const useSizes = ({ containerSize, defaultChildSizes }: UseSizesOptions) 
   if (overflow) {
     const divider = positiveSizeCount;
     resultSizes = resultSizes.map((size) => (size ? size - overflow / divider : size));
-  } else if (shortage) {
-    const divider = changableSizeCount || resultSizes.length;
-    const addition = shortage / divider;
-    resultSizes = resultSizes.map((size) => (size === 0 ? size : (size || 0) + addition));
+  } else if (shortage && undefinedSizeCount) {
+    const addition = shortage / undefinedSizeCount;
+    resultSizes = resultSizes.map((size) => (size === undefined ? (size || 0) + addition : size));
+  } else if (shortage && positiveSizeCount) {
+    const addition = shortage / positiveSizeCount;
+    resultSizes = resultSizes.map((size) => (size ? (size || 0) + addition : size));
   } else {
     resultSizes = resultSizes.map((size) => size ?? 0);
   }
 
-  return resultSizes;
+  return resultSizes.map((size) => {
+    const actualSize = size ?? 0;
+
+    return { size: actualSize, percentSize: actualSize === 0 ? 0 : (actualSize / containerSize) * 100 };
+  });
 };
