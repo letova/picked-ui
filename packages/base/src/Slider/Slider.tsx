@@ -5,7 +5,7 @@ import { ClassNameGenerator, convertCSToClassName, getElementFromSlot } from "..
 
 import { Mark, SliderProps } from "./Slider.types";
 import { useSlider } from "./hooks/useSlider";
-import { getIsDraggingStyle, getLeapStyle, getOffsetStyle, valueConverter } from "./utils";
+import { getInputStyle, getIsDraggingStyle, getLeapStyle, getOffsetStyle, valueConverter } from "./utils";
 
 const getCN = (element?: string, modificator?: string) =>
   ClassNameGenerator.generate({ block: 'Slider', element, modificator });
@@ -31,13 +31,7 @@ export const Slider = forwardRef(
     }: SliderProps,
     ref: ForwardedRef<HTMLSpanElement>
   ) => {
-    const {
-      isDragging,
-      marks,
-      values,
-      track,
-      rootRef,
-    } = useSlider({
+    const slider = useSlider({
       min,
       max,
       step,
@@ -50,6 +44,17 @@ export const Slider = forwardRef(
       onValueChange,
       onValueChangeCommitted
     });
+
+    const {
+      activeIndex,
+      focusedIndex,
+      isDragging,
+      marks,
+      values,
+      track,
+      inputOwnerProps,
+      rootRef,
+    } = slider;
 
     const railElement = getElementFromSlot(
       {
@@ -114,6 +119,24 @@ export const Slider = forwardRef(
         })}
         {values.map((val: number, index: number) => {
           const percent = valueConverter.valueToPercent(val, min, max);
+          const isActive = activeIndex === index;
+          const isFocused = focusedIndex === index;
+
+          const inputElement = getElementFromSlot(
+            {
+              component: 'input',
+            },
+            {
+              'data-index': index,
+              style: getInputStyle(disabled),
+              type: 'range',
+              min,
+              max,
+              value: val,
+              disabled,
+              ...inputOwnerProps,
+            }
+          )
 
           const thumbElement = getElementFromSlot(
             {
@@ -121,12 +144,20 @@ export const Slider = forwardRef(
               ...slots.thumb,
             },
             {
-              className: cx(getCN('thumb'), convertCSToClassName(cs?.thumb)),
+              className: cx(
+                getCN('thumb'),
+                convertCSToClassName(cs?.thumb),
+                {
+                  [getCN('thumb', 'active')]: isActive,
+                  [getCN('thumb', 'focused')]: isFocused,
+                },
+              ),
               style: {
                 ...getOffsetStyle(orientation, percent),
                 ...getIsDraggingStyle(isDragging)
               },
               'data-index': index,
+              children: inputElement,
             }
           );
 

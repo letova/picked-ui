@@ -15,6 +15,7 @@ export interface SliderCS {
   track?: CustomStyle;
   mark?: CustomStyle;
   thumb?: CustomStyle;
+  input?: CustomStyle;
 }
 
 

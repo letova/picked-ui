@@ -1,4 +1,4 @@
-import { ForwardedRef, useEffect, useRef, useState } from "react";
+import { FocusEvent, ForwardedRef, HTMLProps, useEffect, useRef, useState } from "react";
 
 import { useForkRef } from "../../hooks";
 
@@ -27,6 +27,9 @@ interface UseSliderReturnValue {
     marks: Mark[];
     values: number[];
     track: Track;
+    activeIndex?: number;
+    focusedIndex?: number;
+    inputOwnerProps: HTMLProps<HTMLInputElement>;
     rootRef: ((instance: HTMLSpanElement | null) => void) | null;
 }
 
@@ -58,6 +61,8 @@ export const useSlider = ({
         dragCount: 0,
     });
 
+    const [activeIndex, setActiveIndex] = useState<number>();
+    const [focusedIndex, setFocusedIndex] = useState<number>();
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [valueDerived, setValue] = useControlledValue({
         controlledValue: value,
@@ -129,10 +134,27 @@ export const useSlider = ({
         ownerSliderRef.current?.removeEventListener('mousedown', handleMouseDown);
     }
 
+    const focusThumb = (index: number) => {
+        const isContainsActive = ownerSliderRef.current?.contains(ownerDocument.activeElement);
+        const isNotEqualDataIndex = Number(ownerDocument?.activeElement?.getAttribute('data-index')) !== index;
+
+        setActiveIndex(index);
+
+        if (!isContainsActive || isNotEqualDataIndex) {
+            const element: HTMLInputElement | null | undefined = ownerSliderRef.current?.querySelector(`[type="range"][data-index="${index}"]`);
+
+            if (element != null) {
+                element.focus();
+            }
+        }
+    }
+
     const moveThumb = useEventCallback((event: Event, thumbCoords: ThumbCoords) => {
         const thumbNewValue = getThumbNewValueByThumbCoords(thumbCoords);
         const index = getNearestValueIndex(values, thumbNewValue);
         const newValue = setNewValue(values, thumbNewValue, index);
+        focusThumb(index);
+        setFocusedIndex(index);
 
         setValue(newValue);
 
@@ -145,6 +167,7 @@ export const useSlider = ({
         const thumbNewValue = getThumbNewValueByThumbCoords(thumbCoords);
         const index = getNearestValueIndex(values, thumbNewValue);
         const newValue = setNewValue(values, thumbNewValue, index);
+        setActiveIndex(undefined);
 
         onValueChangeCommitted?.(newValue);
     });
@@ -186,6 +209,7 @@ export const useSlider = ({
 
     const handleTouchEnd = (event: TouchEvent) => {
         setIsDragging(false);
+        setActiveIndex(undefined);
 
         const thumbCoords: ThumbCoords | null = extractThumbCoordsFromTouchEvent(event, modelRef.current.touchId);
 
@@ -244,8 +268,22 @@ export const useSlider = ({
         removeMouseListeners();
     };
 
+    // 3. Handle input
+    const handleFocusInput = (event: FocusEvent) => {
+        const index = Number(event.currentTarget.getAttribute('data-index'));
+
+        setFocusedIndex(index);
+    }
+
+    const handleBlurInput = () => {
+        setFocusedIndex(undefined);
+    }
+
     useEffect(() => {
-        if (!disabled) {
+        if (disabled) {
+            setActiveIndex(undefined);
+            setFocusedIndex(undefined);
+        } else {
             addTouchStartListener();
             addMouseDownListener();
         }
@@ -258,11 +296,19 @@ export const useSlider = ({
         }
     }, [disabled]);
 
+    const inputOwnerProps: HTMLProps<HTMLInputElement> = {
+        onFocus: handleFocusInput,
+        onBlur: handleBlurInput,
+    }
+
     return {
         rootRef: handleSliderRef,
+        activeIndex,
+        focusedIndex,
         isDragging,
         marks,
         values,
         track,
+        inputOwnerProps,
     }
 }
