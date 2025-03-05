@@ -22,10 +22,20 @@ export interface PaginationProps {
   onValueItemsPerPageChange?: (nextItemsPerPage: number) => void;
   onValuePageChange?: (nextPage: number) => void;
   /**
-   * @default 0
+   * @default 1
    */
   pageCount?: number;
   page?: number;
+  /**
+   * Number of always visible pages before and after the current page
+   * @default 1
+   */
+  siblingCount?: number;
+  /**
+   * Number of always visible pages at the beginning and end
+   * @default 1
+   */
+  boundaryCount?: number;
   showFirstButton?: boolean;
   showLastButton?: boolean;
   showPageInput?: boolean;
