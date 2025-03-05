@@ -1,9 +1,16 @@
+import { CSSObject } from '@emotion/css';
+
+export interface PaginationCS {
+  container?: CSSObject;
+}
+
 export interface PaginationProps {
   'aria-label'?: string;
   /**
    * Class name applied to the root element
    */
   className?: string;
+  cs?: PaginationCS;
   defaultPage?: number;
   disabled?: boolean;
   hidePrevButton?: boolean;
