@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ForwardedRef, forwardRef, useState } from 'react';
 import { cx } from '@emotion/css';
 
 import { ClassNameGenerator, convertCSToClassName } from '../utils';
@@ -64,7 +64,7 @@ export const usePagination = (options: UsePaginationOptions) => {
   return items.map((item) => {
     return typeof item === 'number'
       ? {
-          'aria-current': item === options.page ? 'page' : undefined,
+          'aria-current': item === options.page ? ('page' as const) : undefined,
           type: 'page',
           page: item,
           selected: item === options.page,
@@ -83,18 +83,42 @@ export const usePagination = (options: UsePaginationOptions) => {
   });
 };
 
-export const Pagination = (props: PaginationProps) => {
+export const Pagination = forwardRef((props: PaginationProps, ref: ForwardedRef<HTMLElement>) => {
   const { className, cs } = props;
 
   const items = usePagination(props);
 
   return (
-    <nav className={cx(getCN(), convertCSToClassName(cs?.container), className)}>
+    <nav ref={ref} className={cx(getCN(), convertCSToClassName(cs?.container), className)}>
       <ul className={getCN('ul')}>
-        {items.map((item) => {
-          return <li>{item.type}</li>;
+        {items.map(({ type, page, selected, ...item }, idx) => {
+          let content = null;
+
+          if (type === 'start-ellipsis' || type === 'end-ellipsis') {
+            content = '…';
+          } else if (type === 'page') {
+            content = (
+              <button
+                {...item}
+                type="button"
+                style={{
+                  fontWeight: selected ? 'bold' : undefined,
+                }}
+              >
+                {page}
+              </button>
+            );
+          } else {
+            content = (
+              <button {...item} type="button">
+                {type}
+              </button>
+            );
+          }
+
+          return <li key={idx}>{content}</li>;
         })}
       </ul>
     </nav>
   );
-};
+});
