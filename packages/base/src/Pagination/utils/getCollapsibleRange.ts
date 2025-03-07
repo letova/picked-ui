@@ -32,21 +32,19 @@ export const getCollapsibleRange = ({
 
   const centerRange = range(siblingStartPage, siblingEndPage);
 
-  const result = [
-    ...startRange,
-    ...(siblingStartPage > boundaryCount + 2
+  const startIntermediateRange =
+    siblingStartPage > boundaryCount + 2
       ? [START_ELLIPSIS]
       : boundaryCount + 1 < pageCount - boundaryCount
       ? [boundaryCount + 1]
-      : []),
-    ...centerRange,
-    ...(siblingEndPage < pageCount - boundaryCount - 1
+      : [];
+
+  const endIntermediateRange =
+    siblingEndPage < pageCount - boundaryCount - 1
       ? [END_ELLIPSIS]
       : pageCount - boundaryCount > boundaryCount
       ? [pageCount - boundaryCount]
-      : []),
-    ...endRange,
-  ];
+      : [];
 
-  return result;
+  return [...startRange, ...startIntermediateRange, ...centerRange, ...endIntermediateRange, ...endRange];
 };
