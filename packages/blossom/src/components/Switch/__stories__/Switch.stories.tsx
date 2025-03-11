@@ -33,6 +33,7 @@ export const States: Story = {
       <div style={containerStyle}>
         <Switch label="Unchecked" />
         <Switch label="Checked" defaultChecked />
+        <Switch label="Read only state" readOnlyState />
         <Switch label="Disabled" disabled />
         <Switch label="Disabled checked" disabled defaultChecked />
       </div>

@@ -31,9 +31,14 @@ export interface CheckboxProps extends PickedInputHTMLAttributes {
    */
   className?: string;
   /**
-   * The label element of the checkbox
+   * Custom styles that overrides default styles
    */
-  label?: React.ReactNode;
+  cs?: CheckboxCS;
+  /**
+   * Additional third state known as partially checked.
+   * This does not set the native input element to indeterminate.
+   */
+  indeterminate?: boolean;
   /**
    * Additional props for the input element
    */
@@ -42,20 +47,23 @@ export interface CheckboxProps extends PickedInputHTMLAttributes {
     TopLevelInputHTMLAttributes | 'type'
   >;
   /**
+   * The label element of the checkbox
+   */
+  label?: React.ReactNode;
+  /**
+   * Provides the checked value as a callback's argument
+   */
+  onValueChange?: (checked: boolean) => void;
+  /**
+   * Analog of a read-only attribute, which makes the element state not mutable
+   * @default false
+   */
+  readOnlyState?: boolean;
+  /**
    * Slots
    */
   slots?: {
     icon?: Slot;
     label?: Partial<Slot>;
   };
-  cs?: CheckboxCS;
-  /**
-   * Additional third state known as partially checked.
-   * This does not set the native input element to indeterminate.
-   */
-  indeterminate?: boolean;
-  /**
-   * Provides the checked value as a callback's argument
-   */
-  onValueChange?: (checked: boolean) => void;
 }

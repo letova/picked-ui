@@ -27,6 +27,7 @@ export const Checkbox = forwardRef(
       defaultChecked,
       disabled = false,
       autoFocus,
+      readOnlyState = false,
       onChange,
       onValueChange,
       onFocus,
@@ -74,6 +75,10 @@ export const Checkbox = forwardRef(
       : null;
 
     const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+      if (readOnlyState) {
+        return;
+      }
+
       const value = event.target.checked;
 
       if (isNil(userChecked)) {
