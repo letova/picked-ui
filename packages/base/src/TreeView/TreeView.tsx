@@ -60,6 +60,9 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
 
   const state = { expanded, indeterminate, selected, disabled, isCurrentLeaf: !children };
 
+  /**
+   * @todo getElementFromSlot(labelStartDecorator, { state })
+   */
   const labelStartDecoratorElement = getElementFromSlot(labelStartDecorator, state);
   const labelEndDecoratorElement = getElementFromSlot(labelEndDecorator, state);
 
