@@ -4,7 +4,7 @@ import { cx } from '@emotion/css';
 import { ClassNameGenerator, convertCSToClassName, getElementFromSlot } from '../utils';
 
 import { TreeContext, TreeViewNode, TreeViewProps, LoadingExpandButtonProps } from './TreeView.types';
-import { TreeInformation, useTreeInformation } from './useTreeInformation';
+import { TreeInformation, useTreeInformation } from './hooks';
 
 const getCN = (element?: string, modificator?: string) =>
   ClassNameGenerator.generate({ block: 'TreeView', element, modificator });

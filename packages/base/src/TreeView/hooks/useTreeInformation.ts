@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 
-import { NodeMetadata, NodeState, TreeViewNode, TreeViewProps } from './TreeView.types';
+import { NodeMetadata, NodeState, TreeViewNode, TreeViewProps } from '../TreeView.types';
 
-import { calculateSelectedIds, prepareMapsForMultiSelect, prepareMapsForSingleSelect } from './utils';
+import { calculateSelectedIds, prepareMapsForMultiSelect, prepareMapsForSingleSelect } from '../utils';
 
 const STATE_FIELDS = ['expanded', 'selected', 'disabled'];
 
@@ -90,6 +90,54 @@ class TreeInformation {
       getMetadataById: this.getMetadataById.bind(this),
     });
   }
+
+  public filterSelectedParentIds(selectedIds: string[] | undefined) {
+    if (!selectedIds) {
+      return undefined;
+    }
+
+    const selectedIdSet = new Set(selectedIds);
+    const result: string[] = [];
+
+    const process = <T extends { children?: T[]; id: string }>(data: T[]) => {
+      return data.forEach((node) => {
+        if (selectedIdSet.has(node.id)) {
+          result.push(node.id);
+        } else if (node.children?.length) {
+          process(node.children);
+        }
+      });
+    };
+
+    process(this.#data);
+
+    return result;
+  }
+
+  public filterSelectedChildIds(selectedIds: string[] | undefined) {
+    if (!selectedIds) {
+      return undefined;
+    }
+
+    const selectedIdSet = new Set(selectedIds);
+    const result: string[] = [];
+
+    const process = <T extends { children?: T[]; id: string }>(data: T[]) => {
+      return data.forEach((node) => {
+        if (selectedIdSet.has(node.id) && !node.children?.length) {
+          result.push(node.id);
+        }
+
+        if (node.children?.length) {
+          process(node.children);
+        }
+      }, [] as T[]);
+    };
+
+    process(this.#data);
+
+    return result;
+  }
 }
 
 const useTreeInformation = (
@@ -101,9 +149,7 @@ const useTreeInformation = (
 
   if (informationRef.current === null) {
     informationRef.current = new TreeInformation(mode, data, state);
-  }
-
-  if (informationRef.current.shouldUpdate(data, state)) {
+  } else if (informationRef.current.shouldUpdate(data, state)) {
     informationRef.current.update(mode, data, state);
   }
 
