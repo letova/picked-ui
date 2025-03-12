@@ -60,12 +60,6 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
 
   const state = { expanded, indeterminate, selected, disabled, isCurrentLeaf: !children };
 
-  /**
-   * @todo getElementFromSlot(labelStartDecorator, { state })
-   */
-  const labelStartDecoratorElement = getElementFromSlot(labelStartDecorator, state);
-  const labelEndDecoratorElement = getElementFromSlot(labelEndDecorator, state);
-
   const handleExpandButtonClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     const currentExpandedIds = treeInformationRef.current!.expandedIds;
 
@@ -79,6 +73,9 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
     );
     event.stopPropagation();
   };
+
+  const labelStartDecoratorElement = getElementFromSlot(labelStartDecorator, { state });
+  const labelEndDecoratorElement = getElementFromSlot(labelEndDecorator, { state });
 
   return (
     <li

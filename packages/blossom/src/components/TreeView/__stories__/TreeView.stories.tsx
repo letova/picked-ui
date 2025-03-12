@@ -157,20 +157,20 @@ export const MultiWithCheckbox: Story = {
     slots: {
       labelStartDecorator: {
         component: ({
-          selected,
-          indeterminate,
-          disabled,
+          state,
         }: {
-          selected: boolean;
-          indeterminate: boolean;
-          disabled: boolean;
+          state: {
+            selected: boolean;
+            indeterminate: boolean;
+            disabled: boolean;
+          };
         }) => {
           return (
             <Checkbox
               variant="soft"
-              checked={selected}
-              indeterminate={indeterminate}
-              disabled={disabled}
+              checked={state.selected}
+              indeterminate={state.indeterminate}
+              disabled={state.disabled}
               cs={CHECKBOX_CS}
             />
           );
