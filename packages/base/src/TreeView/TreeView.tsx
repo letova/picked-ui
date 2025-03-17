@@ -47,7 +47,15 @@ const LoadingExpandButton = ({ className, node, expanded, onClick, onLoadData }:
 const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> }) => {
   const { context, ...node } = props;
   const { id, label, children } = node;
-  const { mode, treeInformationRef, slots = {}, cs, onNodeExpandChange, onNodeSelectChange, onLoadData } = context;
+  const {
+    mode,
+    treeInformationRef,
+    slots = {},
+    cs,
+    onNodeExpansionChange,
+    onNodeSelectionChange,
+    onLoadData,
+  } = context;
   const { labelStartDecorator, labelEndDecorator } = slots;
 
   const {
@@ -63,14 +71,11 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
   const handleExpandButtonClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     const currentExpandedIds = treeInformationRef.current!.expandedIds;
 
-    onNodeExpandChange?.(
-      {
-        node: props,
-        isExpanded: !expanded,
-        expandedIds: !expanded ? currentExpandedIds.concat(id) : currentExpandedIds.filter((eId) => eId !== id),
-      },
-      event,
-    );
+    onNodeExpansionChange?.(event, {
+      node: props,
+      isExpanded: !expanded,
+      expandedIds: !expanded ? currentExpandedIds.concat(id) : currentExpandedIds.filter((eId) => eId !== id),
+    });
     event.stopPropagation();
   };
 
@@ -101,14 +106,11 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
               return;
             }
 
-            onNodeSelectChange?.(
-              {
-                node,
-                isSelected: !selected,
-                selectedIds: mode === 'single-select' ? id : treeInformationRef.current!.calculateSelectedIds(id),
-              },
-              event,
-            );
+            onNodeSelectionChange?.(event, {
+              node,
+              isSelected: !selected,
+              selectedIds: mode === 'single-select' ? id : treeInformationRef.current!.calculateSelectedIds(id),
+            });
           }}
         >
           {onLoadData ? (
@@ -175,8 +177,8 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
     slots = {},
     cs,
     onInitState,
-    onNodeExpandChange,
-    onNodeSelectChange,
+    onNodeExpansionChange,
+    onNodeSelectionChange,
     onLoadData,
     onUpdateState,
   } = props;
@@ -219,8 +221,8 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
     slots,
     cs,
     treeInformationRef,
-    onNodeExpandChange,
-    onNodeSelectChange,
+    onNodeExpansionChange,
+    onNodeSelectionChange,
     onLoadData,
   };
 
