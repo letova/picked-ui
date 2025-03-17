@@ -1,4 +1,4 @@
-import { ForwardedRef, forwardRef, useImperativeHandle, useState } from 'react';
+import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { cx } from '@emotion/css';
 
 import { ClassNameGenerator, convertCSToClassName, getElementFromSlot } from '../utils';
@@ -168,17 +168,35 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
     apiRef,
     mode = 'single-select',
     data,
-    expanded,
-    selected,
-    disabled,
+    expandedIds,
+    selectedIds,
+    disabledIds,
     search,
     slots = {},
     cs,
+    onInitState,
     onNodeExpandChange,
     onNodeSelectChange,
     onLoadData,
+    onUpdateState,
   } = props;
-  const treeInformationRef = useTreeInformation(mode, data, { expanded, selected, disabled, search });
+  const treeInformationRef = useTreeInformation(mode, data, { expandedIds, selectedIds, disabledIds, search });
+
+  useEffect(() => {
+    onInitState?.({
+      expandedIds: treeInformationRef.current.expandedIds,
+      selectedIds: treeInformationRef.current.selectedIds,
+      disabledIds: treeInformationRef.current.disabledIds,
+    });
+  }, []);
+
+  useEffect(() => {
+    onUpdateState?.({
+      expandedIds: treeInformationRef.current.expandedIds,
+      selectedIds: treeInformationRef.current.selectedIds,
+      disabledIds: treeInformationRef.current.disabledIds,
+    });
+  }, [data, expandedIds, selectedIds, disabledIds]);
 
   useImperativeHandle(
     apiRef,

@@ -42,8 +42,8 @@ interface PrepareMapsResult {
 }
 
 export const prepareMapsForSingleSelect = (props: TreeViewProps): PrepareMapsResult => {
-  const expandedIdsMap = getExpandedIdsMap(props.expanded);
-  const disabledIdsMap = getDisabledIdsMap(props.disabled);
+  const expandedIdsMap = getExpandedIdsMap(props.expandedIds);
+  const disabledIdsMap = getDisabledIdsMap(props.disabledIds);
 
   const stateMap: Record<string, NodeState> = {};
   const metadataMap: Record<string, NodeMetadata> = {};
@@ -78,17 +78,17 @@ export const prepareMapsForSingleSelect = (props: TreeViewProps): PrepareMapsRes
        */
       let hidden = isNil(props.search) ? false : !(metadata.searchMatch!.result || !context.hidden);
 
-      if (props.selected === 'all' || Array.isArray(props.selected)) {
+      if (props.selectedIds === 'all' || Array.isArray(props.selectedIds)) {
         throw new Error(`TreeView: received an invalid prop: 'selected'!`);
       }
 
-      state.selected = node.id === props.selected;
+      state.selected = node.id === props.selectedIds;
       state.indeterminate = false;
 
       state.expanded =
-        props.expanded === 'all' ||
+        props.expandedIds === 'all' ||
         Boolean(expandedIdsMap[node.id]) ||
-        (typeof props.expanded === 'number' ? context.level <= props.expanded : false);
+        (typeof props.expandedIds === 'number' ? context.level <= props.expandedIds : false);
 
       state.disabled = Boolean(disabledIdsMap[node.id]) || context.parentIsDisabled;
 

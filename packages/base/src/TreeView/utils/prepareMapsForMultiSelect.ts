@@ -44,9 +44,9 @@ interface PrepareMapsResult {
 }
 
 export const prepareMapsForMultiSelect = (props: TreeViewProps): PrepareMapsResult => {
-  const selectedIdsMap = getSelectedIdsMap(props.selected);
-  const expandedIdsMap = getExpandedIdsMap(props.expanded);
-  const disabledIdsMap = getDisabledIdsMap(props.disabled);
+  const selectedIdsMap = getSelectedIdsMap(props.selectedIds);
+  const expandedIdsMap = getExpandedIdsMap(props.expandedIds);
+  const disabledIdsMap = getDisabledIdsMap(props.disabledIds);
 
   const stateMap: Record<string, NodeState> = {};
   const metadataMap: Record<string, NodeMetadata> = {};
@@ -79,15 +79,16 @@ export const prepareMapsForMultiSelect = (props: TreeViewProps): PrepareMapsResu
       /**
        * Node state
        */
-      let selected = props.selected === 'all' || Boolean(selectedIdsMap[node.id]) || context.parentIsSelected || false;
+      let selected =
+        props.selectedIds === 'all' || Boolean(selectedIdsMap[node.id]) || context.parentIsSelected || false;
       let indeterminate = false;
 
       let hidden = isNil(props.search) ? false : !(metadata.searchMatch!.result || !context.hidden);
 
       state.expanded =
-        props.expanded === 'all' ||
+        props.expandedIds === 'all' ||
         Boolean(expandedIdsMap[node.id]) ||
-        (typeof props.expanded === 'number' ? context.level <= props.expanded : false);
+        (typeof props.expandedIds === 'number' ? context.level <= props.expandedIds : false);
 
       state.disabled = Boolean(disabledIdsMap[node.id]) || context.parentIsDisabled;
 

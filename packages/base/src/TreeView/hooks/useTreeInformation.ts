@@ -4,9 +4,9 @@ import { NodeMetadata, NodeState, TreeViewNode, TreeViewProps } from '../TreeVie
 
 import { calculateSelectedIds, prepareMapsForMultiSelect, prepareMapsForSingleSelect } from '../utils';
 
-const STATE_FIELDS = ['expanded', 'selected', 'disabled'];
+const STATE_FIELDS = ['expandedIds', 'selectedIds', 'disabledIds'];
 
-type TreeInformationUserState = Pick<TreeViewProps, 'expanded' | 'selected' | 'disabled'>;
+type TreeInformationUserState = Pick<TreeViewProps, 'expandedIds' | 'selectedIds' | 'disabledIds'>;
 
 class TreeInformation {
   public expandedIds: string[];
@@ -143,7 +143,7 @@ class TreeInformation {
 const useTreeInformation = (
   mode: TreeViewProps['mode'],
   data: TreeViewNode[] | undefined = [],
-  state: Pick<TreeViewProps, 'expanded' | 'selected' | 'disabled' | 'search'>,
+  state: Pick<TreeViewProps, 'expandedIds' | 'selectedIds' | 'disabledIds' | 'search'>,
 ) => {
   const informationRef: React.MutableRefObject<TreeInformation | null> = useRef(null);
 

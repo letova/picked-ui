@@ -49,16 +49,16 @@ export interface TreeViewProps {
   /**
    * Expanded node id/ids, level or "all" value
    */
-  expanded?: string | string[] | number;
+  expandedIds?: string | string[] | number;
   /**
    * Single-select: selected node id
    * Multi-select: selected node id/ids or "all" value
    */
-  selected?: string | string[];
+  selectedIds?: string | string[];
   /**
    * Disabled node id/ids
    */
-  disabled?: string | string[];
+  disabledIds?: string | string[];
   /**
    * List of nodes
    */
@@ -80,6 +80,10 @@ export interface TreeViewProps {
    */
   showCheckbox?: boolean;
   /**
+   * Callback fired when tree view state is inited
+   */
+  onInitState?: (state: { expandedIds: string[]; selectedIds: string[]; disabledIds: string[] }) => void;
+  /**
    * Callback fired when tree items are expanded/collapsed
    */
   onNodeExpandChange?: (
@@ -97,6 +101,10 @@ export interface TreeViewProps {
    * Load data asynchronously
    */
   onLoadData?: (node: TreeViewNode) => Promise<unknown>;
+  /**
+   * Callback fired when tree view state is updated
+   */
+  onUpdateState?: (state: { expandedIds: string[]; selectedIds: string[]; disabledIds: string[] }) => void;
 }
 
 /**
