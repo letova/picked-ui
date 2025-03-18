@@ -86,10 +86,18 @@ export interface TreeViewProps {
   /**
    * Callback fired when tree items are expanded/collapsed
    */
+  onExpandedIdsChange?: (options: { expandedIds: string[] | undefined }) => void;
+  /**
+   * Callback fired when tree items are expanded/collapsed
+   */
   onNodeExpansionChange?: (
     event: React.SyntheticEvent,
     options: { node: TreeViewNode; isExpanded: boolean; expandedIds: string[] | undefined },
   ) => void;
+  /**
+   * Callback fired when tree items are selected/unselected
+   */
+  onSelectedIdsChange?: (options: { selectedIds: string | string[] | undefined }) => void;
   /**
    * Callback fired when tree items are selected/unselected. Selected ids order is not guaranteed
    */
@@ -132,7 +140,10 @@ export interface NodeMetadata {
 }
 
 export interface TreeContext<T>
-  extends Pick<TreeViewProps, 'onNodeExpansionChange' | 'onNodeSelectionChange' | 'onLoadData'> {
+  extends Pick<
+    TreeViewProps,
+    'onExpandedIdsChange' | 'onNodeExpansionChange' | 'onSelectedIdsChange' | 'onNodeSelectionChange' | 'onLoadData'
+  > {
   mode: NonNullable<TreeViewProps['mode']>;
   level: number;
   slots?: TreeViewProps['slots'];

@@ -52,7 +52,9 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
     treeInformationRef,
     slots = {},
     cs,
+    onExpandedIdsChange,
     onNodeExpansionChange,
+    onSelectedIdsChange,
     onNodeSelectionChange,
     onLoadData,
   } = context;
@@ -71,11 +73,16 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
   const handleExpandButtonClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     const currentExpandedIds = treeInformationRef.current!.expandedIds;
 
+    const expandedIds = !expanded ? currentExpandedIds.concat(id) : currentExpandedIds.filter((eId) => eId !== id);
+
+    onExpandedIdsChange?.({ expandedIds });
+
     onNodeExpansionChange?.(event, {
       node: props,
       isExpanded: !expanded,
-      expandedIds: !expanded ? currentExpandedIds.concat(id) : currentExpandedIds.filter((eId) => eId !== id),
+      expandedIds,
     });
+
     event.stopPropagation();
   };
 
@@ -106,10 +113,14 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
               return;
             }
 
+            const selectedIds = mode === 'single-select' ? id : treeInformationRef.current!.calculateSelectedIds(id);
+
+            onSelectedIdsChange?.({ selectedIds });
+
             onNodeSelectionChange?.(event, {
               node,
               isSelected: !selected,
-              selectedIds: mode === 'single-select' ? id : treeInformationRef.current!.calculateSelectedIds(id),
+              selectedIds,
             });
           }}
         >
@@ -177,7 +188,9 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
     slots = {},
     cs,
     onInitState,
+    onExpandedIdsChange,
     onNodeExpansionChange,
+    onSelectedIdsChange,
     onNodeSelectionChange,
     onLoadData,
     onUpdateState,
@@ -221,7 +234,9 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
     slots,
     cs,
     treeInformationRef,
+    onExpandedIdsChange,
     onNodeExpansionChange,
+    onSelectedIdsChange,
     onNodeSelectionChange,
     onLoadData,
   };
