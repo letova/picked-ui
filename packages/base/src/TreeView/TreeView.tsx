@@ -49,6 +49,7 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
   const { id, label, children } = node;
   const {
     mode,
+    selectionMode,
     treeInformationRef,
     slots = {},
     cs,
@@ -113,7 +114,19 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
               return;
             }
 
-            const selectedIds = mode === 'single-select' ? id : treeInformationRef.current!.calculateSelectedIds(id);
+            let selectedIds: string | string[] | undefined = id;
+
+            if (mode === 'multi-select') {
+              selectedIds = treeInformationRef.current!.calculateSelectedIds(id);
+
+              if (selectionMode === 'parent') {
+                selectedIds = treeInformationRef.current!.filterSelectedParentIds(selectedIds);
+              }
+
+              if (selectionMode === 'child') {
+                selectedIds = treeInformationRef.current!.filterSelectedChildIds(selectedIds);
+              }
+            }
 
             onSelectedIdsChange?.({ selectedIds });
 
@@ -180,6 +193,7 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
     className,
     apiRef,
     mode = 'single-select',
+    selectionMode = 'all',
     data,
     expandedIds,
     selectedIds,
@@ -230,6 +244,7 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
 
   const context: TreeContext<TreeInformation> = {
     mode,
+    selectionMode,
     level: 1,
     slots,
     cs,

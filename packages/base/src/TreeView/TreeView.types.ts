@@ -47,6 +47,11 @@ export interface TreeViewProps {
    */
   mode?: 'single-select' | 'multi-select';
   /**
+   * Method to filter (or not for "all") selectedIds
+   * @default all
+   */
+  selectionMode?: 'all' | 'parent' | 'child';
+  /**
    * Expanded node id/ids, level or "all" value
    */
   expandedIds?: string | string[] | number;
@@ -142,7 +147,12 @@ export interface NodeMetadata {
 export interface TreeContext<T>
   extends Pick<
     TreeViewProps,
-    'onExpandedIdsChange' | 'onNodeExpansionChange' | 'onSelectedIdsChange' | 'onNodeSelectionChange' | 'onLoadData'
+    | 'selectionMode'
+    | 'onExpandedIdsChange'
+    | 'onNodeExpansionChange'
+    | 'onSelectedIdsChange'
+    | 'onNodeSelectionChange'
+    | 'onLoadData'
   > {
   mode: NonNullable<TreeViewProps['mode']>;
   level: number;
