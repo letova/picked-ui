@@ -62,6 +62,8 @@ class TreeInformation {
     this.selectedIds = selectedIds;
     this.disabledIds = disabledIds;
 
+    console.log('expandedIds', expandedIds);
+
     this.#stateMap = stateMap;
     this.#metadataMap = metadataMap;
 

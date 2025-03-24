@@ -26,11 +26,11 @@ const baseRender: Story['render'] = (args: TreeViewProps) => {
   const [expanded, setExpanded] = useState<string | string[] | undefined>('all');
   const [selected, setSelected] = useState<string | undefined>('1-1');
 
-  const handleNodeExpandChange: TreeViewProps['onNodeExpandChange'] = ({ expandedIds }) => {
+  const handleExpandedIdsChange: TreeViewProps['onExpandedIdsChange'] = ({ expandedIds }) => {
     setExpanded(expandedIds);
   };
 
-  const handleNodeSelectChange: TreeViewProps['onNodeSelectChange'] = ({ selectedIds }) => {
+  const handleSelectedIdsChange: TreeViewProps['onSelectedIdsChange'] = ({ selectedIds }) => {
     setSelected(selectedIds as string);
   };
 
@@ -38,10 +38,10 @@ const baseRender: Story['render'] = (args: TreeViewProps) => {
     <TreeView
       {...args}
       data={DATA}
-      expanded={expanded}
-      selected={selected}
-      onNodeExpandChange={handleNodeExpandChange}
-      onNodeSelectChange={handleNodeSelectChange}
+      expandedIds={expanded}
+      selectedIds={selected}
+      onExpandedIdsChange={handleExpandedIdsChange}
+      onSelectedIdsChange={handleSelectedIdsChange}
     />
   );
 };
@@ -53,7 +53,7 @@ export const Base: Story = {
 export const Disabled: Story = {
   render: baseRender,
   args: {
-    disabled: ['1-3-2'],
+    disabledIds: ['1-3-2'],
   },
 };
 
@@ -74,15 +74,20 @@ const useMultiTreeViewState = () => {
   const [expanded, setExpanded] = useState<string | string[] | undefined>('all');
   const [selected, setSelected] = useState<string | string[] | undefined>(['1-1']);
 
-  const handleNodeExpandChange: TreeViewProps['onNodeExpandChange'] = ({ expandedIds }) => {
+  const handleExpandedIdsChange: TreeViewProps['onExpandedIdsChange'] = ({ expandedIds }) => {
     setExpanded(expandedIds);
   };
 
-  const handleNodeSelectChange: TreeViewProps['onNodeSelectChange'] = ({ selectedIds }) => {
-    setSelected(selectedIds);
+  const handleSelectedIdsChange: TreeViewProps['onSelectedIdsChange'] = ({ selectedIds }) => {
+    setSelected(selectedIds as string);
   };
 
-  return { expanded, selected, onNodeExpandChange: handleNodeExpandChange, onNodeSelectChange: handleNodeSelectChange };
+  return {
+    expanded,
+    selected,
+    onExpandedIdsChange: handleExpandedIdsChange,
+    onSelectedIdsChange: handleSelectedIdsChange,
+  };
 };
 
 const multiRender: Story['render'] = (args: TreeViewProps) => {
@@ -92,10 +97,10 @@ const multiRender: Story['render'] = (args: TreeViewProps) => {
     <TreeView
       {...args}
       data={DATA}
-      expanded={state.expanded}
-      selected={state.selected}
-      onNodeExpandChange={state.onNodeExpandChange}
-      onNodeSelectChange={state.onNodeSelectChange}
+      expandedIds={state.expanded}
+      selectedIds={state.selected}
+      onExpandedIdsChange={state.onExpandedIdsChange}
+      onSelectedIdsChange={state.onSelectedIdsChange}
     />
   );
 };
@@ -120,10 +125,10 @@ const multiRenderWithApi: Story['render'] = (args: TreeViewProps) => {
       {...args}
       apiRef={apiRef}
       data={DATA}
-      expanded={state.expanded}
-      selected={state.selected}
-      onNodeExpandChange={state.onNodeExpandChange}
-      onNodeSelectChange={state.onNodeSelectChange}
+      expandedIds={state.expanded}
+      selectedIds={state.selected}
+      onExpandedIdsChange={state.onExpandedIdsChange}
+      onSelectedIdsChange={state.onSelectedIdsChange}
     />
   );
 };
@@ -139,7 +144,7 @@ export const MultiDisabled: Story = {
   render: multiRender,
   args: {
     mode: 'multi-select',
-    disabled: ['1-3-2'],
+    disabledIds: ['1-3-2'],
   },
 };
 
@@ -153,7 +158,7 @@ export const MultiWithCheckbox: Story = {
   render: multiRender,
   args: {
     mode: 'multi-select',
-    disabled: ['1-3-2'],
+    disabledIds: ['1-3-2'],
     slots: {
       labelStartDecorator: {
         component: ({

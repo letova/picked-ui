@@ -7,6 +7,7 @@ import { getDisabledIdsMap, getExpandedIdsMap } from './maps';
 interface ProcessContext {
   parentId?: string;
   parentIsDisabled: boolean;
+  ancestorsAreExpanded: boolean;
   level: number;
   hidden: boolean;
 }
@@ -14,6 +15,7 @@ interface ProcessContext {
 const INITIAL_PROCESS_CONTEXT: ProcessContext = {
   parentId: undefined,
   parentIsDisabled: false,
+  ancestorsAreExpanded: true,
   level: 1,
   hidden: false,
 };
@@ -31,9 +33,12 @@ const INITIAL_NODE_METADATA: NodeMetadata = {
   descendantIds: undefined,
   left: 0,
   right: 0,
+  prevInteractionId: undefined,
+  nextInteractionId: undefined,
 };
 
 interface PrepareMapsResult {
+  total: number;
   stateMap: Record<string, NodeState>;
   metadataMap: Record<string, NodeMetadata>;
   selectedIds: string[];
@@ -45,38 +50,70 @@ export const prepareMapsForSingleSelect = (props: TreeViewProps): PrepareMapsRes
   const expandedIdsMap = getExpandedIdsMap(props.expandedIds);
   const disabledIdsMap = getDisabledIdsMap(props.disabledIds);
 
+  let total = 0;
+
+  let lastInteractionId: string | undefined = undefined;
+
   const stateMap: Record<string, NodeState> = {};
   const metadataMap: Record<string, NodeMetadata> = {};
+
   const expandedIds: string[] = [];
   const selectedIds: string[] = [];
   const disabledIds: string[] = [];
 
   if (!props.data) {
-    return { stateMap, metadataMap, selectedIds, expandedIds, disabledIds };
+    return { total, stateMap, metadataMap, selectedIds, expandedIds, disabledIds };
   }
 
-  let nestedSetModelCounter = 0;
+  // Depth-first search (DFS)
+  let traversalCounter = 0;
 
   const process = (data: TreeViewNode[], context: ProcessContext) => {
-    data.forEach((node) => {
+    data.forEach((node, idx, levelNodes) => {
       const state: NodeState = { ...INITIAL_NODE_STATE };
       const metadata: NodeMetadata = { ...INITIAL_NODE_METADATA };
 
-      nestedSetModelCounter += 1;
+      total += 1;
+      traversalCounter += 1;
 
       /**
        * Node metadata
        */
-      let right = nestedSetModelCounter + 1;
+      let right = traversalCounter + 1;
 
-      metadata.left = nestedSetModelCounter;
+      metadata.left = traversalCounter;
       metadata.parentId = context.parentId;
       metadata.searchMatch = props.search?.match(node);
 
       /**
        * Node state
        */
-      let hidden = isNil(props.search) ? false : !(metadata.searchMatch!.result || !context.hidden);
+      let hidden = isNil(props.search) ? false : !metadata.searchMatch!.result;
+
+      const visible = isNil(context.parentId) && context.ancestorsAreExpanded;
+
+      if (visible) {
+        if (state.expanded && node.children?.length) {
+          metadata.nextInteractionId = node.children[0].id;
+        } else {
+          metadata.nextInteractionId = levelNodes[idx + 1]?.id;
+        }
+
+        metadata.prevInteractionId = lastInteractionId;
+
+        /**
+         * Set the next node id for an end nodes of descendants
+         */
+        if (
+          lastInteractionId &&
+          !isNil(metadataMap[lastInteractionId]?.prevInteractionId) &&
+          isNil(metadataMap[lastInteractionId]?.nextInteractionId)
+        ) {
+          metadataMap[lastInteractionId].nextInteractionId = node.id;
+        }
+
+        lastInteractionId = node.id;
+      }
 
       if (props.selectedIds === 'all' || Array.isArray(props.selectedIds)) {
         throw new Error(`TreeView: received an invalid prop: 'selected'!`);
@@ -96,6 +133,7 @@ export const prepareMapsForSingleSelect = (props: TreeViewProps): PrepareMapsRes
         process(node.children, {
           parentId: node.id,
           parentIsDisabled: state.disabled,
+          ancestorsAreExpanded: context.ancestorsAreExpanded === false ? false : state.expanded,
           level: context.level + 1,
           hidden,
         });
@@ -116,7 +154,7 @@ export const prepareMapsForSingleSelect = (props: TreeViewProps): PrepareMapsRes
 
         metadata.descendantIds = descendantIds;
 
-        right = nestedSetModelCounter + 1;
+        right = traversalCounter + 1;
       }
 
       metadata.right = right;
@@ -140,11 +178,11 @@ export const prepareMapsForSingleSelect = (props: TreeViewProps): PrepareMapsRes
       stateMap[node.id] = state;
       metadataMap[node.id] = metadata;
 
-      nestedSetModelCounter += 1;
+      traversalCounter += 1;
     });
   };
 
   process(props.data, isNil(props.search) ? INITIAL_PROCESS_CONTEXT : { ...INITIAL_PROCESS_CONTEXT, hidden: true });
 
-  return { stateMap, metadataMap, expandedIds, selectedIds, disabledIds };
+  return { total, stateMap, metadataMap, expandedIds, selectedIds, disabledIds };
 };

@@ -135,6 +135,8 @@ export interface NodeState {
 export interface NodeMetadata {
   parentId: string | undefined;
   descendantIds: string[] | undefined;
+  prevInteractionId: string | undefined;
+  nextInteractionId: string | undefined;
   left: number;
   right: number;
   searchMatch?: TreeViewNodeMatchResult;
