@@ -93,33 +93,9 @@ export const prepareMapsForMultiSelect = (props: TreeViewProps): PrepareMapsResu
        */
       let hidden = isNil(props.search) ? false : !metadata.searchMatch!.result;
 
-      const visible = isNil(context.parentId) && context.ancestorsAreExpanded;
-
-      if (visible) {
-        if (state.expanded && node.children?.length) {
-          metadata.nextInteractionId = node.children[0].id;
-        } else {
-          metadata.nextInteractionId = levelNodes[idx + 1]?.id;
-        }
-
-        metadata.prevInteractionId = lastInteractionId;
-
-        /**
-         * Set the next node id for an end nodes of descendants
-         */
-        if (
-          lastInteractionId &&
-          !isNil(metadataMap[lastInteractionId]?.prevInteractionId) &&
-          isNil(metadataMap[lastInteractionId]?.nextInteractionId)
-        ) {
-          metadataMap[lastInteractionId].nextInteractionId = node.id;
-        }
-
-        lastInteractionId = node.id;
-      }
-
       let selected =
         props.selectedIds === 'all' || Boolean(selectedIdsMap[node.id]) || context.parentIsSelected || false;
+
       let indeterminate = false;
 
       state.expanded =
@@ -152,6 +128,7 @@ export const prepareMapsForMultiSelect = (props: TreeViewProps): PrepareMapsResu
         }
 
         const descendantIds: string[] = [];
+
         let hasEnabledSelectedLeafs = false;
         let hasEnabledUnselectedLeafs = false;
         let hasDisabledSelectedLeafs = false;
@@ -159,28 +136,30 @@ export const prepareMapsForMultiSelect = (props: TreeViewProps): PrepareMapsResu
 
         node.children.forEach((childNode) => {
           const { selected, disabled, hidden: childHidden } = stateMap[childNode.id];
-          const { descendantIds, ...restChildMetadata } = metadataMap[childNode.id];
-          const next = descendantIds ? [childNode.id, ...descendantIds] : [childNode.id];
-          descendantIds?.push(...next);
+          const childMetadata = metadataMap[childNode.id];
+
+          descendantIds?.push(
+            ...(childMetadata.descendantIds ? [childNode.id, ...childMetadata.descendantIds] : [childNode.id]),
+          );
 
           hasEnabledSelectedLeafs =
             (!childNode.children && selected && !disabled) ||
-            restChildMetadata.hasEnabledSelectedLeafs ||
+            childMetadata.hasEnabledSelectedLeafs ||
             hasEnabledSelectedLeafs;
 
           hasEnabledUnselectedLeafs =
             (!childNode.children && !selected && !disabled) ||
-            restChildMetadata.hasEnabledUnselectedLeafs ||
+            childMetadata.hasEnabledUnselectedLeafs ||
             hasEnabledUnselectedLeafs;
 
           hasDisabledSelectedLeafs =
             (!childNode.children && selected && disabled) ||
-            restChildMetadata.hasDisabledSelectedLeafs ||
+            childMetadata.hasDisabledSelectedLeafs ||
             hasDisabledSelectedLeafs;
 
           hasDisabledUnselectedLeafs =
             (!childNode.children && !selected && disabled) ||
-            restChildMetadata.hasDisabledUnselectedLeafs ||
+            childMetadata.hasDisabledUnselectedLeafs ||
             hasDisabledUnselectedLeafs;
 
           if (hidden && !childHidden) {
@@ -195,6 +174,31 @@ export const prepareMapsForMultiSelect = (props: TreeViewProps): PrepareMapsResu
         metadata.descendantIds = descendantIds;
 
         right = traversalCounter + 1;
+      }
+
+      const visible = (isNil(context.parentId) || context.ancestorsAreExpanded) && !hidden;
+
+      if (visible) {
+        if (state.expanded && node.children?.length) {
+          metadata.nextInteractionId = node.children[0].id;
+        } else {
+          metadata.nextInteractionId = levelNodes[idx + 1]?.id;
+        }
+
+        metadata.prevInteractionId = lastInteractionId;
+
+        /**
+         * Set the next node id for an end nodes of descendants
+         */
+        if (
+          lastInteractionId &&
+          !isNil(metadataMap[lastInteractionId]?.prevInteractionId) &&
+          isNil(metadataMap[lastInteractionId]?.nextInteractionId)
+        ) {
+          metadataMap[lastInteractionId].nextInteractionId = node.id;
+        }
+
+        lastInteractionId = node.id;
       }
 
       metadata.right = right;

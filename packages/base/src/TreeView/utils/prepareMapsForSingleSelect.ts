@@ -90,7 +90,49 @@ export const prepareMapsForSingleSelect = (props: TreeViewProps): PrepareMapsRes
        */
       let hidden = isNil(props.search) ? false : !metadata.searchMatch!.result;
 
-      const visible = isNil(context.parentId) && context.ancestorsAreExpanded;
+      if (props.selectedIds === 'all' || Array.isArray(props.selectedIds)) {
+        throw new Error(`TreeView: received an invalid prop: 'selected'!`);
+      }
+
+      state.selected = node.id === props.selectedIds;
+
+      state.indeterminate = false;
+
+      state.expanded =
+        props.expandedIds === 'all' ||
+        Boolean(expandedIdsMap[node.id]) ||
+        (typeof props.expandedIds === 'number' ? context.level <= props.expandedIds : false);
+
+      state.disabled = Boolean(disabledIdsMap[node.id]) || context.parentIsDisabled;
+
+      if (node.children) {
+        process(node.children, {
+          parentId: node.id,
+          parentIsDisabled: state.disabled,
+          ancestorsAreExpanded: context.ancestorsAreExpanded === false ? false : state.expanded,
+          level: context.level + 1,
+          hidden,
+        });
+
+        const descendantIds: string[] = [];
+
+        node.children.forEach((childNode) => {
+          const { descendantIds: childDescendantIds } = metadataMap[childNode.id];
+          const { hidden: childHidden } = stateMap[childNode.id];
+
+          descendantIds?.push(...(childDescendantIds ? [childNode.id, ...childDescendantIds] : [childNode.id]));
+
+          if (hidden && !childHidden) {
+            hidden = false;
+          }
+        });
+
+        metadata.descendantIds = descendantIds;
+
+        right = traversalCounter + 1;
+      }
+
+      const visible = (isNil(context.parentId) || context.ancestorsAreExpanded) && !hidden;
 
       if (visible) {
         if (state.expanded && node.children?.length) {
@@ -113,48 +155,6 @@ export const prepareMapsForSingleSelect = (props: TreeViewProps): PrepareMapsRes
         }
 
         lastInteractionId = node.id;
-      }
-
-      if (props.selectedIds === 'all' || Array.isArray(props.selectedIds)) {
-        throw new Error(`TreeView: received an invalid prop: 'selected'!`);
-      }
-
-      state.selected = node.id === props.selectedIds;
-      state.indeterminate = false;
-
-      state.expanded =
-        props.expandedIds === 'all' ||
-        Boolean(expandedIdsMap[node.id]) ||
-        (typeof props.expandedIds === 'number' ? context.level <= props.expandedIds : false);
-
-      state.disabled = Boolean(disabledIdsMap[node.id]) || context.parentIsDisabled;
-
-      if (node.children) {
-        process(node.children, {
-          parentId: node.id,
-          parentIsDisabled: state.disabled,
-          ancestorsAreExpanded: context.ancestorsAreExpanded === false ? false : state.expanded,
-          level: context.level + 1,
-          hidden,
-        });
-
-        const descendantIds: string[] = [];
-
-        node.children.forEach((childNode) => {
-          const { descendantIds } = metadataMap[childNode.id];
-          const { hidden: childHidden } = stateMap[childNode.id];
-
-          const next = descendantIds ? [childNode.id, ...descendantIds] : [childNode.id];
-          descendantIds?.push(...next);
-
-          if (hidden && !childHidden) {
-            hidden = false;
-          }
-        });
-
-        metadata.descendantIds = descendantIds;
-
-        right = traversalCounter + 1;
       }
 
       metadata.right = right;
