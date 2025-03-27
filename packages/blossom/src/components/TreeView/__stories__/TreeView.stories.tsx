@@ -16,6 +16,9 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
+  args: {
+    onLoadData: undefined,
+  },
 } satisfies Meta<typeof TreeView>;
 
 export default meta;

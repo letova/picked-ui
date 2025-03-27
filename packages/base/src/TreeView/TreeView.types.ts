@@ -73,6 +73,7 @@ export interface TreeViewProps {
    * Slots
    */
   slots?: {
+    label?: Partial<Slot>;
     labelStartDecorator?: Slot;
     labelEndDecorator?: Slot;
   };

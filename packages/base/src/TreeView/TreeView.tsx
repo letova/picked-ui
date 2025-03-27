@@ -59,7 +59,6 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
     onNodeSelectionChange,
     onLoadData,
   } = context;
-  const { labelStartDecorator, labelEndDecorator } = slots;
 
   const {
     expanded = false,
@@ -87,8 +86,23 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
     event.stopPropagation();
   };
 
-  const labelStartDecoratorElement = getElementFromSlot(labelStartDecorator, { state });
-  const labelEndDecoratorElement = getElementFromSlot(labelEndDecorator, { state });
+  const labelStartDecoratorElement = getElementFromSlot(slots?.labelStartDecorator, { state });
+  const labelEndDecoratorElement = getElementFromSlot(slots?.labelEndDecorator, { state });
+
+  const labelElement = getElementFromSlot(
+    { component: 'span', ...slots?.label },
+    {
+      className: cx('TreeItem-label', convertCSToClassName(cs?.label, state)),
+      ...(slots?.label?.component ? { state } : undefined),
+      children: (
+        <>
+          {labelStartDecoratorElement}
+          {label}
+          {labelEndDecoratorElement}
+        </>
+      ),
+    },
+  );
 
   return (
     <li
@@ -145,7 +159,7 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
               onClick={handleExpandButtonClick}
               onLoadData={onLoadData}
             />
-          ) : children ? (
+          ) : children?.length ? (
             <button
               className={cx('TreeItem-expandButton', convertCSToClassName(cs?.expandButton))}
               onClick={handleExpandButtonClick}
@@ -153,11 +167,7 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
               {expanded ? '-' : '+'}
             </button>
           ) : null}
-          <span className={cx('TreeItem-label', convertCSToClassName(cs?.label, state))}>
-            {labelStartDecoratorElement}
-            {label}
-            {labelEndDecoratorElement}
-          </span>
+          {labelElement}
         </div>
       )}
       {children && expanded ? <Group className="TreeItem-group" data={children} context={context} /> : null}
