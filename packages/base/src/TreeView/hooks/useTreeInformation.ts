@@ -15,6 +15,7 @@ class TreeInformation {
 
   #data: TreeViewNode[];
   #state: TreeInformationUserState;
+  #nodeMap: Record<string, TreeViewNode>;
   #stateMap: Record<string, NodeState>;
   #metadataMap: Record<string, NodeMetadata>;
 
@@ -25,6 +26,8 @@ class TreeInformation {
 
     this.#data = [];
     this.#state = {};
+
+    this.#nodeMap = {};
     this.#stateMap = {};
     this.#metadataMap = {};
 
@@ -42,6 +45,10 @@ class TreeInformation {
     }, {});
   }
 
+  public getNodeById(id: string) {
+    return this.#nodeMap[id];
+  }
+
   public getStateById(id: string) {
     return this.#stateMap[id];
   }
@@ -53,7 +60,7 @@ class TreeInformation {
   public update(mode: TreeViewProps['mode'], data: TreeViewNode[], state: TreeInformationUserState) {
     const prepareMaps = mode === 'single-select' ? prepareMapsForSingleSelect : prepareMapsForMultiSelect;
 
-    const { stateMap, metadataMap, expandedIds, selectedIds, disabledIds } = prepareMaps({
+    const { nodeMap, stateMap, metadataMap, expandedIds, selectedIds, disabledIds } = prepareMaps({
       data,
       ...state,
     });
@@ -62,8 +69,7 @@ class TreeInformation {
     this.selectedIds = selectedIds;
     this.disabledIds = disabledIds;
 
-    console.log('expandedIds', expandedIds);
-
+    this.#nodeMap = nodeMap;
     this.#stateMap = stateMap;
     this.#metadataMap = metadataMap;
 

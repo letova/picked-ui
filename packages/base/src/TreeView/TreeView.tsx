@@ -241,6 +241,9 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
     apiRef,
     () => {
       return {
+        getNodeById: (id: string) => {
+          return treeInformationRef.current.getNodeById(id);
+        },
         getStateById: (id: string) => {
           return treeInformationRef.current.getStateById(id);
         },

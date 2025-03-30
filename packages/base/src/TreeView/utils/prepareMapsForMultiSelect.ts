@@ -41,11 +41,12 @@ const INITIAL_NODE_METADATA: NodeMetadata = {
 
 interface PrepareMapsResult {
   total: number;
-  stateMap: Record<string, NodeState>;
-  metadataMap: Record<string, NodeMetadata>;
   selectedIds: string[];
   expandedIds: string[];
   disabledIds: string[];
+  nodeMap: Record<string, TreeViewNode>;
+  stateMap: Record<string, NodeState>;
+  metadataMap: Record<string, NodeMetadata>;
 }
 
 export const prepareMapsForMultiSelect = (props: TreeViewProps): PrepareMapsResult => {
@@ -57,6 +58,7 @@ export const prepareMapsForMultiSelect = (props: TreeViewProps): PrepareMapsResu
 
   let lastInteractionId: string | undefined = undefined;
 
+  const nodeMap: Record<string, TreeViewNode> = {};
   const stateMap: Record<string, NodeState> = {};
   const metadataMap: Record<string, NodeMetadata> = {};
 
@@ -65,7 +67,7 @@ export const prepareMapsForMultiSelect = (props: TreeViewProps): PrepareMapsResu
   const disabledIds: string[] = [];
 
   if (!props.data) {
-    return { total, stateMap, metadataMap, selectedIds, expandedIds, disabledIds };
+    return { total, nodeMap, stateMap, metadataMap, selectedIds, expandedIds, disabledIds };
   }
 
   // Depth-first search (DFS)
@@ -221,6 +223,7 @@ export const prepareMapsForMultiSelect = (props: TreeViewProps): PrepareMapsResu
         disabledIds.push(node.id);
       }
 
+      nodeMap[node.id] = node;
       stateMap[node.id] = state;
       metadataMap[node.id] = metadata;
 
@@ -230,5 +233,5 @@ export const prepareMapsForMultiSelect = (props: TreeViewProps): PrepareMapsResu
 
   process(props.data, isNil(props.search) ? INITIAL_PROCESS_CONTEXT : { ...INITIAL_PROCESS_CONTEXT, hidden: true });
 
-  return { total, stateMap, metadataMap, expandedIds, selectedIds, disabledIds };
+  return { total, nodeMap, stateMap, metadataMap, expandedIds, selectedIds, disabledIds };
 };
