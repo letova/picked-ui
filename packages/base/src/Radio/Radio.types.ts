@@ -31,9 +31,9 @@ export interface RadioProps extends PickedInputHTMLAttributes {
    */
   className?: string;
   /**
-   * The label element of the checkbox
+   * Custom styles that overrides default styles
    */
-  label?: React.ReactNode;
+  cs?: RadioCS;
   /**
    * Additional props for the input element
    */
@@ -42,15 +42,23 @@ export interface RadioProps extends PickedInputHTMLAttributes {
     TopLevelInputHTMLAttributes | 'type'
   >;
   /**
+   * The label element of the checkbox
+   */
+  label?: React.ReactNode;
+  /**
+   * Provides the checked value as a callback's argument
+   */
+  onValueChange?: (checked: boolean) => void;
+  /**
+   * Analog of a read-only attribute, which makes the element state not mutable
+   * @default false
+   */
+  readOnlyState?: boolean;
+  /**
    * Slots
    */
   slots?: {
     icon?: Slot;
     label?: Partial<Slot>;
   };
-  cs?: RadioCS;
-  /**
-   * Provides the checked value as a callback's argument
-   */
-  onValueChange?: (checked: boolean) => void;
 }

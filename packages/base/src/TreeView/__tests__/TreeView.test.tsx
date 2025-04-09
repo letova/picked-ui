@@ -13,24 +13,26 @@ describe('TreeView', () => {
   });
 
   describe('single', () => {
-    it('correctly calls the "onNodeSelectChange" when select nodes', () => {
+    it('correctly calls the "onNodeSelectionChange" when select nodes', () => {
       const mockFn = jest.fn();
 
-      const handleNodeSelectChange: TreeViewProps['onNodeSelectChange'] = (options) => {
+      const handleSelectedIdsChange: TreeViewProps['onSelectedIdsChange'] = (options) => {
         mockFn(options.selectedIds);
       };
 
-      render(<TreeView mode="single-select" data={DATA} expanded="all" onNodeSelectChange={handleNodeSelectChange} />);
+      render(
+        <TreeView mode="single-select" data={DATA} expandedIds="all" onSelectedIdsChange={handleSelectedIdsChange} />,
+      );
 
       fireEvent.click(screen.getByText('Label 1-3'));
 
       expect(mockFn).toHaveBeenCalledWith('1-3');
     });
 
-    it('don\'t calls the "onNodeSelectChange" when select disabled nodes', () => {
+    it('don\'t calls the "onNodeSelectionChange" when select disabled nodes', () => {
       const mockFn = jest.fn();
 
-      const handleNodeSelectChange: TreeViewProps['onNodeSelectChange'] = (options) => {
+      const handleSelectedIdsChange: TreeViewProps['onSelectedIdsChange'] = (options) => {
         mockFn(options.selectedIds);
       };
 
@@ -38,9 +40,9 @@ describe('TreeView', () => {
         <TreeView
           mode="single-select"
           data={DATA}
-          expanded="all"
-          disabled="1-3"
-          onNodeSelectChange={handleNodeSelectChange}
+          expandedIds="all"
+          disabledIds="1-3"
+          onSelectedIdsChange={handleSelectedIdsChange}
         />,
       );
 
@@ -51,12 +53,12 @@ describe('TreeView', () => {
   });
 
   describe('multi', () => {
-    describe('correctly calls the "onNodeSelectChange"', () => {
+    describe('correctly calls the "onNodeSelectionChange"', () => {
       const mockFn = jest.fn();
 
       beforeEach(() => {
         // eslint-disable-next-line testing-library/no-render-in-lifecycle
-        render(<TreeView mode="multi-select" data={DATA} expanded="all" onNodeSelectChange={mockFn} />);
+        render(<TreeView mode="multi-select" data={DATA} expandedIds="all" onNodeSelectionChange={mockFn} />);
       });
 
       it('when root parent is selected', () => {
@@ -93,10 +95,10 @@ describe('TreeView', () => {
       });
     });
 
-    it('correctly calls the "onNodeSelectChange" when all leafs is selected', () => {
+    it('correctly calls the "onNodeSelectionChange" when all leafs is selected', () => {
       const mockFn = jest.fn();
 
-      const handleNodeSelectChange: TreeViewProps['onNodeSelectChange'] = (options) => {
+      const handleSelectedIdsChange: TreeViewProps['onSelectedIdsChange'] = (options) => {
         mockFn(Array.isArray(options.selectedIds) ? options.selectedIds?.sort() : options.selectedIds);
       };
 
@@ -104,9 +106,9 @@ describe('TreeView', () => {
         <TreeView
           mode="multi-select"
           data={DATA}
-          expanded="all"
-          selected={'2-1-1-1'}
-          onNodeSelectChange={handleNodeSelectChange}
+          expandedIds="all"
+          selectedIds={'2-1-1-1'}
+          onSelectedIdsChange={handleSelectedIdsChange}
         />,
       );
 
@@ -115,10 +117,10 @@ describe('TreeView', () => {
       expect(mockFn).toHaveBeenCalledWith(['2', '2-1', '2-1-1', '2-1-1-1', '2-1-1-2'].sort());
     });
 
-    it('correctly calls the "onNodeSelectChange" when select parent that has disabled nodes', () => {
+    it('correctly calls the "onNodeSelectionChange" when select parent that has disabled nodes', () => {
       const mockFn = jest.fn();
 
-      const handleNodeSelectChange: TreeViewProps['onNodeSelectChange'] = (options) => {
+      const handleSelectedIdsChange: TreeViewProps['onSelectedIdsChange'] = (options) => {
         mockFn(options.selectedIds);
       };
 
@@ -126,9 +128,9 @@ describe('TreeView', () => {
         <TreeView
           mode="multi-select"
           data={DATA}
-          expanded="all"
-          disabled={'1-3-2'}
-          onNodeSelectChange={handleNodeSelectChange}
+          expandedIds="all"
+          disabledIds={'1-3-2'}
+          onSelectedIdsChange={handleSelectedIdsChange}
         />,
       );
 
@@ -137,10 +139,10 @@ describe('TreeView', () => {
       expect(mockFn).toHaveBeenCalledWith(['1-3-1', '1-3-3']);
     });
 
-    it('correctly calls the "onNodeSelectChange" when select parent that has no enabled to select nodes', () => {
+    it('correctly calls the "onNodeSelectionChange" when select parent that has no enabled to select nodes', () => {
       const mockFn = jest.fn();
 
-      const handleNodeSelectChange: TreeViewProps['onNodeSelectChange'] = (options) => {
+      const handleSelectedIdsChange: TreeViewProps['onSelectedIdsChange'] = (options) => {
         mockFn(options.selectedIds);
       };
 
@@ -148,10 +150,10 @@ describe('TreeView', () => {
         <TreeView
           mode="multi-select"
           data={DATA}
-          expanded="all"
-          selected={['1-3-1', '1-3-3']}
-          disabled={'1-3-2'}
-          onNodeSelectChange={handleNodeSelectChange}
+          expandedIds="all"
+          selectedIds={['1-3-1', '1-3-3']}
+          disabledIds={'1-3-2'}
+          onSelectedIdsChange={handleSelectedIdsChange}
         />,
       );
 
@@ -160,10 +162,10 @@ describe('TreeView', () => {
       expect(mockFn).toHaveBeenCalledWith(undefined);
     });
 
-    it('correctly calls the "onNodeSelectChange" when select root parent that has disabled nodes', () => {
+    it('correctly calls the "onNodeSelectionChange" when select root parent that has disabled nodes', () => {
       const mockFn = jest.fn();
 
-      const handleNodeSelectChange: TreeViewProps['onNodeSelectChange'] = (options) => {
+      const handleSelectedIdsChange: TreeViewProps['onSelectedIdsChange'] = (options) => {
         mockFn(options.selectedIds);
       };
 
@@ -171,10 +173,10 @@ describe('TreeView', () => {
         <TreeView
           mode="multi-select"
           data={DATA}
-          expanded="all"
-          selected={['1-1', '1-2', '1-3-1', '1-3-3']}
-          disabled={'1-3-2'}
-          onNodeSelectChange={handleNodeSelectChange}
+          expandedIds="all"
+          selectedIds={['1-1', '1-2', '1-3-1', '1-3-3']}
+          disabledIds={'1-3-2'}
+          onSelectedIdsChange={handleSelectedIdsChange}
         />,
       );
 
@@ -183,10 +185,10 @@ describe('TreeView', () => {
       expect(mockFn).toHaveBeenCalledWith(undefined);
     });
 
-    it('correctly calls the "onNodeSelectChange" when select root parent that has disabled nodes and unselected nodes', () => {
+    it('correctly calls the "onNodeSelectionChange" when select root parent that has disabled nodes and unselected nodes', () => {
       const mockFn = jest.fn();
 
-      const handleNodeSelectChange: TreeViewProps['onNodeSelectChange'] = (options) => {
+      const handleSelectedIdsChange: TreeViewProps['onSelectedIdsChange'] = (options) => {
         mockFn(options.selectedIds);
       };
 
@@ -194,10 +196,10 @@ describe('TreeView', () => {
         <TreeView
           mode="multi-select"
           data={DATA}
-          expanded="all"
-          selected={['1-1', '1-3-1', '1-3-3']}
-          disabled={'1-3-2'}
-          onNodeSelectChange={handleNodeSelectChange}
+          expandedIds="all"
+          selectedIds={['1-1', '1-3-1', '1-3-3']}
+          disabledIds={'1-3-2'}
+          onSelectedIdsChange={handleSelectedIdsChange}
         />,
       );
 

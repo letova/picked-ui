@@ -18,7 +18,7 @@ const getActualState = (
 describe('TreeView.prepareMaps', () => {
   describe('calculates the correct expanded state map with', () => {
     test('the node', () => {
-      const { stateMap } = prepareMaps({ data: expandedMocks.DATA, expanded: expandedMocks.EXPANDED_NODE });
+      const { stateMap } = prepareMaps({ data: expandedMocks.DATA, expandedIds: expandedMocks.EXPANDED_NODE });
 
       const actual = getActualState('expanded', stateMap, expandedMocks.EXPANDED_NODE_RESULT);
 
@@ -28,7 +28,7 @@ describe('TreeView.prepareMaps', () => {
     test('some nodes', () => {
       const { stateMap } = prepareMaps({
         data: expandedMocks.DATA,
-        expanded: expandedMocks.EXPANDED_NODES,
+        expandedIds: expandedMocks.EXPANDED_NODES,
       });
 
       const actual = getActualState('expanded', stateMap, expandedMocks.EXPANDED_NODES_RESULT);
@@ -39,7 +39,7 @@ describe('TreeView.prepareMaps', () => {
     test('all nodes', () => {
       const { stateMap } = prepareMaps({
         data: expandedMocks.DATA,
-        expanded: expandedMocks.EXPANDED_ALL_NODES,
+        expandedIds: expandedMocks.EXPANDED_ALL_NODES,
       });
 
       const actual = getActualState('expanded', stateMap, expandedMocks.EXPANDED_ALL_NODES_RESULT);
@@ -50,7 +50,7 @@ describe('TreeView.prepareMaps', () => {
     test('level', () => {
       const { stateMap } = prepareMaps({
         data: expandedMocks.DATA,
-        expanded: expandedMocks.EXPANDED_LEVEL,
+        expandedIds: expandedMocks.EXPANDED_LEVEL,
       });
 
       const actual = getActualState('expanded', stateMap, expandedMocks.EXPANDED_LEVEL_RESULT);
@@ -61,7 +61,7 @@ describe('TreeView.prepareMaps', () => {
 
   describe('calculates the correct selected state map with', () => {
     test('the leaf node', () => {
-      const { stateMap } = prepareMaps({ data: selectedMocks.DATA, selected: selectedMocks.SELECTED_LEAF });
+      const { stateMap } = prepareMaps({ data: selectedMocks.DATA, selectedIds: selectedMocks.SELECTED_LEAF });
 
       expect(getActualState('selected', stateMap, selectedMocks.SELECTED_LEAF_RESULT)).toEqual(
         selectedMocks.SELECTED_LEAF_RESULT,
@@ -73,7 +73,7 @@ describe('TreeView.prepareMaps', () => {
     });
 
     test('some leaf nodes', () => {
-      const { stateMap } = prepareMaps({ data: selectedMocks.DATA, selected: selectedMocks.SELECTED_LEAFS });
+      const { stateMap } = prepareMaps({ data: selectedMocks.DATA, selectedIds: selectedMocks.SELECTED_LEAFS });
 
       expect(getActualState('selected', stateMap, selectedMocks.SELECTED_LEAFS_RESULT)).toEqual(
         selectedMocks.SELECTED_LEAFS_RESULT,
@@ -87,7 +87,7 @@ describe('TreeView.prepareMaps', () => {
     test('all leaf nodes (in subtree)', () => {
       const { stateMap } = prepareMaps({
         data: selectedMocks.DATA,
-        selected: selectedMocks.SELECTED_ALL_LEAFS,
+        selectedIds: selectedMocks.SELECTED_ALL_LEAFS,
       });
 
       expect(getActualState('selected', stateMap, selectedMocks.SELECTED_ALL_LEAFS_RESULT)).toEqual(
@@ -102,7 +102,7 @@ describe('TreeView.prepareMaps', () => {
     test('the root parent', () => {
       const { stateMap } = prepareMaps({
         data: selectedMocks.DATA,
-        selected: selectedMocks.SELECTED_ROOT_PARENT,
+        selectedIds: selectedMocks.SELECTED_ROOT_PARENT,
       });
 
       expect(getActualState('selected', stateMap, selectedMocks.SELECTED_ROOT_PARENT_RESULT)).toEqual(
@@ -117,7 +117,7 @@ describe('TreeView.prepareMaps', () => {
     test('the parent', () => {
       const { stateMap } = prepareMaps({
         data: selectedMocks.DATA,
-        selected: selectedMocks.SELECTED_PARENT,
+        selectedIds: selectedMocks.SELECTED_PARENT,
       });
 
       expect(getActualState('selected', stateMap, selectedMocks.SELECTED_PARENT_RESULT)).toEqual(
@@ -132,7 +132,7 @@ describe('TreeView.prepareMaps', () => {
     test('parents', () => {
       const { stateMap } = prepareMaps({
         data: selectedMocks.DATA,
-        selected: selectedMocks.SELECTED_PARENTS,
+        selectedIds: selectedMocks.SELECTED_PARENTS,
       });
 
       expect(getActualState('selected', stateMap, selectedMocks.SELECTED_PARENTS_RESULT)).toEqual(
@@ -147,7 +147,7 @@ describe('TreeView.prepareMaps', () => {
     test('all', () => {
       const { stateMap } = prepareMaps({
         data: selectedMocks.DATA,
-        selected: selectedMocks.SELECTED_ALL,
+        selectedIds: selectedMocks.SELECTED_ALL,
       });
 
       expect(getActualState('selected', stateMap, selectedMocks.SELECTED_ALL_RESULT)).toEqual(
@@ -162,7 +162,7 @@ describe('TreeView.prepareMaps', () => {
 
   describe('calculates the correct disabled state map with', () => {
     test('the leaf node', () => {
-      const { stateMap } = prepareMaps({ data: disabledMocks.DATA, disabled: disabledMocks.DISABLED_LEAF });
+      const { stateMap } = prepareMaps({ data: disabledMocks.DATA, disabledIds: disabledMocks.DISABLED_LEAF });
 
       const actual = getActualState('disabled', stateMap, disabledMocks.DISABLED_LEAF_RESULT);
 
@@ -172,7 +172,7 @@ describe('TreeView.prepareMaps', () => {
     test('the parent', () => {
       const { stateMap } = prepareMaps({
         data: disabledMocks.DATA,
-        disabled: disabledMocks.DISABLED_PARENT,
+        disabledIds: disabledMocks.DISABLED_PARENT,
       });
 
       const actual = getActualState('disabled', stateMap, disabledMocks.DISABLED_PARENT_RESULT);

@@ -42,6 +42,7 @@ export const getCS = ({
   size = 's',
   color = 'primary',
   cs,
+  readOnlyState = false,
 }: RadioProps): RadioProps['cs'] => {
   const sizes = SIZES_MAP[size];
   const colors = COLOR_MAP[variant][color];
@@ -101,7 +102,7 @@ export const getCS = ({
         height: '100%',
         backgroundColor: 'transparent',
         opacity: 0,
-        cursor: 'pointer',
+        cursor: readOnlyState ? 'default' : 'pointer',
       },
       icon: ({ disabled }) => ({
         width: getPxSize(sizes.boxSize, s),

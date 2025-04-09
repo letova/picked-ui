@@ -5,6 +5,7 @@ export * from './Chip';
 export * from './ChipList';
 export * from './Heading';
 export * from './Listbox';
+export * from './Pagination';
 export * from './Paper';
 export * from './Radio';
 export * from './Slider';

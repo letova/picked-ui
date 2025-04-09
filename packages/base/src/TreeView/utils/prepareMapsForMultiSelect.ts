@@ -8,6 +8,7 @@ interface ProcessContext {
   parentId?: string;
   parentIsSelected: boolean;
   parentIsDisabled: boolean;
+  ancestorsAreExpanded: boolean;
   level: number;
   hidden: boolean;
 }
@@ -16,6 +17,7 @@ const INITIAL_PROCESS_CONTEXT: ProcessContext = {
   parentId: undefined,
   parentIsSelected: false,
   parentIsDisabled: false,
+  ancestorsAreExpanded: true,
   level: 1,
   hidden: false,
 };
@@ -33,61 +35,75 @@ const INITIAL_NODE_METADATA: NodeMetadata = {
   descendantIds: undefined,
   left: 0,
   right: 0,
+  prevInteractionId: undefined,
+  nextInteractionId: undefined,
 };
 
 interface PrepareMapsResult {
-  stateMap: Record<string, NodeState>;
-  metadataMap: Record<string, NodeMetadata>;
+  total: number;
   selectedIds: string[];
   expandedIds: string[];
   disabledIds: string[];
+  nodeMap: Record<string, TreeViewNode>;
+  stateMap: Record<string, NodeState>;
+  metadataMap: Record<string, NodeMetadata>;
 }
 
 export const prepareMapsForMultiSelect = (props: TreeViewProps): PrepareMapsResult => {
-  const selectedIdsMap = getSelectedIdsMap(props.selected);
-  const expandedIdsMap = getExpandedIdsMap(props.expanded);
-  const disabledIdsMap = getDisabledIdsMap(props.disabled);
+  const selectedIdsMap = getSelectedIdsMap(props.selectedIds);
+  const expandedIdsMap = getExpandedIdsMap(props.expandedIds);
+  const disabledIdsMap = getDisabledIdsMap(props.disabledIds);
 
+  let total = 0;
+
+  let lastInteractionId: string | undefined = undefined;
+
+  const nodeMap: Record<string, TreeViewNode> = {};
   const stateMap: Record<string, NodeState> = {};
   const metadataMap: Record<string, NodeMetadata> = {};
+
   const expandedIds: string[] = [];
   const selectedIds: string[] = [];
   const disabledIds: string[] = [];
 
   if (!props.data) {
-    return { stateMap, metadataMap, selectedIds, expandedIds, disabledIds };
+    return { total, nodeMap, stateMap, metadataMap, selectedIds, expandedIds, disabledIds };
   }
 
-  let nestedSetModelCounter = 0;
+  // Depth-first search (DFS)
+  let traversalCounter = 0;
 
   const process = (data: TreeViewNode[], context: ProcessContext) => {
-    data.forEach((node) => {
+    data.forEach((node, idx, levelNodes) => {
       const state: NodeState = { ...INITIAL_NODE_STATE };
       const metadata: NodeMetadata = { ...INITIAL_NODE_METADATA };
 
-      nestedSetModelCounter += 1;
+      total += 1;
+      traversalCounter += 1;
 
       /**
        * Node metadata
        */
-      let right = nestedSetModelCounter + 1;
+      let right = traversalCounter + 1;
 
-      metadata.left = nestedSetModelCounter;
+      metadata.left = traversalCounter;
       metadata.parentId = context.parentId;
       metadata.searchMatch = props.search?.match(node);
 
       /**
        * Node state
        */
-      let selected = props.selected === 'all' || Boolean(selectedIdsMap[node.id]) || context.parentIsSelected || false;
+      let hidden = isNil(props.search) ? false : !metadata.searchMatch!.result;
+
+      let selected =
+        props.selectedIds === 'all' || Boolean(selectedIdsMap[node.id]) || context.parentIsSelected || false;
+
       let indeterminate = false;
 
-      let hidden = isNil(props.search) ? false : !(metadata.searchMatch!.result || !context.hidden);
-
       state.expanded =
-        props.expanded === 'all' ||
+        props.expandedIds === 'all' ||
         Boolean(expandedIdsMap[node.id]) ||
-        (typeof props.expanded === 'number' ? context.level <= props.expanded : false);
+        (typeof props.expandedIds === 'number' ? context.level <= props.expandedIds : false);
 
       state.disabled = Boolean(disabledIdsMap[node.id]) || context.parentIsDisabled;
 
@@ -96,6 +112,7 @@ export const prepareMapsForMultiSelect = (props: TreeViewProps): PrepareMapsResu
           parentId: node.id,
           parentIsSelected: selected,
           parentIsDisabled: state.disabled,
+          ancestorsAreExpanded: context.ancestorsAreExpanded === false ? false : state.expanded,
           level: context.level + 1,
           hidden,
         });
@@ -113,6 +130,7 @@ export const prepareMapsForMultiSelect = (props: TreeViewProps): PrepareMapsResu
         }
 
         const descendantIds: string[] = [];
+
         let hasEnabledSelectedLeafs = false;
         let hasEnabledUnselectedLeafs = false;
         let hasDisabledSelectedLeafs = false;
@@ -120,28 +138,30 @@ export const prepareMapsForMultiSelect = (props: TreeViewProps): PrepareMapsResu
 
         node.children.forEach((childNode) => {
           const { selected, disabled, hidden: childHidden } = stateMap[childNode.id];
-          const { descendantIds, ...restChildMetadata } = metadataMap[childNode.id];
-          const next = descendantIds ? [childNode.id, ...descendantIds] : [childNode.id];
-          descendantIds?.push(...next);
+          const childMetadata = metadataMap[childNode.id];
+
+          descendantIds?.push(
+            ...(childMetadata.descendantIds ? [childNode.id, ...childMetadata.descendantIds] : [childNode.id]),
+          );
 
           hasEnabledSelectedLeafs =
             (!childNode.children && selected && !disabled) ||
-            restChildMetadata.hasEnabledSelectedLeafs ||
+            childMetadata.hasEnabledSelectedLeafs ||
             hasEnabledSelectedLeafs;
 
           hasEnabledUnselectedLeafs =
             (!childNode.children && !selected && !disabled) ||
-            restChildMetadata.hasEnabledUnselectedLeafs ||
+            childMetadata.hasEnabledUnselectedLeafs ||
             hasEnabledUnselectedLeafs;
 
           hasDisabledSelectedLeafs =
             (!childNode.children && selected && disabled) ||
-            restChildMetadata.hasDisabledSelectedLeafs ||
+            childMetadata.hasDisabledSelectedLeafs ||
             hasDisabledSelectedLeafs;
 
           hasDisabledUnselectedLeafs =
             (!childNode.children && !selected && disabled) ||
-            restChildMetadata.hasDisabledUnselectedLeafs ||
+            childMetadata.hasDisabledUnselectedLeafs ||
             hasDisabledUnselectedLeafs;
 
           if (hidden && !childHidden) {
@@ -155,7 +175,32 @@ export const prepareMapsForMultiSelect = (props: TreeViewProps): PrepareMapsResu
         metadata.hasDisabledUnselectedLeafs = hasDisabledUnselectedLeafs;
         metadata.descendantIds = descendantIds;
 
-        right = nestedSetModelCounter + 1;
+        right = traversalCounter + 1;
+      }
+
+      const visible = (isNil(context.parentId) || context.ancestorsAreExpanded) && !hidden;
+
+      if (visible) {
+        if (state.expanded && node.children?.length) {
+          metadata.nextInteractionId = node.children[0].id;
+        } else {
+          metadata.nextInteractionId = levelNodes[idx + 1]?.id;
+        }
+
+        metadata.prevInteractionId = lastInteractionId;
+
+        /**
+         * Set the next node id for an end nodes of descendants
+         */
+        if (
+          lastInteractionId &&
+          !isNil(metadataMap[lastInteractionId]?.prevInteractionId) &&
+          isNil(metadataMap[lastInteractionId]?.nextInteractionId)
+        ) {
+          metadataMap[lastInteractionId].nextInteractionId = node.id;
+        }
+
+        lastInteractionId = node.id;
       }
 
       metadata.right = right;
@@ -178,14 +223,15 @@ export const prepareMapsForMultiSelect = (props: TreeViewProps): PrepareMapsResu
         disabledIds.push(node.id);
       }
 
+      nodeMap[node.id] = node;
       stateMap[node.id] = state;
       metadataMap[node.id] = metadata;
 
-      nestedSetModelCounter += 1;
+      traversalCounter += 1;
     });
   };
 
   process(props.data, isNil(props.search) ? INITIAL_PROCESS_CONTEXT : { ...INITIAL_PROCESS_CONTEXT, hidden: true });
 
-  return { stateMap, metadataMap, expandedIds, selectedIds, disabledIds };
+  return { total, nodeMap, stateMap, metadataMap, expandedIds, selectedIds, disabledIds };
 };

@@ -31,9 +31,10 @@ export interface SwitchProps extends PickedInputHTMLAttributes {
    */
   className?: string;
   /**
-   * The label element of the switch
+   * Custom styles that overrides default styles
    */
-  label?: React.ReactNode;
+  cs?: SwitchCS;
+  endDecorator?: React.ReactElement | string | number;
   /**
    * Additional props for the input element
    */
@@ -41,8 +42,19 @@ export interface SwitchProps extends PickedInputHTMLAttributes {
     React.InputHTMLAttributes<HTMLInputElement>,
     TopLevelInputHTMLAttributes | 'type'
   >;
-  startDecorator?: React.ReactElement | string | number;
-  endDecorator?: React.ReactElement | string | number;
+  /**
+   * The label element of the switch
+   */
+  label?: React.ReactNode;
+  /**
+   * Provides the checked value as a callback's argument
+   */
+  onValueChange?: (checked: boolean) => void;
+  /**
+   * Analog of a read-only attribute, which makes the element state not mutable
+   * @default false
+   */
+  readOnlyState?: boolean;
   /**
    * Slots
    */
@@ -53,9 +65,5 @@ export interface SwitchProps extends PickedInputHTMLAttributes {
     endDecorator?: Slot;
     thumb?: Partial<Slot>;
   };
-  cs?: SwitchCS;
-  /**
-   * Provides the checked value as a callback's argument
-   */
-  onValueChange?: (checked: boolean) => void;
+  startDecorator?: React.ReactElement | string | number;
 }

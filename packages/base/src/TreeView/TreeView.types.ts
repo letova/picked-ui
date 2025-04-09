@@ -47,18 +47,23 @@ export interface TreeViewProps {
    */
   mode?: 'single-select' | 'multi-select';
   /**
+   * Method to filter (or not for "all") selectedIds
+   * @default all
+   */
+  selectionMode?: 'all' | 'parent' | 'child';
+  /**
    * Expanded node id/ids, level or "all" value
    */
-  expanded?: string | string[] | number;
+  expandedIds?: string | string[] | number;
   /**
    * Single-select: selected node id
    * Multi-select: selected node id/ids or "all" value
    */
-  selected?: string | string[];
+  selectedIds?: string | string[];
   /**
    * Disabled node id/ids
    */
-  disabled?: string | string[];
+  disabledIds?: string | string[];
   /**
    * List of nodes
    */
@@ -68,6 +73,7 @@ export interface TreeViewProps {
    * Slots
    */
   slots?: {
+    label?: Partial<Slot>;
     labelStartDecorator?: Slot;
     labelEndDecorator?: Slot;
   };
@@ -80,23 +86,39 @@ export interface TreeViewProps {
    */
   showCheckbox?: boolean;
   /**
+   * Callback fired when tree view state is inited
+   */
+  onInitState?: (state: { expandedIds: string[]; selectedIds: string[]; disabledIds: string[] }) => void;
+  /**
    * Callback fired when tree items are expanded/collapsed
    */
-  onNodeExpandChange?: (
-    options: { node: TreeViewNode; isExpanded: boolean; expandedIds: string[] | undefined },
+  onExpandedIdsChange?: (options: { expandedIds: string[] | undefined }) => void;
+  /**
+   * Callback fired when tree items are expanded/collapsed
+   */
+  onNodeExpansionChange?: (
     event: React.SyntheticEvent,
+    options: { node: TreeViewNode; isExpanded: boolean; expandedIds: string[] | undefined },
   ) => void;
+  /**
+   * Callback fired when tree items are selected/unselected
+   */
+  onSelectedIdsChange?: (options: { selectedIds: string | string[] | undefined }) => void;
   /**
    * Callback fired when tree items are selected/unselected. Selected ids order is not guaranteed
    */
-  onNodeSelectChange?: (
-    options: { node: TreeViewNode; isSelected: boolean; selectedIds: string | string[] | undefined },
+  onNodeSelectionChange?: (
     event: React.SyntheticEvent,
+    options: { node: TreeViewNode; isSelected: boolean; selectedIds: string | string[] | undefined },
   ) => void;
   /**
    * Load data asynchronously
    */
   onLoadData?: (node: TreeViewNode) => Promise<unknown>;
+  /**
+   * Callback fired when tree view state is updated
+   */
+  onUpdateState?: (state: { expandedIds: string[]; selectedIds: string[]; disabledIds: string[] }) => void;
 }
 
 /**
@@ -114,6 +136,8 @@ export interface NodeState {
 export interface NodeMetadata {
   parentId: string | undefined;
   descendantIds: string[] | undefined;
+  prevInteractionId: string | undefined;
+  nextInteractionId: string | undefined;
   left: number;
   right: number;
   searchMatch?: TreeViewNodeMatchResult;
@@ -124,7 +148,15 @@ export interface NodeMetadata {
 }
 
 export interface TreeContext<T>
-  extends Pick<TreeViewProps, 'onNodeExpandChange' | 'onNodeSelectChange' | 'onLoadData'> {
+  extends Pick<
+    TreeViewProps,
+    | 'selectionMode'
+    | 'onExpandedIdsChange'
+    | 'onNodeExpansionChange'
+    | 'onSelectedIdsChange'
+    | 'onNodeSelectionChange'
+    | 'onLoadData'
+  > {
   mode: NonNullable<TreeViewProps['mode']>;
   level: number;
   slots?: TreeViewProps['slots'];

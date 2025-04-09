@@ -1,5 +1,5 @@
 export { TreeView } from './TreeView';
-export { useTreeInformation } from './useTreeInformation';
+export { useTreeInformation } from './hooks';
 
 export type {
   TreeViewCS,

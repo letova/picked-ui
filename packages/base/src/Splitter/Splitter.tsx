@@ -1,22 +1,21 @@
 import { cx } from '@emotion/css';
-import { ForwardedRef, forwardRef, useMemo, isValidElement, Children, Fragment, useRef } from 'react';
+import { ForwardedRef, forwardRef, useMemo, isValidElement, Children, Fragment, useState } from 'react';
 
 import { useForkRef, useResizeObserver } from '../hooks';
 import { ClassNameGenerator, convertCSToClassName } from '../utils';
 
 import { SplitterProps, SplitterSectionProps } from './Splitter.types';
+import { getSizes } from './utils';
 
 const getCN = (element?: string, modificator?: string) =>
   ClassNameGenerator.generate({ block: 'Splitter', element, modificator });
 
 export const Splitter = forwardRef(({ className, children, cs }: SplitterProps, ref: ForwardedRef<HTMLDivElement>) => {
-  const sizesRef = useRef({
-    containerSize: 0,
-  });
+  const [containerSize, setContainerSize] = useState<number | undefined>();
 
   const { ref: observerRef } = useResizeObserver({
     onResize: (element) => {
-      sizesRef.current.containerSize = element.clientWidth;
+      setContainerSize(element.clientWidth);
     },
   });
 
@@ -30,6 +29,15 @@ export const Splitter = forwardRef(({ className, children, cs }: SplitterProps, 
         return props;
       });
   }, [children]);
+
+  const separatorCount = items.length - 1;
+
+  const sizes = getSizes({
+    containerSize: containerSize ? containerSize - 8 * separatorCount : 0,
+    defaultChildSizes: items.map(({ defaultSize }) => ({ size: defaultSize })),
+  });
+
+  console.log('sizes', sizes);
 
   return (
     <div ref={handleRef} className={cx(getCN(), convertCSToClassName(cs?.container), className)}>

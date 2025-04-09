@@ -1,10 +1,10 @@
-import { ForwardedRef, forwardRef, useImperativeHandle, useState } from 'react';
+import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { cx } from '@emotion/css';
 
 import { ClassNameGenerator, convertCSToClassName, getElementFromSlot } from '../utils';
 
 import { TreeContext, TreeViewNode, TreeViewProps, LoadingExpandButtonProps } from './TreeView.types';
-import { TreeInformation, useTreeInformation } from './useTreeInformation';
+import { TreeInformation, useTreeInformation } from './hooks';
 
 const getCN = (element?: string, modificator?: string) =>
   ClassNameGenerator.generate({ block: 'TreeView', element, modificator });
@@ -47,8 +47,18 @@ const LoadingExpandButton = ({ className, node, expanded, onClick, onLoadData }:
 const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> }) => {
   const { context, ...node } = props;
   const { id, label, children } = node;
-  const { mode, treeInformationRef, slots = {}, cs, onNodeExpandChange, onNodeSelectChange, onLoadData } = context;
-  const { labelStartDecorator, labelEndDecorator } = slots;
+  const {
+    mode,
+    selectionMode,
+    treeInformationRef,
+    slots = {},
+    cs,
+    onExpandedIdsChange,
+    onNodeExpansionChange,
+    onSelectedIdsChange,
+    onNodeSelectionChange,
+    onLoadData,
+  } = context;
 
   const {
     expanded = false,
@@ -60,22 +70,39 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
 
   const state = { expanded, indeterminate, selected, disabled, isCurrentLeaf: !children };
 
-  const labelStartDecoratorElement = getElementFromSlot(labelStartDecorator, state);
-  const labelEndDecoratorElement = getElementFromSlot(labelEndDecorator, state);
-
   const handleExpandButtonClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     const currentExpandedIds = treeInformationRef.current!.expandedIds;
 
-    onNodeExpandChange?.(
-      {
-        node: props,
-        isExpanded: !expanded,
-        expandedIds: !expanded ? currentExpandedIds.concat(id) : currentExpandedIds.filter((eId) => eId !== id),
-      },
-      event,
-    );
+    const expandedIds = !expanded ? currentExpandedIds.concat(id) : currentExpandedIds.filter((eId) => eId !== id);
+
+    onExpandedIdsChange?.({ expandedIds });
+
+    onNodeExpansionChange?.(event, {
+      node: props,
+      isExpanded: !expanded,
+      expandedIds,
+    });
+
     event.stopPropagation();
   };
+
+  const labelStartDecoratorElement = getElementFromSlot(slots?.labelStartDecorator, { state });
+  const labelEndDecoratorElement = getElementFromSlot(slots?.labelEndDecorator, { state });
+
+  const labelElement = getElementFromSlot(
+    { component: 'span', ...slots?.label },
+    {
+      className: cx('TreeItem-label', convertCSToClassName(cs?.label, state)),
+      ...(slots?.label?.component ? { state } : undefined),
+      children: (
+        <>
+          {labelStartDecoratorElement}
+          {label}
+          {labelEndDecoratorElement}
+        </>
+      ),
+    },
+  );
 
   return (
     <li
@@ -101,14 +128,27 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
               return;
             }
 
-            onNodeSelectChange?.(
-              {
-                node,
-                isSelected: !selected,
-                selectedIds: mode === 'single-select' ? id : treeInformationRef.current!.calculateSelectedIds(id),
-              },
-              event,
-            );
+            let selectedIds: string | string[] | undefined = id;
+
+            if (mode === 'multi-select') {
+              selectedIds = treeInformationRef.current!.calculateSelectedIds(id);
+
+              if (selectionMode === 'parent') {
+                selectedIds = treeInformationRef.current!.filterSelectedParentIds(selectedIds);
+              }
+
+              if (selectionMode === 'child') {
+                selectedIds = treeInformationRef.current!.filterSelectedChildIds(selectedIds);
+              }
+            }
+
+            onSelectedIdsChange?.({ selectedIds });
+
+            onNodeSelectionChange?.(event, {
+              node,
+              isSelected: !selected,
+              selectedIds,
+            });
           }}
         >
           {onLoadData ? (
@@ -119,7 +159,7 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
               onClick={handleExpandButtonClick}
               onLoadData={onLoadData}
             />
-          ) : children ? (
+          ) : children?.length ? (
             <button
               className={cx('TreeItem-expandButton', convertCSToClassName(cs?.expandButton))}
               onClick={handleExpandButtonClick}
@@ -127,11 +167,7 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
               {expanded ? '-' : '+'}
             </button>
           ) : null}
-          <span className={cx('TreeItem-label', convertCSToClassName(cs?.label, state))}>
-            {labelStartDecoratorElement}
-            {label}
-            {labelEndDecoratorElement}
-          </span>
+          {labelElement}
         </div>
       )}
       {children && expanded ? <Group className="TreeItem-group" data={children} context={context} /> : null}
@@ -167,23 +203,47 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
     className,
     apiRef,
     mode = 'single-select',
+    selectionMode = 'all',
     data,
-    expanded,
-    selected,
-    disabled,
+    expandedIds,
+    selectedIds,
+    disabledIds,
     search,
     slots = {},
     cs,
-    onNodeExpandChange,
-    onNodeSelectChange,
+    onInitState,
+    onExpandedIdsChange,
+    onNodeExpansionChange,
+    onSelectedIdsChange,
+    onNodeSelectionChange,
     onLoadData,
+    onUpdateState,
   } = props;
-  const treeInformationRef = useTreeInformation(mode, data, { expanded, selected, disabled, search });
+  const treeInformationRef = useTreeInformation(mode, data, { expandedIds, selectedIds, disabledIds, search });
+
+  useEffect(() => {
+    onInitState?.({
+      expandedIds: treeInformationRef.current.expandedIds,
+      selectedIds: treeInformationRef.current.selectedIds,
+      disabledIds: treeInformationRef.current.disabledIds,
+    });
+  }, []);
+
+  useEffect(() => {
+    onUpdateState?.({
+      expandedIds: treeInformationRef.current.expandedIds,
+      selectedIds: treeInformationRef.current.selectedIds,
+      disabledIds: treeInformationRef.current.disabledIds,
+    });
+  }, [data, expandedIds, selectedIds, disabledIds]);
 
   useImperativeHandle(
     apiRef,
     () => {
       return {
+        getNodeById: (id: string) => {
+          return treeInformationRef.current.getNodeById(id);
+        },
         getStateById: (id: string) => {
           return treeInformationRef.current.getStateById(id);
         },
@@ -197,12 +257,15 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
 
   const context: TreeContext<TreeInformation> = {
     mode,
+    selectionMode,
     level: 1,
     slots,
     cs,
     treeInformationRef,
-    onNodeExpandChange,
-    onNodeSelectChange,
+    onExpandedIdsChange,
+    onNodeExpansionChange,
+    onSelectedIdsChange,
+    onNodeSelectionChange,
     onLoadData,
   };
 

@@ -11,7 +11,7 @@ const getIdsMap = (state: string | string[]): Record<string, true> => {
   return { [state]: true };
 };
 
-export const getSelectedIdsMap = (selected: TreeViewProps['selected']): Record<string, true> => {
+export const getSelectedIdsMap = (selected: TreeViewProps['selectedIds']): Record<string, true> => {
   if (!selected || selected === 'all') {
     return {};
   }
@@ -19,7 +19,7 @@ export const getSelectedIdsMap = (selected: TreeViewProps['selected']): Record<s
   return getIdsMap(selected);
 };
 
-export const getExpandedIdsMap = (expanded: TreeViewProps['expanded']): Record<string, true> => {
+export const getExpandedIdsMap = (expanded: TreeViewProps['expandedIds']): Record<string, true> => {
   if (!expanded || expanded === 'all' || typeof expanded === 'number') {
     return {};
   }
@@ -27,7 +27,7 @@ export const getExpandedIdsMap = (expanded: TreeViewProps['expanded']): Record<s
   return getIdsMap(expanded);
 };
 
-export const getDisabledIdsMap = (disabled: TreeViewProps['disabled']): Record<string, true> => {
+export const getDisabledIdsMap = (disabled: TreeViewProps['disabledIds']): Record<string, true> => {
   if (!disabled) {
     return {};
   }

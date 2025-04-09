@@ -29,6 +29,7 @@ export const States: Story = {
       <div style={containerStyle}>
         <Radio label="Unchecked" />
         <Radio label="Checked" defaultChecked />
+        <Radio label="Read only state" readOnlyState />
         <Radio label="Disabled" disabled />
         <Radio label="Disabled checked" disabled defaultChecked />
       </div>

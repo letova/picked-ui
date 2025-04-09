@@ -46,6 +46,7 @@ export const getCS = ({
   color = 'primary',
   cs,
   focusOutlineWraps = 'input',
+  readOnlyState = false,
 }: SwitchProps): SwitchProps['cs'] => {
   const colors = COLOR_MAP[variant][color];
   const sizes = SIZES_MAP[size];
@@ -148,7 +149,7 @@ export const getCS = ({
         height: '100%',
         backgroundColor: 'transparent',
         opacity: 0,
-        cursor: 'pointer',
+        cursor: readOnlyState ? 'default' : 'pointer',
       },
       label: ({ disabled }) => ({
         fontSize: getPxSize(sizes.label, s),
