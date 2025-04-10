@@ -122,6 +122,11 @@ export const Slider = forwardRef(
           const isActive = activeIndex === index;
           const isFocused = focusedIndex === index;
 
+          const thumbState = {
+            isActive,
+            isFocused
+          }
+
           const inputElement = getElementFromSlot(
             {
               component: 'input',
@@ -146,7 +151,7 @@ export const Slider = forwardRef(
             {
               className: cx(
                 getCN('thumb'),
-                convertCSToClassName(cs?.thumb),
+                convertCSToClassName(cs?.thumb, thumbState),
                 {
                   [getCN('thumb', 'active')]: isActive,
                   [getCN('thumb', 'focused')]: isFocused,

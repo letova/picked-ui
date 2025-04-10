@@ -1,7 +1,7 @@
 export { areEqualValues } from "./areEqualValues";
 export { clamp } from "./clamp";
 export { extractThumbCoordsFromMouseEvent, extractThumbCoordsFromTouchEvent } from "./extractThumbCoords";
-export { getOffsetStyle, getLeapStyle } from "./getAxisParams";
+export { getOffsetStyle, getLeapStyle } from "./getAxisStyles";
 export { getNearestValueFromArray, getNearestValueFromStep, getNearestValueIndex } from "./getNearestValue";
 export { getOwnerDocument } from "./getOwnerDocument";
 export { getIsDraggingStyle, getInputStyle } from "./getStyles";

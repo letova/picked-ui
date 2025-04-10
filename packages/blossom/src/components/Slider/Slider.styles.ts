@@ -68,24 +68,36 @@ export const getCS = ({
       transform: orientation === 'horizontal' ? 'translate(-50%, -50%)' : 'translate(-50%, 50%)',
       backgroundColor: disabled ? disabledPalette.bg : palette.bg.normal,
     },
-    thumb: {
-      position: 'absolute',
-      display: 'block',
-      width: getPxSize(sizes.thumbSize, scale),
-      height: getPxSize(sizes.thumbSize, scale),
-      borderRadius: getPxSize(sizes.thumbSize, scale),
-      left: orientation === 'horizontal' ? undefined : '50%',
-      top: orientation === 'horizontal' ? '50%' : undefined,
-      transform: orientation === 'horizontal' ? 'translate(-50%, -50%)' : 'translate(-50%, 50%)',
-      backgroundColor: disabled ? disabledPalette.bg : palette.bg.normal,
+    thumb: ({ isActive, isFocused }) => {
+      const getThumbBackgroundColor = (isHover: boolean = false): string => {
+        if (isActive) {
+          return palette.bg.active;
+        }
+        if (isFocused) {
+          return palette.bg.focus;
+        }
+        if (isHover) {
+          palette.bg.hover;
+        }
 
-      '&:hover': {
-        backgroundColor: disabled ? disabledPalette.bg : palette.bg.hover,
-      },
+        return disabled ? disabledPalette.bg : palette.bg.normal;
+      }
 
-      '&:active': {
-        backgroundColor: disabled ? disabledPalette.bg : palette.bg.active,
-      },
+      return {
+        position: 'absolute',
+        display: 'block',
+        width: getPxSize(sizes.thumbSize, scale),
+        height: getPxSize(sizes.thumbSize, scale),
+        borderRadius: getPxSize(sizes.thumbSize, scale),
+        left: orientation === 'horizontal' ? undefined : '50%',
+        top: orientation === 'horizontal' ? '50%' : undefined,
+        transform: orientation === 'horizontal' ? 'translate(-50%, -50%)' : 'translate(-50%, 50%)',
+        backgroundColor: getThumbBackgroundColor(),
+
+        '&:hover': {
+          backgroundColor: getThumbBackgroundColor(true),
+        },
+      };
     },
   };
 };

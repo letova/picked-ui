@@ -9,7 +9,7 @@
     "check-types": "tsc --noEmit",
     "lint": "eslint --ignore-path .gitignore .",
     "prepare": "husky install",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "storybook dev -p 6007",
     "test": "jest",
     "test:watch": "jest --watch"
   },
