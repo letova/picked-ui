@@ -57,16 +57,18 @@ export const getCS = ({
       opacity: 0.9,
       backgroundColor: disabled ? disabledPalette.bg : palette.bg.normal,
     },
-    mark: {
-      position: 'absolute',
-      display: 'block',
-      width: '2px',
-      height: '2px',
-      borderRadius: '2px',
-      left: orientation === 'horizontal' ? undefined : '50%',
-      top: orientation === 'horizontal' ? '50%' : undefined,
-      transform: orientation === 'horizontal' ? 'translate(-50%, -50%)' : 'translate(-50%, 50%)',
-      backgroundColor: disabled ? disabledPalette.bg : palette.bg.normal,
+    mark: () => {
+      return {
+        position: 'absolute',
+        display: 'block',
+        width: '2px',
+        height: '2px',
+        borderRadius: '2px',
+        left: orientation === 'horizontal' ? undefined : '50%',
+        top: orientation === 'horizontal' ? '50%' : undefined,
+        transform: orientation === 'horizontal' ? 'translate(-50%, -50%)' : 'translate(-50%, 50%)',
+        backgroundColor: disabled ? disabledPalette.bg : palette.bg.normal,
+      };
     },
     thumb: ({ isActive, isFocused }) => {
       const getThumbBackgroundColor = (isHover: boolean = false): string => {
@@ -81,7 +83,7 @@ export const getCS = ({
         }
 
         return disabled ? disabledPalette.bg : palette.bg.normal;
-      }
+      };
 
       return {
         position: 'absolute',

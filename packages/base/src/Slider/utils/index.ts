@@ -2,6 +2,7 @@ export { areEqualValues } from "./areEqualValues";
 export { clamp } from "./clamp";
 export { extractThumbCoordsFromMouseEvent, extractThumbCoordsFromTouchEvent, type ThumbCoords } from "./extractThumbCoords";
 export { getOffsetStyle, getLeapStyle } from "./getAxisStyles";
+export { getIsPassedMark } from "./getIsPassedMark";
 export { getNearestValueFromArray, getNearestValueFromStep, getNearestValueIndex } from "./getNearestValue";
 export { getOwnerDocument } from "./getOwnerDocument";
 export { getIsDraggingStyle, getInputStyle } from "./getStyles";

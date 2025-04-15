@@ -5,7 +5,7 @@ import { ClassNameGenerator, convertCSToClassName, getElementFromSlot } from "..
 
 import { Mark, SliderProps } from "./Slider.types";
 import { useSlider } from "./hooks/useSlider";
-import { getInputStyle, getIsDraggingStyle, getLeapStyle, getOffsetStyle, valueConverter } from "./utils";
+import { getInputStyle, getIsDraggingStyle, getIsPassedMark, getLeapStyle, getOffsetStyle, valueConverter } from "./utils";
 
 const getCN = (element?: string, modificator?: string) =>
   ClassNameGenerator.generate({ block: 'Slider', element, modificator });
@@ -100,6 +100,11 @@ export const Slider = forwardRef(
         {marks.map((mark: Mark, index: number) => {
           const percent = valueConverter.valueToPercent(mark.value, min, max);
           const style = getOffsetStyle(orientation, percent);
+          const isPassed = getIsPassedMark(percent, values[0]);
+
+          const markState = {
+            isPassed,
+          }
 
           const markElement = getElementFromSlot(
             {
@@ -107,7 +112,13 @@ export const Slider = forwardRef(
               ...slots.mark
             },
             {
-              className: cx(getCN('mark'), convertCSToClassName(cs?.mark)),
+              className: cx(
+                getCN('mark'),
+                convertCSToClassName(cs?.mark, markState),
+                {
+                  [getCN('mark', 'passed')]: isPassed,
+                }
+              ),
               style: style
             }
           );
@@ -151,6 +162,7 @@ export const Slider = forwardRef(
               ...slots.thumb,
             },
             {
+              'data-index': index,
               className: cx(
                 getCN('thumb'),
                 convertCSToClassName(cs?.thumb, thumbState),
@@ -163,7 +175,6 @@ export const Slider = forwardRef(
                 ...getOffsetStyle(orientation, percent),
                 ...getIsDraggingStyle(isDragging)
               },
-              'data-index': index,
               children: inputElement,
             }
           );
