@@ -1,5 +1,4 @@
 import { CSSProperties, useState } from "react";
-
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Slider } from '../index';

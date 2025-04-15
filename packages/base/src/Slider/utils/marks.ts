@@ -1,4 +1,6 @@
-import { Mark, ThumbMoveType } from "../Slider.types";
+import { Mark } from "../Slider.types";
+
+import { ThumbMoveType } from "./getThumbMoveType";
 
 interface MarksParams {
     min: number;

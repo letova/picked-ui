@@ -1,12 +1,12 @@
 export { areEqualValues } from "./areEqualValues";
 export { clamp } from "./clamp";
-export { extractThumbCoordsFromMouseEvent, extractThumbCoordsFromTouchEvent } from "./extractThumbCoords";
+export { extractThumbCoordsFromMouseEvent, extractThumbCoordsFromTouchEvent, type ThumbCoords } from "./extractThumbCoords";
 export { getOffsetStyle, getLeapStyle } from "./getAxisStyles";
 export { getNearestValueFromArray, getNearestValueFromStep, getNearestValueIndex } from "./getNearestValue";
 export { getOwnerDocument } from "./getOwnerDocument";
 export { getIsDraggingStyle, getInputStyle } from "./getStyles";
 export { getTargetIndex } from "./getTargetIndex";
-export { getThumbMoveType } from "./getThumbMoveType";
+export { getThumbMoveType, type ThumbMoveType } from "./getThumbMoveType";
 export { getThumbNewValue } from "./getThumbNewValue";
 export { getTrack, type Track } from "./getTrackData";
 export { getValuesArr } from "./getValuesArr";

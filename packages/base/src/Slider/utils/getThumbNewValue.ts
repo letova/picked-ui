@@ -1,7 +1,9 @@
-import { Orientation, ThumbCoords, ThumbMoveType } from "../Slider.types";
+import { Orientation } from "../Slider.types";
 
 import { clamp } from "./clamp";
+import { ThumbCoords } from "./extractThumbCoords";
 import { getNearestValueFromArray, getNearestValueFromStep } from "./getNearestValue";
+import { ThumbMoveType } from "./getThumbMoveType";
 import { valueConverter } from "./valueConverter";
 
 interface ThumbNewValueParams {

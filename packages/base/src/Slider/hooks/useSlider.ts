@@ -2,8 +2,8 @@ import { FocusEvent, ForwardedRef, HTMLProps, useEffect, useRef, useState } from
 
 import { useForkRef } from "../../hooks";
 
-import { Mark, Orientation, ThumbCoords } from "../Slider.types";
-import { getMarksFromParams, getThumbMoveType, getTrack, Track, getValuesArr, getThumbNewValue, getMarksValues, areEqualValues, extractThumbCoordsFromTouchEvent, extractThumbCoordsFromMouseEvent, getOwnerDocument, getNearestValueIndex, setNewValue } from "../utils";
+import { Mark, Orientation } from "../Slider.types";
+import { getMarksFromParams, getThumbMoveType, getTrack, Track, getValuesArr, getThumbNewValue, getMarksValues, areEqualValues, extractThumbCoordsFromTouchEvent, extractThumbCoordsFromMouseEvent, getOwnerDocument, getNearestValueIndex, setNewValue, ThumbCoords } from "../utils";
 
 import { useControlledValue } from "./useControlledValue";
 import { useEventCallback } from "./useEventCallback";

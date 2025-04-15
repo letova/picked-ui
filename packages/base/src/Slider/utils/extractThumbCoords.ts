@@ -1,4 +1,7 @@
-import { ThumbCoords } from "../Slider.types";
+export interface ThumbCoords {
+    x: number;
+    y: number;
+}
 
 export const extractThumbCoordsFromMouseEvent = (event: MouseEvent): ThumbCoords => {
     const coords: ThumbCoords = {
