@@ -21,6 +21,10 @@ export interface SliderCS {
 
 export interface SliderProps {
   /**
+   * A property that specifies the accessible name of an element
+   */
+  'aria-label'?: string;
+  /**
   * Class name applied to the root element.
   */
   className?: string;

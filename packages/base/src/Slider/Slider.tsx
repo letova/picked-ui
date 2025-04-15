@@ -15,6 +15,7 @@ const getMCN = (modificator?: string) => ClassNameGenerator.generate({ block: 'S
 export const Slider = forwardRef(
   (
     {
+      'aria-label': ariaLabel,
       className,
       min = 0,
       max = 100,
@@ -132,6 +133,7 @@ export const Slider = forwardRef(
               component: 'input',
             },
             {
+              'aria-label': ariaLabel,
               'data-index': index,
               style: getInputStyle(disabled),
               type: 'range',
