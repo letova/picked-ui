@@ -1,10 +1,10 @@
-import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { cx } from '@emotion/css';
+import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 
 import { ClassNameGenerator, convertCSToClassName, getElementFromSlot } from '../utils';
 
 import { TreeContext, TreeViewNode, TreeViewProps, LoadingExpandButtonProps } from './TreeView.types';
-import { TreeInformation, useTreeInformation } from './hooks';
+import { TreeInformation, useTreeInformation, useTreeViewFocus } from './hooks';
 
 const getCN = (element?: string, modificator?: string) =>
   ClassNameGenerator.generate({ block: 'TreeView', element, modificator });
@@ -53,6 +53,7 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
     treeInformationRef,
     slots = {},
     cs,
+    focusApi,
     onExpandedIdsChange,
     onNodeExpansionChange,
     onSelectedIdsChange,
@@ -70,7 +71,9 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
 
   const state = { expanded, indeterminate, selected, disabled, isCurrentLeaf: !children };
 
-  const handleExpandButtonClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+  const { prevInteractionId, nextInteractionId } = treeInformationRef.current!.getMetadataById(id);
+
+  const handleExpandChange = (event: React.KeyboardEvent<HTMLLIElement> | React.MouseEvent<HTMLButtonElement>) => {
     const currentExpandedIds = treeInformationRef.current!.expandedIds;
 
     const expandedIds = !expanded ? currentExpandedIds.concat(id) : currentExpandedIds.filter((eId) => eId !== id);
@@ -83,7 +86,44 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
       expandedIds,
     });
 
-    event.stopPropagation();
+    // event.stopPropagation(); // ???
+  };
+
+  const handleSelectChange = (event: React.KeyboardEvent<HTMLLIElement> | React.MouseEvent<HTMLDivElement>) => {
+    if (disabled) {
+      return;
+    }
+
+    let selectedIds: string | string[] | undefined = id;
+
+    if (mode === 'multi-select') {
+      selectedIds = treeInformationRef.current!.calculateSelectedIds(id);
+
+      if (selectionMode === 'parent') {
+        selectedIds = treeInformationRef.current!.filterSelectedParentIds(selectedIds);
+      }
+
+      if (selectionMode === 'child') {
+        selectedIds = treeInformationRef.current!.filterSelectedChildIds(selectedIds);
+      }
+    }
+
+    onSelectedIdsChange?.({ selectedIds });
+
+    onNodeSelectionChange?.(event, {
+      node,
+      isSelected: !selected,
+      selectedIds,
+    });
+  };
+
+  const handleFocusedSelectChange = (e: React.MouseEvent<HTMLElement>) => {
+    if (focusApi.getFocusedNodeId() !== id) {
+      focusApi.focus(id);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    handleSelectChange(e as any);
   };
 
   const labelStartDecoratorElement = getElementFromSlot(slots?.labelStartDecorator, { state });
@@ -119,50 +159,63 @@ const TreeItem = (props: TreeViewNode & { context: TreeContext<TreeInformation> 
       role="treeitem"
       aria-expanded={expanded}
       aria-selected={selected}
+      onKeyDown={(event) => {
+        event.stopPropagation();
+
+        switch (event.key) {
+          case 'ArrowLeft': {
+            if (expanded) {
+              handleExpandChange(event);
+            } else {
+              prevInteractionId && focusApi.focus(prevInteractionId);
+            }
+            break;
+          }
+
+          case 'ArrowRight': {
+            if (expanded) {
+              nextInteractionId && focusApi.focus(nextInteractionId);
+            } else {
+              handleExpandChange(event);
+            }
+            break;
+          }
+
+          case 'ArrowUp': {
+            prevInteractionId && focusApi.focus(prevInteractionId);
+            break;
+          }
+
+          case 'ArrowDown': {
+            nextInteractionId && focusApi.focus(nextInteractionId);
+            break;
+          }
+
+          case 'Enter':
+          case ' ': {
+            handleSelectChange(event);
+            break;
+          }
+        }
+      }}
     >
       {hidden ? null : (
         <div
           className={cx('TreeItem-content', convertCSToClassName(cs?.content, state))}
-          onClick={(event) => {
-            if (disabled) {
-              return;
-            }
-
-            let selectedIds: string | string[] | undefined = id;
-
-            if (mode === 'multi-select') {
-              selectedIds = treeInformationRef.current!.calculateSelectedIds(id);
-
-              if (selectionMode === 'parent') {
-                selectedIds = treeInformationRef.current!.filterSelectedParentIds(selectedIds);
-              }
-
-              if (selectionMode === 'child') {
-                selectedIds = treeInformationRef.current!.filterSelectedChildIds(selectedIds);
-              }
-            }
-
-            onSelectedIdsChange?.({ selectedIds });
-
-            onNodeSelectionChange?.(event, {
-              node,
-              isSelected: !selected,
-              selectedIds,
-            });
-          }}
+          onClick={handleFocusedSelectChange}
         >
           {onLoadData ? (
             <LoadingExpandButton
               className={cx('TreeItem-expandButton', convertCSToClassName(cs?.expandButton))}
               node={node}
               expanded={expanded}
-              onClick={handleExpandButtonClick}
+              onClick={handleExpandChange}
               onLoadData={onLoadData}
             />
           ) : children?.length ? (
             <button
               className={cx('TreeItem-expandButton', convertCSToClassName(cs?.expandButton))}
-              onClick={handleExpandButtonClick}
+              onClick={handleExpandChange}
             >
               {expanded ? '-' : '+'}
             </button>
@@ -211,6 +264,7 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
     search,
     slots = {},
     cs,
+    autoFocus = false,
     onInitState,
     onExpandedIdsChange,
     onNodeExpansionChange,
@@ -237,6 +291,8 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
     });
   }, [data, expandedIds, selectedIds, disabledIds]);
 
+  const focusApi = useTreeViewFocus({ initialNodeId: data?.[0]?.id, autoFocus });
+
   useImperativeHandle(
     apiRef,
     () => {
@@ -262,6 +318,9 @@ const TreeView = forwardRef((props: TreeViewProps, ref: ForwardedRef<HTMLDivElem
     slots,
     cs,
     treeInformationRef,
+
+    focusApi,
+
     onExpandedIdsChange,
     onNodeExpansionChange,
     onSelectedIdsChange,

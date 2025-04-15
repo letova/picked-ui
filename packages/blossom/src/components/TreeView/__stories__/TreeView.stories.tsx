@@ -17,6 +17,7 @@ const meta = {
   },
   tags: ['autodocs'],
   args: {
+    autoFocus: true,
     onLoadData: undefined,
   },
 } satisfies Meta<typeof TreeView>;

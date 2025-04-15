@@ -3,6 +3,13 @@ import { CSSObject } from '@emotion/css';
 
 import { CustomStyle, Slot } from '../types';
 
+export interface UseTreeViewFocusResult {
+  setElement: (element: HTMLLIElement | null) => void;
+  focus: (id: string) => void;
+  setFocusable: (id: string) => void;
+  getFocusedNodeId: () => string | undefined;
+}
+
 export interface TreeViewCS {
   container?: CSSObject;
   noDataView?: CSSObject;
@@ -42,6 +49,11 @@ export interface TreeViewProps {
    * TreeView API
    */
   apiRef?: RefObject<TreeViewApi>;
+  /**
+   * Autofocus on the first node/selected node
+   * @default false
+   */
+  autoFocus?: boolean;
   /**
    * Defines how the component behaves
    */
@@ -162,6 +174,7 @@ export interface TreeContext<T>
   slots?: TreeViewProps['slots'];
   cs?: TreeViewCS;
   treeInformationRef: React.RefObject<T>;
+  focusApi: UseTreeViewFocusResult;
 }
 
 export interface LoadingExpandButtonProps {
